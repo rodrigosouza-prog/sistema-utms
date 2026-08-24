@@ -1,0 +1,105 @@
+---
+/**
+ * Campo do gerador. Tres formas, mesma casca:
+ *   - texto puro / url      -> input simples
+ *   - combo (tem dicionario)-> input + dropdown com busca, aceita valor novo
+ *   - canal                 -> input + dropdown agrupado por familia, valor fechado
+ *
+ * As opcoes saem do dicionario em build time. O que o time adiciona ou
+ * remove depois e aplicado em cima, no cliente (ver generator.js).
+ */
+import Icon from './Icon.astro';
+
+export interface Props {
+  k: string;
+  field: Record<string, any>;
+  sugestoes?: Record<string, string>;
+  grupos?: Record<string, [string, any][]> | null;
+}
+const { k, field, sugestoes = {}, grupos = null } = Astro.props;
+
+const id = `i-${k}`;
+const dim = grupos ? 'canal' : (field.dim ?? '');
+const opts = Object.entries(sugestoes).sort((a, b) => a[0].localeCompare(b[0]));
+const isCombo = !!grupos || field.kind === 'combo';
+---
+
+<div class="fld">
+  <label class="fld__l" for={id}>
+    {field.label}{field.req && <i class="req">*</i>}
+    <span class="fld__badge" id={`b-${k}`} hidden></span>
+  </label>
+
+  {isCombo ? (
+    <div class="cbx" data-cbx={k} data-dim={dim}>
+      <input
+        class="inp" id={id} data-k={k} type="text"
+        placeholder={field.ph ?? ''}
+        role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls={`l-${k}`}
+        autocomplete="off" spellcheck="false" autocapitalize="off"
+      />
+      <button type="button" class="cbx__caret" data-toggle={k} tabindex="-1" aria-label="Abrir sugestoes">
+        <Icon name="chevron" size={15} />
+      </button>
+
+      <div class="cbx__pop" id={`l-${k}`} hidden>
+        <div class="cbx__list" role="listbox">
+          {grupos
+            ? Object.entries(grupos).map(([g, itens]) => (
+                <>
+                  <div class="cbx__g" data-g={g}>{g}</div>
+                  {itens.map(([ck, c]) => (
+                    <div
+                      class="opt" role="option"
+                      data-val={ck} data-label={(c as any).label}
+                      data-search={`${ck} ${(c as any).label} ${(c as any).utm_source}`.toLowerCase()}
+                    >
+                      <span class="opt__v">{(c as any).label}</span>
+                      <span class="opt__d">{(c as any).utm_source} / {(c as any).utm_medium}</span>
+                      <span class="opt__x" role="button" data-rm={`canal|${ck}`} title="Remover do dicionario">
+                        <Icon name="x" size={12} />
+                      </span>
+                    </div>
+                  ))}
+                </>
+              ))
+            : opts.map(([v, d]) => (
+                <div
+                  class="opt" role="option"
+                  data-val={v} data-search={`${v} ${d}`.toLowerCase()}
+                >
+                  <span class="opt__v">{v}</span>
+                  <span class="opt__d">{d}</span>
+                  <span class="opt__x" role="button" data-rm={`${dim}|${v}`} title="Remover do dicionario">
+                    <Icon name="x" size={12} />
+                  </span>
+                </div>
+              ))}
+          <div class="cbx__empty" hidden>nenhum valor no dicionario com esse texto</div>
+        </div>
+
+        <div class="cbx__foot">
+          {!grupos && (
+            <button type="button" class="cbx__new" data-add={k} hidden>
+              <Icon name="plus" size={13} />
+              <span>Adicionar <b data-newval>—</b> ao dicionario</span>
+            </button>
+          )}
+          <button type="button" class="cbx__man" data-manage={dim}>
+            <Icon name="book" size={13} />
+            <span>Gerenciar valores</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <input
+      class="inp" id={id} data-k={k}
+      type={field.kind === 'url' ? 'url' : 'text'}
+      placeholder={field.ph ?? ''}
+      autocomplete="off" spellcheck="false" autocapitalize="off"
+    />
+  )}
+
+  <p class="fld__h" id={`h-${k}`} set:html={field.hint ?? ''}></p>
+</div>

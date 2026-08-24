@@ -1,0 +1,52 @@
+# Sistema de UTM — Aprova Total
+
+Gerador de nomenclatura de campanha e UTM. Padroniza o nome de **campanha**,
+**conjunto** e **anúncio** a partir de um dicionário controlado, e monta a URL
+final, o tracking template ou os parâmetros de URL de cada plataforma.
+
+Astro estático, sem backend. Roda inteiro no navegador.
+
+## Rodar local
+
+```bash
+npm install
+npm run dev      # http://localhost:4330
+npm run build    # gera dist/
+npm run preview
+```
+
+## Estrutura
+
+```
+taxonomia/dicionario.json   fonte da verdade: valores válidos de cada dimensão
+src/lib/fields.js           campos, seções e regras de validação
+src/lib/utm.js              macros, tracking templates e montagem da URL
+src/scripts/generator.js    runtime: estado, combobox, dicionário editável
+src/pages/index.astro       as 4 telas (Gerador, Histórico, Dicionário, Regras)
+docs/                       nomenclatura e tracking templates
+```
+
+## Como o nome é montado
+
+| Saída | Fórmula |
+|---|---|
+| `utm_campaign` | `objetivo_produto_funil_geo_periodo_responsavel` |
+| `utm_term` | `publico_detalhe_posicionamento` |
+| `utm_content` | `formato_angulo_gancho_versao` |
+
+Token vazio nunca fica em branco: vira `na`. Regras completas em
+`_meta.regras_globais` do dicionário e na tela **Regras & padrão**.
+
+## Editar o dicionário
+
+A tela **Dicionário** permite adicionar, editar e remover valores. As alterações
+ficam no `localStorage` do navegador — são suas até você clicar em **Baixar JSON**
+e substituir `taxonomia/dicionario.json` neste repositório. É o commit desse
+arquivo que faz a mudança valer para o time.
+
+## Atenção: exports do GTM
+
+Os arquivos `GTM-*.json` estão no `.gitignore`. O export do container
+**server-side** guarda access tokens da Meta Conversions API em texto puro.
+Se precisar versionar o container, troque os valores das variáveis de token
+por placeholders antes.

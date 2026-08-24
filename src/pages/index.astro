@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Field from '../components/Field.astro';
+import Icon from '../components/Icon.astro';
+import { FIELDS, SECTIONS } from '../lib/fields.js';
+import TX from '../../taxonomia/dicionario.json';
+
+/** valores conhecidos de uma dimensao, sem as chaves de metadado */
+function sugestoes(dim) {
+  const d = TX[dim] || {};
+  return Object.fromEntries(
+    Object.entries(d).filter(([k, v]) => !k.startsWith('_') && typeof v === 'string')
+  );
+}
+
+const versao = TX._meta?.versao ?? '?';
+const regras = TX._meta?.regras_globais ?? {};
+
+/* canais agrupados por familia, para o dropdown do bloco 1 */
+const canalGrupos: Record<string, [string, any][]> = {};
+for (const [k, c] of Object.entries(TX.canal || {})) {
+  if (k.startsWith('_')) continue;
+  (canalGrupos[(c as any).grupo] ||= []).push([k, c]);
+}
+
+/* 4 campos ficam melhor em 2x2 do que em 3+1 */
+const cols = (n: number) => (n <= 2 ? n : 3);
+
+const previews = [
+  { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+  { id: 'conjunto', titulo: 'Conjunto / ad group', map: 'utm_term', vazio: 'complete o bloco 3' },
+  { id: 'anuncio',  titulo: 'Anuncio', map: 'utm_content', vazio: 'complete o bloco 4' }
+];
+
+/* formula de cada nome, para a tela de regras */
+const formulas = SECTIONS.filter((s) => s.map).map((s) => ({
+  map: s.map,
+  titulo: s.title,
+  tokens: s.rows.flat()
+}));
+
+const regraLabels: Record<string, string> = {
+  casing: 'Caixa', separador_entre_tokens: 'Separador entre tokens',
+  separador_dentro_do_token: 'Separador dentro do token', acentos: 'Acentos',
+  espacos: 'Espacos', vazio: 'Token vazio', regex_validacao_token: 'Regex de validacao'
+};
+---
+
+<Base title="Sistema de UTM — Aprova Total">
+  <div class="shell">
+    <Sidebar versao={versao} />
+
+    <div class="main">
+      <!-- ══════════ TOPBAR ══════════ -->
+      <header class="top">
+        <button type="button" class="top__menu" id="btn-menu" aria-label="Abrir menu">
+          <Icon name="menu" size={18} />
+        </button>
+
+        <div class="top__t">
+          <h1 id="page-t">Gerador de UTM</h1>
+          <p id="page-s">Monte a nomenclatura da campanha e a URL rastreavel.</p>
+        </div>
+
+        <div class="top__acts">
+          <span class="prog" id="prog" data-acts="gerador">
+            <span class="prog__dots">
+              <span class="prog__d"></span><span class="prog__d"></span><span class="prog__d"></span>
+            </span>
+            <span id="prog-t">0 de 3 nomes</span>
+          </span>
+
+          <button type="button" class="btn" id="btn-reset" data-acts="gerador">
+            <Icon name="eraser" size={14} /><span>Limpar</span>
+          </button>
+          <button type="button" class="btn btn--primary" id="btn-save" data-acts="gerador" disabled>
+            <Icon name="save" size={14} /><span>Salvar campanha</span>
+          </button>
+
+          <button type="button" class="btn" id="btn-csv" data-acts="historico" hidden>
+            <Icon name="download" size={14} /><span>Exportar CSV</span>
+          </button>
+          <button type="button" class="btn" id="btn-clear" data-acts="historico" hidden>
+            <Icon name="eraser" size={14} /><span>Limpar historico</span>
+          </button>
+
+          <button type="button" class="btn" id="btn-dict2" data-acts="dicionario" hidden>
+            <Icon name="download" size={14} /><span>Baixar JSON</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="views">
+
+        <!-- ══════════ GERADOR ══════════ -->
+        <section class="view is-on" data-view="gerador">
+          <div class="work">
+            <div class="work__form">
+              {SECTIONS.map((sec, i) => (
+                <section class="blk" data-sec={sec.n}>
+                  <header class="blk__h">
+                    <span class="blk__n">{i + 1}</span>
+                    <div class="blk__t">
+                      <h2>{sec.title}</h2>
+                      <p>{sec.desc}</p>
+                    </div>
+                    <div class="blk__meta">
+                      {sec.map && <code class="blk__map">{sec.map}</code>}
+                      <span class="blk__st" data-st={sec.n}>0/{sec.rows.flat().filter((k) => FIELDS[k].req).length}</span>
+                    </div>
+                  </header>
+
+                  <div class="blk__b">
+                    {sec.n === '0' ? (
+                      <>
+                        <div class="grid grid--2">
+                          <Field k="canal" field={FIELDS.canal} grupos={canalGrupos} />
+                          <Field k="lp" field={FIELDS.lp} />
+                        </div>
+                        <div class="srcmap" id="canal-map">
+                          <span class="srcmap__ph">escolha a plataforma para ver source, medium e platform</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div class={`grid grid--${cols(sec.rows.flat().length)}`}>
+                        {sec.rows.flat().map((k) => (
+                          <Field
+                            k={k}
+                            field={FIELDS[k]}
+                            sugestoes={FIELDS[k].dim ? sugestoes(FIELDS[k].dim) : {}}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            <aside class="work__out">
+              <div class="panel">
+                <div class="panel__h">
+                  <h3>Nomes gerados</h3>
+                  <span class="pill" id="canal-badge" hidden></span>
+                </div>
+                {previews.map((p) => (
+                  <div class="nm" id={`nmw-${p.id}`}>
+                    <div class="nm__h">
+                      <span class="nm__t">{p.titulo}</span>
+                      <code class="nm__m">{p.map}</code>
+                    </div>
+                    <div class="nm__v" id={`pv-${p.id}`} data-vazio={p.vazio}>
+                      <span class="ph">{p.vazio}</span>
+                    </div>
+                    <button type="button" class="ico" data-cp={`pv-${p.id}`} title="Copiar" disabled>
+                      <Icon name="copy" size={14} cls="cy" />
+                      <Icon name="check" size={14} cls="ck" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div class="panel">
+                <div class="tabs" id="tabs"></div>
+                <div id="pane"></div>
+              </div>
+
+              <div class="alerts" id="alerts"></div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ══════════ HISTORICO ══════════ -->
+        <section class="view" data-view="historico">
+          <div id="hist"></div>
+        </section>
+
+        <!-- ══════════ DICIONARIO ══════════ -->
+        <section class="view" data-view="dicionario">
+          <div class="banner">
+            <b>Suas alteracoes ficam neste navegador.</b> Para valer para o time, clique em
+            <b>Baixar JSON</b> e substitua <code>taxonomia/dicionario.json</code> no repositorio.
+          </div>
+          <div class="dims" id="dims"></div>
+        </section>
+
+        <!-- ══════════ REGRAS ══════════ -->
+        <section class="view view--narrow" data-view="ajuda">
+          <div class="doc">
+            <section class="blk">
+              <header class="blk__h">
+                <span class="blk__n"><Icon name="target" size={14} /></span>
+                <div class="blk__t">
+                  <h2>Como o nome e montado</h2>
+                  <p>Cada bloco do gerador vira um parametro de UTM.</p>
+                </div>
+              </header>
+              <div class="blk__b">
+                {formulas.map((f) => (
+                  <div class="formula">
+                    <span class="formula__l">{f.titulo} &middot; <b>{f.map}</b></span>
+                    {f.tokens.map((t, i) => (
+                      <>
+                        {i > 0 && <span class="sep">_</span>}
+                        <span class="tk">{t}</span>
+                      </>
+                    ))}
+                  </div>
+                ))}
+                <p>
+                  Campos opcionais (<b>detalhe</b>, <b>gancho</b>) viram <b>na</b> quando ficam vazios —
+                  a posicao do token nunca muda, entao da para separar por coluna em qualquer planilha.
+                </p>
+              </div>
+            </section>
+
+            <section class="blk">
+              <header class="blk__h">
+                <span class="blk__n"><Icon name="help" size={14} /></span>
+                <div class="blk__t">
+                  <h2>Regras globais</h2>
+                  <p>Valem para todo token, em qualquer plataforma.</p>
+                </div>
+              </header>
+              <div class="blk__b">
+                <div class="rules">
+                  {Object.entries(regras).map(([k, v]) => (
+                    <div class="rule">
+                      <div class="rule__k">{regraLabels[k] ?? k}</div>
+                      <div class="rule__v">{String(v)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section class="blk">
+              <header class="blk__h">
+                <span class="blk__n"><Icon name="link" size={14} /></span>
+                <div class="blk__t">
+                  <h2>Onde colar cada saida</h2>
+                  <p>Depende de como a plataforma preenche a URL.</p>
+                </div>
+              </header>
+              <div class="blk__b">
+                <div class="rules">
+                  <div class="rule">
+                    <div class="rule__k">Google &amp; Microsoft Ads</div>
+                    <div class="rule__v">Tracking template fixo em <b>Opcoes de URL</b> da campanha. O que muda por campanha sao os <b>custom parameters</b> <code>_campaign</code> e <code>_content</code>.</div>
+                  </div>
+                  <div class="rule">
+                    <div class="rule__k">Meta, TikTok, Reddit</div>
+                    <div class="rule__v">Cole os <b>parametros de URL</b> no anuncio. As macros preenchem nome de campanha, conjunto e anuncio sozinhas.</div>
+                  </div>
+                  <div class="rule">
+                    <div class="rule__k">E-mail, WhatsApp, influencer, offline</div>
+                    <div class="rule__v">Nao tem macro. Use a <b>URL final</b> ja montada e distribua esse link.</div>
+                  </div>
+                  <div class="rule">
+                    <div class="rule__k">LinkedIn</div>
+                    <div class="rule__v">Sem macro de URL. Tudo digitado a mao — copie a URL final e confira antes de publicar.</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden>
+    <span id="toast-t"></span>
+    <button type="button" class="toast__u" id="toast-u" hidden>
+      <Icon name="undo" size={13} /> Desfazer
+    </button>
+  </div>
+
+  <script>
+    import { init } from '../scripts/generator.js';
+    init();
+  </script>
+</Base>

@@ -1,0 +1,16 @@
+{
+  "name": "sistema-utms",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "description": "Sistema de UTM e nomenclatura de campanha - Aprova Total",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.14.1"
+  }
+}

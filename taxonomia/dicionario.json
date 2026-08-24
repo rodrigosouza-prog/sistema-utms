@@ -1,0 +1,362 @@
+{
+  "_meta": {
+    "versao": "0.4.0",
+    "atualizado_em": "2026-08-24",
+    "owner": "contas.marketing@aprovatotal.com.br",
+    "regras_globais": {
+      "casing": "lowercase sempre",
+      "separador_entre_tokens": "_",
+      "separador_dentro_do_token": "-",
+      "acentos": "proibido (a-z 0-9 - _ apenas)",
+      "espacos": "proibido",
+      "vazio": "usar 'na' — nunca deixar o token em branco",
+      "regex_validacao_token": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    }
+  },
+  "objetivo": {
+    "_descricao": "Objetivo de negocio da campanha. Primeiro token do nome — sempre por extenso.",
+    "conversao": "Conversao / venda direta",
+    "lead": "Captura de lead (formulario, WhatsApp, lista)",
+    "remarketing": "Remarketing / retargeting",
+    "trafego": "Trafego para conteudo",
+    "alcance": "Alcance / awareness",
+    "video": "Visualizacao de video",
+    "engajamento": "Engajamento",
+    "aplicativo": "Instalacao / uso do app",
+    "marca": "Marca / institucional"
+  },
+  "produto": {
+    "_descricao": "Produto, oferta ou evento. PREENCHER/CONFIRMAR — extraído dos triggers do GTM.",
+    "intensivo-enem": "Intensivo Enem",
+    "reta-final": "Plano Reta Final",
+    "aprovalive": "Aprovalive",
+    "aprovados": "Aprovados",
+    "semiextensivo": "Semiextensivos",
+    "treino-elite": "Treino de Elite",
+    "craques-enem": "Craques do Enem",
+    "app": "App Aprova Total",
+    "ensino-medio": "Ensino Médio",
+    "institucional": "Marca (sem produto específico)"
+  },
+  "funil": {
+    "_descricao": "Etapa do funil. Terceiro token do nome da campanha.",
+    "topo": "Descoberta / publico frio",
+    "meio": "Consideracao / publico morno",
+    "fundo": "Decisao / publico quente",
+    "retencao": "Retencao / base de alunos",
+    "recuperacao": "Recuperacao de carrinho / boleto"
+  },
+  "geo": {
+    "_descricao": "Recorte geográfico.",
+    "brasil": "Brasil inteiro",
+    "sudeste": "Região Sudeste",
+    "sul": "Região Sul",
+    "nordeste": "Região Nordeste",
+    "norte": "Região Norte",
+    "centro-oeste": "Região Centro-Oeste",
+    "sao-paulo": "São Paulo (UF)",
+    "rio-de-janeiro": "Rio de Janeiro (UF)",
+    "minas-gerais": "Minas Gerais (UF)",
+    "na": "Sem recorte geográfico"
+  },
+  "periodo": {
+    "_descricao": "Safra/ciclo. Formato AAAAtN (trimestre) ou AAAA-MM. Campo livre validado por regex.",
+    "_regex": "^(20[2-9][0-9](t[1-4]|-(0[1-9]|1[0-2]))|perene)$",
+    "_exemplos": [
+      "2026t1",
+      "2026-01",
+      "perene"
+    ]
+  },
+  "responsavel": {
+    "_descricao": "Quem criou a campanha. Iniciais, 2-4 letras. PREENCHER com o time.",
+    "_regex": "^[a-z]{2,4}$",
+    "_exemplos": [
+      "jvs",
+      "mrc",
+      "ana"
+    ],
+    "_valores": {}
+  },
+  "publico": {
+    "_descricao": "Nível CONJUNTO/AD GROUP — tipo de segmentação.",
+    "lookalike": "Lookalike / semelhante",
+    "interesses": "Interesses",
+    "aberto": "Aberto / broad / Advantage+",
+    "personalizado": "Público personalizado (lista, pixel, engajamento)",
+    "remarketing": "Remarketing de site",
+    "crm": "Base de CRM importada",
+    "keyword-exata": "Keyword exata (Search)",
+    "keyword-frase": "Keyword frase (Search)",
+    "keyword-ampla": "Keyword ampla (Search)",
+    "dynamic-search": "Dynamic Search Ads",
+    "marca": "Termos de marca",
+    "concorrentes": "Termos de concorrente",
+    "generico": "Termos genéricos",
+    "performance-max": "Sinais de público PMax",
+    "na": "Sem segmentação declarada"
+  },
+  "posicionamento": {
+    "_descricao": "Nível CONJUNTO — onde o anúncio roda.",
+    "automatico": "Automático / Advantage+ placements",
+    "feed": "Feed",
+    "stories": "Stories",
+    "reels": "Reels",
+    "search": "Rede de Pesquisa",
+    "display": "Rede de Display",
+    "youtube": "YouTube",
+    "shopping": "Shopping",
+    "discover": "Discover / Demand Gen",
+    "audience": "Audience Network",
+    "youtube-feed": "YouTube Shorts/Feed",
+    "na": "Não se aplica"
+  },
+  "formato": {
+    "_descricao": "Nível ANÚNCIO — formato criativo. Alimenta o utm_creative_format.",
+    "video": "Vídeo",
+    "imagem": "Imagem estática",
+    "carrossel": "Carrossel",
+    "colecao": "Coleção",
+    "responsive-search": "Responsive Search Ad",
+    "responsive-display": "Responsive Display Ad",
+    "texto": "Texto",
+    "vertical": "Vertical 9:16",
+    "gif": "GIF / animação",
+    "ugc": "UGC / depoimento gravado",
+    "na": "Não se aplica"
+  },
+  "angulo": {
+    "_descricao": "Nível ANÚNCIO — ângulo/promessa da comunicação. Vocabulário aberto mas controlado; adicionar aqui antes de usar.",
+    "prova-social": "Depoimento, aprovado, resultado",
+    "dor": "Dor / medo de não passar",
+    "autoridade": "Professor, método, credencial",
+    "oferta": "Preço, desconto, bônus",
+    "urgencia": "Prazo, últimas vagas",
+    "curiosidade": "Gancho de curiosidade",
+    "comparativo": "Comparação com alternativa",
+    "educativo": "Conteúdo / dica",
+    "institucional": "Marca"
+  },
+  "canal": {
+    "_descricao": "Mapa canônico canal -> utm_source / utm_medium / utm_source_platform. Fonte de verdade para o gerador e para a normalização no GTM.",
+    "google-search": {
+      "label": "Search",
+      "grupo": "Google Ads",
+      "utm_source": "google",
+      "utm_medium": "cpc",
+      "utm_source_platform": "google_ads"
+    },
+    "google-pmax": {
+      "label": "Performance Max",
+      "grupo": "Google Ads",
+      "utm_source": "google",
+      "utm_medium": "pmax",
+      "utm_source_platform": "google_ads"
+    },
+    "google-display": {
+      "label": "Display",
+      "grupo": "Google Ads",
+      "utm_source": "google",
+      "utm_medium": "display",
+      "utm_source_platform": "google_ads"
+    },
+    "google-video": {
+      "label": "YouTube",
+      "grupo": "Google Ads",
+      "utm_source": "youtube",
+      "utm_medium": "video",
+      "utm_source_platform": "google_ads"
+    },
+    "google-demandgen": {
+      "label": "Demand Gen",
+      "grupo": "Google Ads",
+      "utm_source": "google",
+      "utm_medium": "demandgen",
+      "utm_source_platform": "google_ads"
+    },
+    "google-shopping": {
+      "label": "Shopping",
+      "grupo": "Google Ads",
+      "utm_source": "google",
+      "utm_medium": "shopping",
+      "utm_source_platform": "google_ads"
+    },
+    "meta-facebook": {
+      "label": "Facebook",
+      "grupo": "Meta Ads",
+      "utm_source": "facebook",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "meta_ads"
+    },
+    "meta-instagram": {
+      "label": "Instagram",
+      "grupo": "Meta Ads",
+      "utm_source": "instagram",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "meta_ads"
+    },
+    "meta-messenger": {
+      "label": "Messenger",
+      "grupo": "Meta Ads",
+      "utm_source": "messenger",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "meta_ads"
+    },
+    "meta-audience": {
+      "label": "Audience Network",
+      "grupo": "Meta Ads",
+      "utm_source": "audience-network",
+      "utm_medium": "display",
+      "utm_source_platform": "meta_ads"
+    },
+    "tiktok": {
+      "label": "TikTok",
+      "grupo": "Outras midias pagas",
+      "utm_source": "tiktok",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "tiktok_ads"
+    },
+    "linkedin": {
+      "label": "LinkedIn",
+      "grupo": "Outras midias pagas",
+      "utm_source": "linkedin",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "linkedin_ads"
+    },
+    "microsoft": {
+      "label": "Microsoft",
+      "grupo": "Outras midias pagas",
+      "utm_source": "bing",
+      "utm_medium": "cpc",
+      "utm_source_platform": "microsoft_ads"
+    },
+    "reddit": {
+      "label": "Reddit",
+      "grupo": "Outras midias pagas",
+      "utm_source": "reddit",
+      "utm_medium": "paid-social",
+      "utm_source_platform": "reddit_ads"
+    },
+    "email": {
+      "label": "E-mail",
+      "grupo": "Canais proprios",
+      "utm_source": "activecampaign",
+      "utm_medium": "email",
+      "utm_source_platform": "activecampaign"
+    },
+    "whatsapp": {
+      "label": "WhatsApp",
+      "grupo": "Canais proprios",
+      "utm_source": "whatsapp",
+      "utm_medium": "messaging",
+      "utm_source_platform": "manual"
+    },
+    "sms": {
+      "label": "SMS",
+      "grupo": "Canais proprios",
+      "utm_source": "sms",
+      "utm_medium": "sms",
+      "utm_source_platform": "manual"
+    },
+    "push": {
+      "label": "Push",
+      "grupo": "Canais proprios",
+      "utm_source": "onesignal",
+      "utm_medium": "push",
+      "utm_source_platform": "manual"
+    },
+    "organico-social": {
+      "label": "Social organico",
+      "grupo": "Canais proprios",
+      "utm_source": "instagram",
+      "utm_medium": "social-organic",
+      "utm_source_platform": "manual"
+    },
+    "link-na-bio": {
+      "label": "Link na bio",
+      "grupo": "Canais proprios",
+      "utm_source": "instagram",
+      "utm_medium": "bio",
+      "utm_source_platform": "manual"
+    },
+    "influencer": {
+      "label": "Influencer",
+      "grupo": "Parcerias & offline",
+      "utm_source": "influencer",
+      "utm_medium": "influencer",
+      "utm_source_platform": "manual"
+    },
+    "afiliado": {
+      "label": "Afiliado",
+      "grupo": "Parcerias & offline",
+      "utm_source": "afiliado",
+      "utm_medium": "affiliate",
+      "utm_source_platform": "manual"
+    },
+    "parceria": {
+      "label": "Parceria",
+      "grupo": "Parcerias & offline",
+      "utm_source": "parceria",
+      "utm_medium": "partnership",
+      "utm_source_platform": "manual"
+    },
+    "offline": {
+      "label": "Offline",
+      "grupo": "Parcerias & offline",
+      "utm_source": "offline",
+      "utm_medium": "offline",
+      "utm_source_platform": "manual"
+    }
+  },
+  "aliases_normalizacao": {
+    "_descricao": "Usado pela camada de sanitização do GTM. Chave = valor sujo que chega na URL; valor = valor canônico.",
+    "utm_source": {
+      "fb": "facebook",
+      "FB": "facebook",
+      "face": "facebook",
+      "facebook.com": "facebook",
+      "ig": "instagram",
+      "IG": "instagram",
+      "insta": "instagram",
+      "instagram.com": "instagram",
+      "an": "audience-network",
+      "msg": "messenger",
+      "adwords": "google",
+      "google.com": "google",
+      "www.google.com": "google",
+      "googleads": "google",
+      "yt": "youtube",
+      "youtube.com": "youtube",
+      "m.youtube.com": "youtube",
+      "tik-tok": "tiktok",
+      "tiktok.com": "tiktok",
+      "ttk": "tiktok",
+      "ac": "activecampaign",
+      "active-campaign": "activecampaign",
+      "linkedin.com": "linkedin",
+      "lnkd.in": "linkedin",
+      "bing.com": "bing",
+      "microsoft": "bing",
+      "wa": "whatsapp",
+      "whats": "whatsapp",
+      "api.whatsapp.com": "whatsapp",
+      "l.wl.co": "whatsapp"
+    },
+    "utm_medium": {
+      "ppc": "cpc",
+      "paid": "cpc",
+      "cpc-search": "cpc",
+      "search": "cpc",
+      "social": "paid-social",
+      "social-paid": "paid-social",
+      "socialpaid": "paid-social",
+      "banner": "display",
+      "cpm": "display",
+      "e-mail": "email",
+      "mail": "email",
+      "newsletter": "email",
+      "stories": "paid-social",
+      "reels": "paid-social"
+    }
+  }
+}

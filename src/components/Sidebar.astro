@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+export interface Props { versao: string }
+const { versao } = Astro.props;
+
+const nav = [
+  { grupo: 'Operacao', itens: [
+    { v: 'gerador',   icon: 'wand',    label: 'Gerador' },
+    { v: 'historico', icon: 'history', label: 'Historico', badge: true }
+  ]},
+  { grupo: 'Referencia', itens: [
+    { v: 'dicionario', icon: 'book', label: 'Dicionario' },
+    { v: 'ajuda',      icon: 'help', label: 'Regras & padrao' }
+  ]}
+];
+---
+
+<aside class="nav" id="nav">
+  <a class="nav__brand" href="/">
+    <img class="nav__logo" src="/logo-aprova.webp" alt="" width="34" height="34" />
+    <span class="nav__brandt">
+      <b>Sistema de UTM</b>
+      <small>Aprova Total</small>
+    </span>
+  </a>
+
+  <nav class="nav__list">
+    {nav.map((g) => (
+      <>
+        <span class="nav__sec">{g.grupo}</span>
+        {g.itens.map((i) => (
+          <button type="button" class={`nav__i${i.v === 'gerador' ? ' is-on' : ''}`} data-view={i.v}>
+            <Icon name={i.icon} size={16} />
+            <span>{i.label}</span>
+            {i.badge && <em class="nav__b" id="nav-hist" hidden></em>}
+          </button>
+        ))}
+      </>
+    ))}
+  </nav>
+
+  <div class="nav__foot">
+    <div class="nav__ver">
+      <span>dicionario</span>
+      <b>v{versao}</b>
+    </div>
+    <button type="button" class="nav__dl" id="btn-dict">
+      <Icon name="download" size={13} /> Baixar JSON
+    </button>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>

@@ -1,0 +1,22 @@
+# dependencias e build
+node_modules/
+dist/
+.astro/
+.vercel/
+
+# segredos
+.env
+.env.*
+!.env.example
+
+# ⚠️ exports de container do GTM: o container server-side guarda
+# access tokens da Meta Conversions API em texto puro. Nao commitar
+# sem antes trocar os valores por placeholders.
+GTM-*.json
+
+# 651 MB de assets de marca — nao pertencem ao repo do app
+marca aprova total/
+
+# sistema
+.DS_Store
+*.log
