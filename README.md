@@ -44,9 +44,12 @@ ficam no `localStorage` do navegador — são suas até você clicar em **Baixar
 e substituir `taxonomia/dicionario.json` neste repositório. É o commit desse
 arquivo que faz a mudança valer para o time.
 
-## Atenção: exports do GTM
+## Exports do GTM não entram aqui
 
-Os arquivos `GTM-*.json` estão no `.gitignore`. O export do container
-**server-side** guarda access tokens da Meta Conversions API em texto puro.
-Se precisar versionar o container, troque os valores das variáveis de token
-por placeholders antes.
+`GTM-*.json` está no `.gitignore` por regra, não por acaso: o export do
+container **server-side** guarda access tokens da Meta Conversions API em
+texto puro. Se precisar versionar um container, troque os valores das
+variáveis de token por placeholders antes.
+
+O patch de normalização do GTM (referenciado em `docs/02-tracking-templates.md`)
+vive em `gtm-patch/` e ainda está no roadmap.

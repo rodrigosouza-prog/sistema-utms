@@ -9,9 +9,9 @@ dist/
 .env.*
 !.env.example
 
-# ⚠️ exports de container do GTM: o container server-side guarda
-# access tokens da Meta Conversions API em texto puro. Nao commitar
-# sem antes trocar os valores por placeholders.
+# ⚠️ exports de container do GTM nunca entram no repo: o container
+# server-side guarda access tokens da Meta Conversions API em texto puro.
+# Para versionar um container, troque os tokens por placeholders antes.
 GTM-*.json
 
 # 651 MB de assets de marca — nao pertencem ao repo do app
