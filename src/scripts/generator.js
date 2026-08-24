@@ -151,15 +151,26 @@ function afterDict() {
 
 /* ═══════════════ nomes ═══════════════ */
 
+const ANUNCIO_KS = ['formato', 'angulo', 'gancho', 'versao'];
+/* o bloco do anuncio e opcional: so entra na URL se alguem preencheu algo nele */
+const temAnuncio = () => ANUNCIO_KS.some(k => S[k]);
+
+/* so entra no nome o valor que passa na validacao do proprio campo —
+   senao o preview monta um nome com um valor que o Salvar vai recusar */
+function tok(k) {
+  const st = fieldState(k);
+  return st.s === 'ok' || st.s === 'novo' ? S[k] : null;
+}
+
 function nomes() {
   const ok = arr => arr.every(v => v && TOKEN_RE.test(v));
-  const c = [S.objetivo, S.produto, S.funil, S.geo, S.periodo, S.responsavel];
-  const j = [S.publico, S.detalhe || 'na', S.posicionamento];
-  const a = [S.formato, S.angulo, S.gancho || 'na', S.versao];
+  const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tok);
+  const j = [tok('publico'), S.detalhe ? tok('detalhe') : 'na', tok('posicionamento')];
+  const a = ANUNCIO_KS.map(k => (S[k] ? tok(k) : 'na'));
   return {
     campanha: ok(c) ? c.join('_') : null,
     conjunto: ok(j) ? j.join('_') : null,
-    anuncio:  ok(a) ? a.join('_') : null
+    anuncio:  temAnuncio() && ok(a) ? a.join('_') : null
   };
 }
 
@@ -175,6 +186,7 @@ function fieldState(k) {
     return { s: 'ok' };
   }
   if (f.re && !RE_MAP[f.re].test(v)) return { s: 'bad', why: 'fora do formato' };
+  if (f.chk && !f.chk(v)) return { s: 'bad', why: f.chkWhy || 'valor invalido' };
   if (!TOKEN_RE.test(v)) return { s: 'bad', why: 'caracteres invalidos' };
   if (f.kind === 'combo') return isKnown(f.dim, v) ? { s: 'ok' } : { s: 'novo' };
   return { s: 'ok' };
@@ -667,15 +679,30 @@ function update() {
     $(`#nmw-${id}`).classList.toggle('is-full', !!val);
     $(`[data-cp="pv-${id}"]`).disabled = !val;
   }
-  $('#prog-t').textContent = `${prontos} de 3 nomes`;
-  $('#prog').classList.toggle('is-full', prontos === 3);
-  $$('#prog .prog__d').forEach((d, i) => d.classList.toggle('is-on', i < prontos));
+  const alvo = temAnuncio() ? 3 : 2;
+  $('#prog-t').textContent = `${prontos} de ${alvo} nome${alvo > 1 ? 's' : ''}`;
+  $('#prog').classList.toggle('is-full', prontos >= alvo);
+  $$('#prog .prog__d').forEach((d, i) => {
+    d.hidden = i >= alvo;
+    d.classList.toggle('is-on', i < prontos);
+  });
 
   for (const sec of SECTIONS) {
-    const req = sec.rows.flat().filter(k => FIELDS[k].req);
-    const ok = req.filter(k => ['ok', 'novo'].includes(fieldState(k).s)).length;
-    $(`.blk[data-sec="${sec.n}"]`).classList.toggle('is-done', ok === req.length);
-    $(`[data-st="${sec.n}"]`).textContent = ok === req.length ? 'completo' : `${ok}/${req.length}`;
+    const ks = sec.rows.flat();
+    const req = ks.filter(k => FIELDS[k].req);
+    const bloco = $(`.blk[data-sec="${sec.n}"]`);
+    const st = $(`[data-st="${sec.n}"]`);
+
+    if (req.length) {
+      const ok = req.filter(k => ['ok', 'novo'].includes(fieldState(k).s)).length;
+      bloco.classList.toggle('is-done', ok === req.length);
+      st.textContent = ok === req.length ? 'completo' : `${ok}/${req.length}`;
+    } else {
+      const cheios = ks.filter(k => S[k]).length;
+      const algumBad = ks.some(k => fieldState(k).s === 'bad');
+      bloco.classList.toggle('is-done', cheios > 0 && !algumBad);
+      st.textContent = cheios ? `${cheios}/${ks.length}` : 'opcional';
+    }
   }
 
   const defs = [['url', 'URL final']]

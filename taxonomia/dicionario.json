@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "0.4.0",
+    "versao": "0.5.0",
     "atualizado_em": "2026-08-24",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -67,16 +67,6 @@
       "2026-01",
       "perene"
     ]
-  },
-  "responsavel": {
-    "_descricao": "Quem criou a campanha. Iniciais, 2-4 letras. PREENCHER com o time.",
-    "_regex": "^[a-z]{2,4}$",
-    "_exemplos": [
-      "jvs",
-      "mrc",
-      "ana"
-    ],
-    "_valores": {}
   },
   "publico": {
     "_descricao": "Nível CONJUNTO/AD GROUP — tipo de segmentação.",
@@ -283,14 +273,14 @@
       "label": "Influencer",
       "grupo": "Parcerias & offline",
       "utm_source": "influencer",
-      "utm_medium": "influencer",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "afiliado": {
       "label": "Afiliado",
       "grupo": "Parcerias & offline",
       "utm_source": "afiliado",
-      "utm_medium": "affiliate",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "parceria": {
@@ -356,7 +346,9 @@
       "mail": "email",
       "newsletter": "email",
       "stories": "paid-social",
-      "reels": "paid-social"
+      "reels": "paid-social",
+      "affiliate": "cpc",
+      "influencer": "cpc"
     }
   }
 }

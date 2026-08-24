@@ -2,9 +2,17 @@
    Compartilhado entre o render de build (.astro) e o runtime no cliente. */
 
 export const TOKEN_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-export const PERIODO_RE = /^(20[2-9][0-9](t[1-4]|-(0[1-9]|1[0-2]))|perene)$/;
-export const RESP_RE = /^[a-z]{2,}(-[a-z0-9]+)*$/;
+export const PERIODO_RE = /^((0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-20[2-9][0-9]|perene)$/;
 export const VERSAO_RE = /^v[0-9]{2}$/;
+
+/* O regex garante o formato dd-mm-aaaa; isto garante que a data existe —
+   31-02-2026 passa no regex mas nao e um dia real. */
+export function dataValida(v) {
+  if (v === 'perene') return true;
+  const [d, m, y] = v.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.getDate() === d && dt.getMonth() === m - 1 && dt.getFullYear() === y;
+}
 
 /* kind:
    select -> valor fechado (so canal, porque mapeia source/medium/platform)
@@ -26,12 +34,9 @@ export const FIELDS = {
   funil: { kind: 'combo', dim: 'funil', label: 'Funil', req: true, ph: 'fundo' },
   geo: { kind: 'combo', dim: 'geo', label: 'Geo', req: true, ph: 'brasil' },
   periodo: {
-    kind: 'text', label: 'Periodo', req: true, ph: '2026t1',
-    hint: '<b>2026t1</b> · <b>2026-03</b> · <b>perene</b>', re: 'PERIODO'
-  },
-  responsavel: {
-    kind: 'combo', dim: 'responsavel', label: 'Responsavel', req: true, ph: 'joao-victor',
-    hint: 'nome de quem opera — sem espaco, use hifen', re: 'RESP'
+    kind: 'text', label: 'Data', req: true, ph: '12-02-2026',
+    hint: 'dia-mes-ano — <b>12-02-2026</b> · ou <b>perene</b>',
+    re: 'PERIODO', chk: dataValida, chkWhy: 'essa data nao existe'
   },
   publico: { kind: 'combo', dim: 'publico', label: 'Publico', req: true, ph: 'lookalike' },
   detalhe: {
@@ -39,16 +44,16 @@ export const FIELDS = {
     hint: 'opcional — vazio vira <b>na</b>'
   },
   posicionamento: { kind: 'combo', dim: 'posicionamento', label: 'Posicionamento', req: true, ph: 'reels' },
-  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: true, ph: 'video' },
-  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: true, ph: 'prova-social' },
+  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: false, ph: 'video' },
+  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: false, ph: 'prova-social' },
   gancho: {
     kind: 'text', label: 'Gancho', req: false, ph: 'aprovada-usp',
-    hint: 'opcional — vazio vira <b>na</b>'
+    hint: 'vazio vira <b>na</b>'
   },
-  versao: { kind: 'text', label: 'Versao', req: true, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO' }
+  versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO' }
 };
 
-export const RE_MAP = { PERIODO: PERIODO_RE, RESP: RESP_RE, VERSAO: VERSAO_RE };
+export const RE_MAP = { PERIODO: PERIODO_RE, VERSAO: VERSAO_RE };
 
 export const SECTIONS = [
   {
@@ -59,7 +64,7 @@ export const SECTIONS = [
   {
     n: '1', title: 'Campanha', map: 'utm_campaign',
     desc: 'Por que estou gastando esse dinheiro?',
-    rows: [['objetivo', 'produto'], ['funil', 'geo'], ['periodo', 'responsavel']]
+    rows: [['objetivo', 'produto'], ['funil', 'geo'], ['periodo']]
   },
   {
     n: '2', title: 'Conjunto / Ad group', map: 'utm_term',
@@ -68,7 +73,7 @@ export const SECTIONS = [
   },
   {
     n: '3', title: 'Anuncio', map: 'utm_content',
-    desc: 'Com qual criativo?',
+    desc: 'Com qual criativo? Bloco opcional — preencha o que fizer sentido.',
     rows: [['formato', 'angulo'], ['gancho', 'versao']]
   }
 ];

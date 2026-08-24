@@ -30,12 +30,17 @@ docs/                       nomenclatura e tracking templates
 
 | Saída | Fórmula |
 |---|---|
-| `utm_campaign` | `objetivo_produto_funil_geo_periodo_responsavel` |
+| `utm_campaign` | `objetivo_produto_funil_geo_data` |
 | `utm_term` | `publico_detalhe_posicionamento` |
 | `utm_content` | `formato_angulo_gancho_versao` |
 
-Token vazio nunca fica em branco: vira `na`. Regras completas em
-`_meta.regras_globais` do dicionário e na tela **Regras & padrão**.
+O bloco do **anúncio é opcional**: se ninguém encostar nele, `utm_content`
+simplesmente não entra na URL. Se preencher qualquer campo, os outros três
+viram `na` — token vazio nunca fica em branco. Data no formato `12-02-2026`,
+ou `perene` para campanha sem data de corte.
+
+Regras completas em `_meta.regras_globais` do dicionário e na tela
+**Regras & padrão**.
 
 ## Editar o dicionário
 
