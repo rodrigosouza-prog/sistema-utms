@@ -37,6 +37,7 @@ const previews = [
 ];
 
 /* formula de cada nome, para a tela de regras */
+const soAnuncio = (k: string) => !!(FIELDS[k] as any).modos?.includes('anuncio');
 const formulas = SECTIONS.filter((s) => s.map).map((s) => ({
   map: s.map,
   titulo: s.title,
@@ -105,8 +106,8 @@ const regraLabels: Record<string, string> = {
                   <header class="blk__h">
                     <span class="blk__n">{i + 1}</span>
                     <div class="blk__t">
-                      <h2>{sec.title}</h2>
-                      <p>{sec.desc}</p>
+                      <h2 data-sect={sec.n}>{sec.title}</h2>
+                      <p data-secd={sec.n}>{sec.desc}</p>
                     </div>
                     <div class="blk__meta">
                       {sec.map && <code class="blk__map">{sec.map}</code>}
@@ -206,7 +207,7 @@ const regraLabels: Record<string, string> = {
                     {f.tokens.map((t, i) => (
                       <>
                         {i > 0 && <span class="sep">_</span>}
-                        <span class="tk">{t}</span>
+                        <span class={`tk${soAnuncio(t) ? ' tk--ads' : ''}`} title={soAnuncio(t) ? 'so no modo Anuncios' : ''}>{t}</span>
                       </>
                     ))}
                   </div>
@@ -214,6 +215,12 @@ const regraLabels: Record<string, string> = {
                 <p>
                   Campos opcionais (<b>detalhe</b>, <b>gancho</b>) viram <b>na</b> quando ficam vazios —
                   a posicao do token nunca muda, entao da para separar por coluna em qualquer planilha.
+                </p>
+                <p>
+                  Os tokens <span class="tk tk--ads">assim</span> so aparecem em <b>Anuncios</b>:
+                  nao existe placement nem criativo num e-mail. No modo <b>Organico</b> eles somem da
+                  tela mas continuam ocupando a mesma posicao no nome, preenchidos com <b>na</b>.
+                  Canal e campanha sao iguais nos dois modos.
                 </p>
               </div>
             </section>

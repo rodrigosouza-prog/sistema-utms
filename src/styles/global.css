@@ -833,6 +833,7 @@ td .sep { color: var(--brand); opacity: .55; }
   word-break: break-word;
 }
 .formula .tk { background: var(--brand-50); color: var(--brand-700); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--brand-200); }
+.tk--ads { background: var(--navy-50) !important; color: var(--navy) !important; border-color: var(--navy-200) !important; }
 .formula .sep { color: var(--text-4); margin: 0 2px; }
 .formula__l { font-size: 11px; color: var(--text-3); font-family: var(--sans); display: block; margin-bottom: 4px; }
 .formula + .formula { margin-top: 8px; }

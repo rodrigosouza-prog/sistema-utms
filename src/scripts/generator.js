@@ -160,9 +160,13 @@ function afterDict() {
 
 /* ═══════════════ nomes ═══════════════ */
 
+/* Campo sem 'modos' vale nos dois. Fora do modo ativo ele some da tela
+   e seu token vira 'na' — a posicao no nome nunca muda. */
+const campoAtivo = k => !FIELDS[k].modos || FIELDS[k].modos.includes(canalTab);
+
 const ANUNCIO_KS = ['formato', 'angulo', 'gancho', 'versao'];
 /* o bloco do anuncio e opcional: so entra na URL se alguem preencheu algo nele */
-const temAnuncio = () => ANUNCIO_KS.some(k => S[k]);
+const temAnuncio = () => ANUNCIO_KS.filter(campoAtivo).some(k => S[k]);
 
 /* so entra no nome o valor que passa na validacao do proprio campo —
    senao o preview monta um nome com um valor que o Salvar vai recusar */
@@ -171,11 +175,17 @@ function tok(k) {
   return st.s === 'ok' || st.s === 'novo' ? S[k] : null;
 }
 
+function tokOuNa(k) {
+  if (!campoAtivo(k)) return 'na';
+  if (!S[k]) return FIELDS[k].req ? null : 'na';
+  return tok(k);
+}
+
 function nomes() {
   const ok = arr => arr.every(v => v && TOKEN_RE.test(v));
-  const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tok);
-  const j = [tok('publico'), S.detalhe ? tok('detalhe') : 'na', tok('posicionamento')];
-  const a = ANUNCIO_KS.map(k => (S[k] ? tok(k) : 'na'));
+  const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tokOuNa);
+  const j = ['publico', 'detalhe', 'posicionamento'].map(tokOuNa);
+  const a = ANUNCIO_KS.map(tokOuNa);
   return {
     campanha: ok(c) ? c.join('_') : null,
     conjunto: ok(j) ? j.join('_') : null,
@@ -187,6 +197,7 @@ function nomes() {
 
 function fieldState(k) {
   const f = FIELDS[k];
+  if (!campoAtivo(k)) return { s: 'off' };
   const v = S[k];
   if (!v) return { s: f.req ? 'vazio' : 'off' };
   if (f.kind === 'canal') return { s: 'ok' };
@@ -661,6 +672,9 @@ function update() {
   const n = nomes();
 
   for (const [k, f] of Object.entries(FIELDS)) {
+    const wrap = $(`[data-fld="${k}"]`);
+    if (wrap) wrap.hidden = !campoAtivo(k);
+
     const st = fieldState(k);
     const mostra = TOUCHED.has(k);
     const badge = $(`#b-${k}`);
@@ -712,7 +726,14 @@ function update() {
   });
 
   for (const sec of SECTIONS) {
-    const ks = sec.rows.flat();
+    /* titulo e descricao podem mudar conforme o modo */
+    const txt = (sec.porModo && sec.porModo[canalTab]) || sec;
+    const h = $(`[data-sect="${sec.n}"]`);
+    const d = $(`[data-secd="${sec.n}"]`);
+    if (h) h.textContent = txt.title ?? sec.title;
+    if (d) d.textContent = txt.desc ?? sec.desc;
+
+    const ks = sec.rows.flat().filter(campoAtivo);
     const req = ks.filter(k => FIELDS[k].req);
     const bloco = $(`.blk[data-sec="${sec.n}"]`);
     const st = $(`[data-st="${sec.n}"]`);
