@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "0.7.0",
+    "versao": "0.8.0",
     "atualizado_em": "2026-08-26",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -390,5 +390,56 @@
       "automation": "email-automacao",
       "flow": "email-automacao"
     }
+  },
+  "segmento": {
+    "_descricao": "Para quem o envio foi. Vale para e-mail, WhatsApp, SMS e push.",
+    "base-completa": "Toda a base, sem recorte",
+    "crm": "Base de CRM importada",
+    "lista": "Lista especifica montada a mao",
+    "tag": "Tag ou campo do automatizador",
+    "engajados": "Abriram ou clicaram nos ultimos 90 dias",
+    "inativos": "Sem abertura ha mais de 90 dias",
+    "leads": "Cadastrados que ainda nao compraram",
+    "compradores": "Ja compraram alguma vez",
+    "alunos": "Base de alunos ativos",
+    "carrinho": "Abandonaram o checkout",
+    "aniversariantes": "Aniversariantes do periodo",
+    "na": "Sem segmentacao declarada"
+  },
+  "peca": {
+    "_descricao": "Que peca levou o clique. Cobre e-mail, WhatsApp, SMS/push e social organico.",
+    "email": "E-mail avulso",
+    "newsletter": "Newsletter recorrente",
+    "broadcast": "Disparo em massa no WhatsApp",
+    "grupo": "Mensagem em grupo de WhatsApp",
+    "status": "Status do WhatsApp",
+    "atendimento": "Conversa de atendimento",
+    "sms": "SMS",
+    "push-app": "Push no aplicativo",
+    "push-web": "Push no navegador",
+    "post": "Post de feed",
+    "carrossel": "Carrossel de feed",
+    "reels": "Reels",
+    "story": "Story",
+    "live": "Transmissao ao vivo",
+    "bio": "Link na bio"
+  },
+  "posicao": {
+    "_descricao": "Onde dentro da peca estava o link clicado.",
+    "header": "Topo / cabecalho",
+    "banner": "Banner principal",
+    "cta-principal": "Botao principal",
+    "cta-secundario": "Botao secundario",
+    "corpo": "Link no meio do texto",
+    "imagem": "Imagem clicavel",
+    "rodape": "Rodape",
+    "assinatura": "Assinatura",
+    "ps": "P.S. no fim da mensagem",
+    "legenda": "Legenda do post",
+    "primeiro-comentario": "Primeiro comentario",
+    "sticker": "Sticker / figurinha do story",
+    "bio-link": "Link do perfil",
+    "destaque": "Destaque do perfil",
+    "na": "Nao se aplica"
   }
 }

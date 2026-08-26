@@ -28,16 +28,32 @@ docs/                       nomenclatura e tracking templates
 
 ## Como o nome é montado
 
+O gerador tem dois modos, escolhidos no menu lateral. **Canal e campanha são
+idênticos nos dois**; os blocos 3 e 4 mudam.
+
+**Anúncios** — mídia paga:
+
 | Saída | Fórmula |
 |---|---|
 | `utm_campaign` | `objetivo_produto_funil_geo_data` |
 | `utm_content` | `publico_detalhe_posicionamento` |
 | `utm_term` | `formato_angulo_gancho_versao` |
 
-O bloco do **anúncio é opcional**: se ninguém encostar nele, `utm_term`
-simplesmente não entra na URL. Se preencher qualquer campo, os outros três
-viram `na` — token vazio nunca fica em branco. Data no formato `12-12-26`,
-ou `perene` para campanha sem data de corte.
+**Orgânico** — canal próprio (e-mail, WhatsApp, SMS, push, social):
+
+| Saída | Fórmula |
+|---|---|
+| `utm_campaign` | `objetivo_produto_funil_geo_data` |
+| `utm_content` | `segmento_detalhe` |
+| `utm_term` | `peca_posicao_assunto_versao` |
+
+Canal próprio não tem placement nem criativo: tem segmento, peça e o ponto da
+peça onde o link estava.
+
+O **bloco 4 é opcional** nos dois modos: se ninguém encostar nele, `utm_term`
+não entra na URL. Se preencher parte, o resto vira `na` — token vazio nunca
+fica em branco. Data no formato `12-12-26`, ou `perene` para campanha sem
+data de corte.
 
 Regras completas em `_meta.regras_globais` do dicionário e na tela
 **Regras & padrão**.

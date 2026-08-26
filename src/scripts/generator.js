@@ -7,7 +7,7 @@
    arquivo ja com as duas coisas aplicadas, para commitar no repositorio. */
 
 import TX from '../../taxonomia/dicionario.json';
-import { FIELDS, SECTIONS, RE_MAP, TOKEN_RE, slug } from '../lib/fields.js';
+import { FIELDS, SECOES, PREVIEWS, RE_MAP, TOKEN_RE, slug } from '../lib/fields.js';
 import {
   isDyn, isGoogleAds, isMsAds, usaCustomParam,
   trackingTemplate, customParams, urlFinal
@@ -161,8 +161,15 @@ function afterDict() {
 /* ═══════════════ nomes ═══════════════ */
 
 const ANUNCIO_KS = ['formato', 'angulo', 'gancho', 'versao'];
-/* o bloco do anuncio e opcional: so entra na URL se alguem preencheu algo nele */
-const temAnuncio = () => ANUNCIO_KS.some(k => S[k]);
+
+/* Campo sem 'modo' vale nos dois. Fora do modo ativo ele nao existe:
+   nao aparece, nao valida e nao entra em nome nenhum. */
+const campoAtivo = k => !FIELDS[k].modo || FIELDS[k].modo === canalTab;
+const secoesAtivas = () => SECOES[canalTab];
+/* bloco 4 so entra na URL se alguem preencheu algo nele */
+const temAnuncio = () => (canalTab === 'organico'
+  ? ['peca', 'posicao', 'assunto', 'peca_versao']
+  : ANUNCIO_KS).some(k => S[k]);
 
 /* so entra no nome o valor que passa na validacao do proprio campo —
    senao o preview monta um nome com um valor que o Salvar vai recusar */
@@ -171,15 +178,27 @@ function tok(k) {
   return st.s === 'ok' || st.s === 'novo' ? S[k] : null;
 }
 
+function tokOuNa(k) {
+  if (!S[k]) return FIELDS[k].req ? null : 'na';
+  return tok(k);
+}
+
 function nomes() {
   const ok = arr => arr.every(v => v && TOKEN_RE.test(v));
-  const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tok);
-  const j = [tok('publico'), S.detalhe ? tok('detalhe') : 'na', tok('posicionamento')];
-  const a = ANUNCIO_KS.map(k => (S[k] ? tok(k) : 'na'));
+  const org = canalTab === 'organico';
+
+  const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tokOuNa);
+  const jk = org ? ['segmento', 'segmento_detalhe'] : ['publico', 'detalhe', 'posicionamento'];
+  const ak = org ? ['peca', 'posicao', 'assunto', 'peca_versao'] : ANUNCIO_KS;
+
+  const j = jk.map(tokOuNa);
+  const a = ak.map(tokOuNa);
+  const tem = ak.some(k => S[k]);   /* bloco 4 e opcional nos dois modos */
+
   return {
     campanha: ok(c) ? c.join('_') : null,
     conjunto: ok(j) ? j.join('_') : null,
-    anuncio:  temAnuncio() && ok(a) ? a.join('_') : null
+    anuncio:  tem && ok(a) ? a.join('_') : null
   };
 }
 
@@ -187,6 +206,7 @@ function nomes() {
 
 function fieldState(k) {
   const f = FIELDS[k];
+  if (!campoAtivo(k)) return { s: 'off' };
   const v = S[k];
   if (!v) return { s: f.req ? 'vazio' : 'off' };
   if (f.kind === 'canal') return { s: 'ok' };
@@ -711,7 +731,17 @@ function update() {
     d.classList.toggle('is-on', i < prontos);
   });
 
-  for (const sec of SECTIONS) {
+  $$('.blk[data-modo]').forEach(b => { b.hidden = b.dataset.modo !== canalTab; });
+  PREVIEWS[canalTab].forEach(pv => {
+    const t = $(`[data-nmt="${pv.id}"]`);
+    const m = $(`[data-nmm="${pv.id}"]`);
+    const v = $(`#pv-${pv.id}`);
+    if (t) t.textContent = pv.titulo;
+    if (m) m.textContent = pv.map;
+    if (v) v.dataset.vazio = pv.vazio;
+  });
+
+  for (const sec of secoesAtivas()) {
     const ks = sec.rows.flat();
     const req = ks.filter(k => FIELDS[k].req);
     const bloco = $(`.blk[data-sec="${sec.n}"]`);

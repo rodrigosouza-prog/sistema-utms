@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Sidebar from '../components/Sidebar.astro';
 import Field from '../components/Field.astro';
 import Icon from '../components/Icon.astro';
-import { FIELDS, SECTIONS } from '../lib/fields.js';
+import { FIELDS, SECOES, SECOES_RENDER, PREVIEWS } from '../lib/fields.js';
 import TX from '../../taxonomia/dicionario.json';
 
 /** valores conhecidos de uma dimensao, sem as chaves de metadado */
@@ -30,17 +30,14 @@ for (const [k, c] of Object.entries(TX.canal || {})) {
 /* 4 campos ficam melhor em 2x2 do que em 3+1 */
 const cols = (n: number) => (n <= 2 ? n : 3);
 
-const previews = [
-  { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
-  { id: 'conjunto', titulo: 'Conjunto / ad group', map: 'utm_content', vazio: 'complete o bloco 3' },
-  { id: 'anuncio',  titulo: 'Anuncio', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
-];
+const previews = PREVIEWS.anuncio;   /* o runtime troca os rotulos por modo */
 
 /* formula de cada nome, para a tela de regras */
-const formulas = SECTIONS.filter((s) => s.map).map((s) => ({
-  map: s.map,
-  titulo: s.title,
-  tokens: s.rows.flat()
+/* uma formula por modo, para a tela de Regras */
+const formulasPorModo = Object.entries(SECOES).map(([modo, secs]) => ({
+  modo,
+  rotulo: modo === 'anuncio' ? 'Anuncios' : 'Organico',
+  linhas: secs.filter((x) => x.map).map((x) => ({ map: x.map, titulo: x.title, tokens: x.rows.flat() }))
 }));
 
 const regraLabels: Record<string, string> = {
@@ -100,10 +97,10 @@ const regraLabels: Record<string, string> = {
         <section class="view is-on" data-view="gerador">
           <div class="work">
             <div class="work__form">
-              {SECTIONS.map((sec, i) => (
-                <section class="blk" data-sec={sec.n}>
+              {SECOES_RENDER.map((sec) => (
+                <section class="blk" data-sec={sec.n} data-modo={sec.modo ?? null} hidden={sec.modo === 'organico'}>
                   <header class="blk__h">
-                    <span class="blk__n">{i + 1}</span>
+                    <span class="blk__n">{sec.num}</span>
                     <div class="blk__t">
                       <h2>{sec.title}</h2>
                       <p>{sec.desc}</p>
@@ -150,8 +147,8 @@ const regraLabels: Record<string, string> = {
                 {previews.map((p) => (
                   <div class="nm" id={`nmw-${p.id}`}>
                     <div class="nm__h">
-                      <span class="nm__t">{p.titulo}</span>
-                      <code class="nm__m">{p.map}</code>
+                      <span class="nm__t" data-nmt={p.id}>{p.titulo}</span>
+                      <code class="nm__m" data-nmm={p.id}>{p.map}</code>
                     </div>
                     <div class="nm__v" id={`pv-${p.id}`} data-vazio={p.vazio}>
                       <span class="ph">{p.vazio}</span>
@@ -200,20 +197,29 @@ const regraLabels: Record<string, string> = {
                 </div>
               </header>
               <div class="blk__b">
-                {formulas.map((f) => (
-                  <div class="formula">
-                    <span class="formula__l">{f.titulo} &middot; <b>{f.map}</b></span>
-                    {f.tokens.map((t, i) => (
-                      <>
-                        {i > 0 && <span class="sep">_</span>}
-                        <span class="tk">{t}</span>
-                      </>
+                {formulasPorModo.map((fm) => (
+                  <div class="fmod">
+                    <div class="fmod__h">{fm.rotulo}</div>
+                    {fm.linhas.map((f) => (
+                      <div class="formula">
+                        <span class="formula__l">{f.titulo} &middot; <b>{f.map}</b></span>
+                        {f.tokens.map((t, i) => (
+                          <>
+                            {i > 0 && <span class="sep">_</span>}
+                            <span class="tk">{t}</span>
+                          </>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 ))}
                 <p>
-                  Campos opcionais (<b>detalhe</b>, <b>gancho</b>) viram <b>na</b> quando ficam vazios —
-                  a posicao do token nunca muda, entao da para separar por coluna em qualquer planilha.
+                  <b>Canal</b> e <b>campanha</b> sao iguais nos dois modos. O que muda sao os blocos 3 e 4:
+                  midia paga fala de publico e criativo, canal proprio fala de segmento e peca.
+                </p>
+                <p>
+                  Campo opcional vazio vira <b>na</b> — a posicao do token nunca muda dentro do mesmo modo,
+                  entao da para separar por coluna em qualquer planilha.
                 </p>
               </div>
             </section>

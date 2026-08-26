@@ -40,45 +40,100 @@ export const FIELDS = {
     hint: 'dia-mes-ano — <b>12-12-26</b> · ou <b>perene</b>',
     re: 'PERIODO', chk: dataValida, chkWhy: 'essa data nao existe'
   },
-  publico: { kind: 'combo', dim: 'publico', label: 'Publico', req: true, ph: 'lookalike' },
+  publico: { kind: 'combo', dim: 'publico', label: 'Publico', req: true, ph: 'lookalike', modo: 'anuncio' },
   detalhe: {
     kind: 'text', label: 'Detalhe', req: false, ph: 'compradores-180d',
-    hint: 'opcional — vazio vira <b>na</b>'
+    hint: 'opcional — vazio vira <b>na</b>', modo: 'anuncio'
   },
-  posicionamento: { kind: 'combo', dim: 'posicionamento', label: 'Posicionamento', req: true, ph: 'reels' },
-  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: false, ph: 'video' },
-  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: false, ph: 'prova-social' },
+  posicionamento: { kind: 'combo', dim: 'posicionamento', label: 'Posicionamento', req: true, ph: 'reels', modo: 'anuncio' },
+  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: false, ph: 'video', modo: 'anuncio' },
+  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: false, ph: 'prova-social', modo: 'anuncio' },
   gancho: {
     kind: 'text', label: 'Gancho', req: false, ph: 'aprovada-usp',
-    hint: 'vazio vira <b>na</b>'
+    hint: 'vazio vira <b>na</b>', modo: 'anuncio'
   },
-  versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO' }
+  versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'anuncio' },
+
+  /* ── so no modo Organico ─────────────────────────────────────────
+     Canal proprio nao tem placement nem criativo: tem segmento, peca
+     e o ponto da peca onde o link estava. Chaves proprias para nao
+     colidir com os campos de anuncio, que ficam no mesmo HTML.       */
+  segmento: { kind: 'combo', dim: 'segmento', label: 'Segmento', req: true, ph: 'crm', modo: 'organico' },
+  segmento_detalhe: {
+    kind: 'text', label: 'Detalhe', req: false, ph: 'carrinho-abandonado',
+    hint: 'opcional — vazio vira <b>na</b>', modo: 'organico'
+  },
+  peca: { kind: 'combo', dim: 'peca', label: 'Tipo de peca', req: false, ph: 'email', modo: 'organico' },
+  posicao: { kind: 'combo', dim: 'posicao', label: 'Posicao do link', req: false, ph: 'cta-principal', modo: 'organico' },
+  assunto: {
+    kind: 'text', label: 'Assunto / chamada', req: false, ph: 'ultimo-aviso',
+    hint: 'vazio vira <b>na</b>', modo: 'organico'
+  },
+  peca_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'organico' }
 };
 
 export const RE_MAP = { PERIODO: PERIODO_RE, VERSAO: VERSAO_RE };
 
-export const SECTIONS = [
-  {
-    n: '0', title: 'Canal & destino', map: null,
-    desc: 'De onde vem o clique e para onde ele vai.',
-    rows: [['canal', 'lp']]
-  },
-  {
-    n: '1', title: 'Campanha', map: 'utm_campaign',
-    desc: 'Por que estou gastando esse dinheiro?',
-    rows: [['objetivo', 'produto'], ['funil', 'geo'], ['periodo']]
-  },
-  {
-    n: '2', title: 'Conjunto / Ad group', map: 'utm_content',
-    desc: 'Para quem?',
-    rows: [['publico', 'detalhe'], ['posicionamento']]
-  },
-  {
-    n: '3', title: 'Anuncio', map: 'utm_term',
-    desc: 'Com qual criativo? Bloco opcional — preencha o que fizer sentido.',
-    rows: [['formato', 'angulo'], ['gancho', 'versao']]
-  }
+/* Canal e campanha sao iguais nos dois modos. O que muda sao os blocos
+   3 e 4: anuncio fala de publico/criativo, organico fala de segmento/peca. */
+const BLOCO_CANAL = {
+  n: '0', num: 1, title: 'Canal & destino', map: null,
+  desc: 'De onde vem o clique e para onde ele vai.',
+  rows: [['canal', 'lp']]
+};
+const BLOCO_CAMPANHA = {
+  n: '1', num: 2, title: 'Campanha', map: 'utm_campaign',
+  desc: 'Por que estou gastando esse dinheiro?',
+  rows: [['objetivo', 'produto'], ['funil', 'geo'], ['periodo']]
+};
+
+export const SECOES = {
+  anuncio: [BLOCO_CANAL, BLOCO_CAMPANHA,
+    {
+      n: '2a', num: 3, modo: 'anuncio', title: 'Conjunto / Ad group', map: 'utm_content',
+      desc: 'Para quem?',
+      rows: [['publico', 'detalhe'], ['posicionamento']]
+    },
+    {
+      n: '3a', num: 4, modo: 'anuncio', title: 'Anuncio', map: 'utm_term',
+      desc: 'Com qual criativo? Bloco opcional — preencha o que fizer sentido.',
+      rows: [['formato', 'angulo'], ['gancho', 'versao']]
+    }
+  ],
+  organico: [BLOCO_CANAL, BLOCO_CAMPANHA,
+    {
+      n: '2o', num: 3, modo: 'organico', title: 'Publico / segmento', map: 'utm_content',
+      desc: 'Para quem foi o envio?',
+      rows: [['segmento', 'segmento_detalhe']]
+    },
+    {
+      n: '3o', num: 4, modo: 'organico', title: 'Peca', map: 'utm_term',
+      desc: 'Qual peca e onde estava o link? Bloco opcional.',
+      rows: [['peca', 'posicao'], ['assunto', 'peca_versao']]
+    }
+  ]
+};
+
+/* ordem de render no HTML: os compartilhados uma vez, depois os dois pares */
+export const SECOES_RENDER = [
+  BLOCO_CANAL, BLOCO_CAMPANHA,
+  ...SECOES.anuncio.slice(2),
+  ...SECOES.organico.slice(2)
 ];
+
+/* rotulos do painel de saida, por modo */
+export const PREVIEWS = {
+  anuncio: [
+    { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+    { id: 'conjunto', titulo: 'Conjunto / ad group', map: 'utm_content', vazio: 'complete o bloco 3' },
+    { id: 'anuncio', titulo: 'Anuncio', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  ],
+  organico: [
+    { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+    { id: 'conjunto', titulo: 'Publico / segmento', map: 'utm_content', vazio: 'complete o bloco 3' },
+    { id: 'anuncio', titulo: 'Peca', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  ]
+};
 
 /* normaliza qualquer coisa digitada para um token valido */
 export const slug = s => String(s == null ? '' : s)

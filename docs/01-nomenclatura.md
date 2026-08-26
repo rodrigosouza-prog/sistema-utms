@@ -16,11 +16,25 @@ Regra de ouro: **se a informação já está no nível de cima, não repete emba
 
 ## Estrutura
 
+**Anúncios** — mídia paga:
+
 ```
 CAMPANHA   objetivo_produto_funil_geo_data
 CONJUNTO   publico_detalhe_posicionamento
 ANÚNCIO    formato_angulo_gancho_vNN          (opcional)
 ```
+
+**Orgânico** — canal próprio:
+
+```
+CAMPANHA   objetivo_produto_funil_geo_data
+SEGMENTO   segmento_detalhe
+PEÇA       peca_posicao_assunto_vNN          (opcional)
+```
+
+Canal e campanha são iguais nos dois. O que muda são os dois de baixo:
+mídia paga fala de público e criativo, canal próprio fala de segmento,
+peça e o ponto da peça onde o link estava.
 
 ### Exemplo real
 
@@ -75,13 +89,29 @@ muda, então dá para separar por coluna em qualquer planilha.
 | 2 | **detalhe** | livre-controlado: `compradores-180d` `visitantes-30d` `enem-2026` |
 | 3 | **posicionamento** | `automatico` `feed` `stories` `reels` `search` `youtube` `display` |
 
-### Nível ANÚNCIO
+### Nível ANÚNCIO — só no modo Anúncios
 
 | Token | Dimensão | Exemplos |
 |---|---|---|
 | 1 | **formato** | `video` `imagem` `carrossel` `responsive-search` `ugc` `vertical` |
 | 2 | **angulo** | `prova-social` `dor` `autoridade` `oferta` `urgencia` |
 | 3 | **gancho** | livre-controlado: `aprovada-usp` `nota-980-redacao` |
+| 4 | **versao** | `v01` … `v99` |
+
+### Nível SEGMENTO — só no modo Orgânico
+
+| Token | Dimensão | Exemplos |
+|---|---|---|
+| 1 | **segmento** | `crm` `lista` `tag` `engajados` `inativos` `carrinho` `alunos` `compradores` |
+| 2 | **detalhe** | livre-controlado: `24h` `carrinho-abandonado` `turma-2026` |
+
+### Nível PEÇA — só no modo Orgânico
+
+| Token | Dimensão | Exemplos |
+|---|---|---|
+| 1 | **peca** | `email` `newsletter` `broadcast` `grupo` `status` `sms` `push-app` `post` `reels` `story` `bio` |
+| 2 | **posicao** | `header` `banner` `cta-principal` `corpo` `rodape` `assinatura` `legenda` `bio-link` |
+| 3 | **assunto** | livre-controlado: `ultimo-aviso` `vagas-acabando` |
 | 4 | **versao** | `v01` … `v99` |
 
 ---
