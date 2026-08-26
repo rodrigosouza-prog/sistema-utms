@@ -3,25 +3,33 @@
  * Campo do gerador. Tres formas, mesma casca:
  *   - texto puro / url      -> input simples
  *   - combo (tem dicionario)-> input + dropdown com busca, aceita valor novo
- *   - canal                 -> input + dropdown agrupado por familia, valor fechado
+ *   - canal                 -> input + dropdown em duas abas (anuncio /
+ *                              organico), cada uma com seus grupos
  *
  * As opcoes saem do dicionario em build time. O que o time adiciona ou
  * remove depois e aplicado em cima, no cliente (ver generator.js).
  */
 import Icon from './Icon.astro';
 
+type Grupos = Record<string, [string, any][]>;
+
 export interface Props {
   k: string;
   field: Record<string, any>;
   sugestoes?: Record<string, string>;
-  grupos?: Record<string, [string, any][]> | null;
+  abas?: Record<string, Grupos> | null;
 }
-const { k, field, sugestoes = {}, grupos = null } = Astro.props;
+const { k, field, sugestoes = {}, abas = null } = Astro.props;
 
 const id = `i-${k}`;
-const dim = grupos ? 'canal' : (field.dim ?? '');
+const dim = abas ? 'canal' : (field.dim ?? '');
 const opts = Object.entries(sugestoes).sort((a, b) => a[0].localeCompare(b[0]));
-const isCombo = !!grupos || field.kind === 'combo';
+const isCombo = !!abas || field.kind === 'combo';
+
+const ABAS = [
+  { id: 'anuncio',  label: 'Anuncios' },
+  { id: 'organico', label: 'Organico' }
+];
 ---
 
 <div class="fld">
@@ -43,26 +51,43 @@ const isCombo = !!grupos || field.kind === 'combo';
       </button>
 
       <div class="cbx__pop" id={`l-${k}`} hidden>
+        {abas && (
+          <div class="cbx__tabs" role="tablist">
+            {ABAS.map((a, i) => (
+              <button
+                type="button" role="tab"
+                class={`cbx__tab${i === 0 ? ' is-on' : ''}`}
+                data-ctab={a.id}
+                aria-selected={i === 0 ? 'true' : 'false'}
+              >
+                {a.label}<span class="cbx__tabn" data-ctabn={a.id}></span>
+              </button>
+            ))}
+          </div>
+        )}
+
         <div class="cbx__list" role="listbox">
-          {grupos
-            ? Object.entries(grupos).map(([g, itens]) => (
-                <>
-                  <div class="cbx__g" data-g={g}>{g}</div>
-                  {itens.map(([ck, c]) => (
-                    <div
-                      class="opt" role="option"
-                      data-val={ck} data-label={(c as any).label}
-                      data-search={`${ck} ${(c as any).label} ${(c as any).utm_source}`.toLowerCase()}
-                    >
-                      <span class="opt__v">{(c as any).label}</span>
-                      <span class="opt__d">{(c as any).utm_source} / {(c as any).utm_medium}</span>
-                      <span class="opt__x" role="button" data-rm={`canal|${ck}`} title="Remover do dicionario">
-                        <Icon name="x" size={12} />
-                      </span>
-                    </div>
-                  ))}
-                </>
-              ))
+          {abas
+            ? ABAS.map((a) =>
+                Object.entries(abas[a.id] ?? {}).map(([g, itens]) => (
+                  <>
+                    <div class="cbx__g" data-g={g} data-tipo={a.id}>{g}</div>
+                    {itens.map(([ck, c]) => (
+                      <div
+                        class="opt" role="option"
+                        data-val={ck} data-label={(c as any).label} data-tipo={a.id}
+                        data-search={`${ck} ${(c as any).label} ${(c as any).utm_source}`.toLowerCase()}
+                      >
+                        <span class="opt__v">{(c as any).label}</span>
+                        <span class="opt__d">{(c as any).utm_source} / {(c as any).utm_medium}</span>
+                        <span class="opt__x" role="button" data-rm={`canal|${ck}`} title="Remover do dicionario">
+                          <Icon name="x" size={12} />
+                        </span>
+                      </div>
+                    ))}
+                  </>
+                ))
+              )
             : opts.map(([v, d]) => (
                 <div
                   class="opt" role="option"
@@ -78,8 +103,15 @@ const isCombo = !!grupos || field.kind === 'combo';
           <div class="cbx__empty" hidden>nenhum valor no dicionario com esse texto</div>
         </div>
 
+        {abas && (
+          <button type="button" class="cbx__cross" data-ccross hidden>
+            <Icon name="chevron" size={13} />
+            <span data-ccrosst></span>
+          </button>
+        )}
+
         <div class="cbx__foot">
-          {!grupos && (
+          {!abas && (
             <button type="button" class="cbx__new" data-add={k} hidden>
               <Icon name="plus" size={13} />
               <span>Adicionar <b data-newval>—</b> ao dicionario</span>

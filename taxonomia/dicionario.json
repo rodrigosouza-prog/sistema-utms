@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "versao": "0.5.0",
-    "atualizado_em": "2026-08-24",
+    "versao": "0.7.0",
+    "atualizado_em": "2026-08-26",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
       "casing": "lowercase sempre",
@@ -134,168 +134,204 @@
       "grupo": "Google Ads",
       "utm_source": "google",
       "utm_medium": "cpc",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "google-pmax": {
       "label": "Performance Max",
       "grupo": "Google Ads",
       "utm_source": "google",
       "utm_medium": "pmax",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "google-display": {
       "label": "Display",
       "grupo": "Google Ads",
       "utm_source": "google",
       "utm_medium": "display",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "google-video": {
       "label": "YouTube",
       "grupo": "Google Ads",
       "utm_source": "youtube",
       "utm_medium": "video",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "google-demandgen": {
       "label": "Demand Gen",
       "grupo": "Google Ads",
       "utm_source": "google",
       "utm_medium": "demandgen",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "google-shopping": {
       "label": "Shopping",
       "grupo": "Google Ads",
       "utm_source": "google",
       "utm_medium": "shopping",
-      "utm_source_platform": "google_ads"
+      "utm_source_platform": "google_ads",
+      "tipo": "anuncio"
     },
     "meta-facebook": {
       "label": "Facebook",
       "grupo": "Meta Ads",
       "utm_source": "facebook",
       "utm_medium": "paid-social",
-      "utm_source_platform": "meta_ads"
+      "utm_source_platform": "meta_ads",
+      "tipo": "anuncio"
     },
     "meta-instagram": {
       "label": "Instagram",
       "grupo": "Meta Ads",
       "utm_source": "instagram",
       "utm_medium": "paid-social",
-      "utm_source_platform": "meta_ads"
+      "utm_source_platform": "meta_ads",
+      "tipo": "anuncio"
     },
     "meta-messenger": {
       "label": "Messenger",
       "grupo": "Meta Ads",
       "utm_source": "messenger",
       "utm_medium": "paid-social",
-      "utm_source_platform": "meta_ads"
+      "utm_source_platform": "meta_ads",
+      "tipo": "anuncio"
     },
     "meta-audience": {
       "label": "Audience Network",
       "grupo": "Meta Ads",
       "utm_source": "audience-network",
       "utm_medium": "display",
-      "utm_source_platform": "meta_ads"
+      "utm_source_platform": "meta_ads",
+      "tipo": "anuncio"
     },
     "tiktok": {
       "label": "TikTok",
       "grupo": "Outras midias pagas",
       "utm_source": "tiktok",
       "utm_medium": "paid-social",
-      "utm_source_platform": "tiktok_ads"
+      "utm_source_platform": "tiktok_ads",
+      "tipo": "anuncio"
     },
     "linkedin": {
       "label": "LinkedIn",
       "grupo": "Outras midias pagas",
       "utm_source": "linkedin",
       "utm_medium": "paid-social",
-      "utm_source_platform": "linkedin_ads"
+      "utm_source_platform": "linkedin_ads",
+      "tipo": "anuncio"
     },
     "microsoft": {
       "label": "Microsoft",
       "grupo": "Outras midias pagas",
       "utm_source": "bing",
       "utm_medium": "cpc",
-      "utm_source_platform": "microsoft_ads"
+      "utm_source_platform": "microsoft_ads",
+      "tipo": "anuncio"
     },
     "reddit": {
       "label": "Reddit",
       "grupo": "Outras midias pagas",
       "utm_source": "reddit",
       "utm_medium": "paid-social",
-      "utm_source_platform": "reddit_ads"
+      "utm_source_platform": "reddit_ads",
+      "tipo": "anuncio"
     },
-    "email": {
-      "label": "E-mail",
+    "email-disparo": {
+      "label": "E-mail · disparo",
       "grupo": "Canais proprios",
       "utm_source": "activecampaign",
-      "utm_medium": "email",
-      "utm_source_platform": "activecampaign"
+      "utm_medium": "email-disparo",
+      "utm_source_platform": "activecampaign",
+      "tipo": "organico"
+    },
+    "email-automacao": {
+      "label": "E-mail · automação",
+      "grupo": "Canais proprios",
+      "utm_source": "activecampaign",
+      "utm_medium": "email-automacao",
+      "utm_source_platform": "activecampaign",
+      "tipo": "organico"
     },
     "whatsapp": {
       "label": "WhatsApp",
       "grupo": "Canais proprios",
       "utm_source": "whatsapp",
       "utm_medium": "messaging",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "organico"
     },
     "sms": {
       "label": "SMS",
       "grupo": "Canais proprios",
       "utm_source": "sms",
       "utm_medium": "sms",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "organico"
     },
     "push": {
       "label": "Push",
       "grupo": "Canais proprios",
       "utm_source": "onesignal",
       "utm_medium": "push",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "organico"
     },
     "organico-social": {
       "label": "Social organico",
       "grupo": "Canais proprios",
       "utm_source": "instagram",
       "utm_medium": "social-organic",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "organico"
     },
     "link-na-bio": {
       "label": "Link na bio",
       "grupo": "Canais proprios",
       "utm_source": "instagram",
       "utm_medium": "bio",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "organico"
     },
     "influencer": {
       "label": "Influencer",
       "grupo": "Parcerias & offline",
       "utm_source": "influencer",
       "utm_medium": "cpc",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "anuncio"
     },
     "afiliado": {
       "label": "Afiliado",
       "grupo": "Parcerias & offline",
       "utm_source": "afiliado",
       "utm_medium": "cpc",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "anuncio"
     },
     "parceria": {
       "label": "Parceria",
       "grupo": "Parcerias & offline",
       "utm_source": "parceria",
       "utm_medium": "partnership",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "anuncio"
     },
     "offline": {
       "label": "Offline",
       "grupo": "Parcerias & offline",
       "utm_source": "offline",
       "utm_medium": "offline",
-      "utm_source_platform": "manual"
+      "utm_source_platform": "manual",
+      "tipo": "anuncio"
+    },
+    "_tipos": {
+      "anuncio": "Mídia paga — compra de clique ou veiculação",
+      "organico": "Canal próprio — audiência que já é sua"
     }
   },
   "aliases_normalizacao": {
@@ -342,13 +378,17 @@
       "socialpaid": "paid-social",
       "banner": "display",
       "cpm": "display",
-      "e-mail": "email",
-      "mail": "email",
-      "newsletter": "email",
+      "e-mail": "email-disparo",
+      "mail": "email-disparo",
+      "newsletter": "email-disparo",
       "stories": "paid-social",
       "reels": "paid-social",
       "affiliate": "cpc",
-      "influencer": "cpc"
+      "influencer": "cpc",
+      "email": "email-disparo",
+      "automacao": "email-automacao",
+      "automation": "email-automacao",
+      "flow": "email-automacao"
     }
   }
 }

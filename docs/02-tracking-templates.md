@@ -94,12 +94,20 @@ Nenhum destes é bloqueante — o template roda. Ficam registrados para decisão
 
 ---
 
+> ⚠️ **Exceção do Google e do Microsoft:** no padrão da casa, `utm_term` carrega
+> o **anúncio**. Nesses dois, os templates oficiais mantêm `utm_term={keyword}`
+> — a keyword é mais valiosa ali, e o anúncio já vem identificado por
+> `creative={creative}`. Se quiser alinhar, é trocar `{keyword}` por `{_content}`
+> nos templates, ciente de que a keyword se perde.
+
+---
+
 ## ✅ Meta Ads
 
 Campo **URL parameters** (nível anúncio) — cole sem `?` inicial:
 
 ```
-utm_id={{campaign.id}}&utm_source={{site_source_name}}&utm_source_platform=meta_ads&utm_medium=paid-social&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.name}}&utm_marketing_tactic={{adset.name}}&mt_placement={{placement}}&mt_adset={{adset.id}}&mt_ad={{ad.id}}
+utm_id={{campaign.id}}&utm_source={{site_source_name}}&utm_source_platform=meta_ads&utm_medium=paid-social&utm_campaign={{campaign.name}}&utm_content={{adset.name}}&utm_term={{ad.name}}&utm_marketing_tactic={{adset.name}}&mt_placement={{placement}}&mt_adset={{adset.id}}&mt_ad={{ad.id}}
 ```
 
 | Macro | Devolve |
@@ -119,7 +127,7 @@ utm_id={{campaign.id}}&utm_source={{site_source_name}}&utm_source_platform=meta_
 ## ✅ TikTok Ads
 
 ```
-utm_id=__CAMPAIGN_ID__&utm_source=tiktok&utm_source_platform=tiktok_ads&utm_medium=paid-social&utm_campaign=__CAMPAIGN_NAME__&utm_content=__CID_NAME__&utm_term=__AID_NAME__&tt_placement=__PLACEMENT__&tt_adgroup=__AID__&tt_ad=__CID__
+utm_id=__CAMPAIGN_ID__&utm_source=tiktok&utm_source_platform=tiktok_ads&utm_medium=paid-social&utm_campaign=__CAMPAIGN_NAME__&utm_content=__AID_NAME__&utm_term=__CID_NAME__&tt_placement=__PLACEMENT__&tt_adgroup=__AID__&tt_ad=__CID__
 ```
 
 | Macro | Devolve |
@@ -146,7 +154,7 @@ ValueTrack compatível com Google. `msclkid` é auto-tagged.
 **Não tem macro dinâmica de URL.** Toda UTM é digitada à mão no campo Destination URL de cada anúncio — é a plataforma de maior risco de erro humano do stack. Usar o gerador, sempre.
 
 ```
-?utm_id=<ID_DA_CAMPANHA_MANUAL>&utm_source=linkedin&utm_source_platform=linkedin_ads&utm_medium=paid-social&utm_campaign=<NOME>&utm_content=<NOME_ANUNCIO>&utm_term=<NOME_ADSET>
+?utm_id=<ID_DA_CAMPANHA_MANUAL>&utm_source=linkedin&utm_source_platform=linkedin_ads&utm_medium=paid-social&utm_campaign=<NOME>&utm_content=<NOME_ADSET>&utm_term=<NOME_ANUNCIO>
 ```
 
 ---
@@ -154,7 +162,7 @@ ValueTrack compatível com Google. `msclkid` é auto-tagged.
 ## ✅ Reddit Ads
 
 ```
-?utm_id={{CAMPAIGN_ID}}&utm_source=reddit&utm_source_platform=reddit_ads&utm_medium=paid-social&utm_campaign={{CAMPAIGN_NAME}}&utm_content={{AD_NAME}}&utm_term={{ADGROUP_NAME}}
+?utm_id={{CAMPAIGN_ID}}&utm_source=reddit&utm_source_platform=reddit_ads&utm_medium=paid-social&utm_campaign={{CAMPAIGN_NAME}}&utm_content={{ADGROUP_NAME}}&utm_term={{AD_NAME}}
 ```
 > Confirmar disponibilidade das macros na conta — o Reddit habilita por conta.
 
@@ -162,8 +170,20 @@ ValueTrack compatível com Google. `msclkid` é auto-tagged.
 
 ## ✅ E-mail (ActiveCampaign)
 
+O `utm_medium` separa os dois tipos de envio. Os dois casam com o regex de
+Email do GA4 (`.*e-?mail.*`), então continuam no mesmo canal do relatório —
+mas dá para filtrar um ou outro.
+
+**Disparo** (campanha pontual para uma lista):
+
 ```
-?utm_id=%SUBSCRIBERID%&utm_source=activecampaign&utm_source_platform=activecampaign&utm_medium=email&utm_campaign=<nome_automacao>&utm_content=<posicao_do_link>&utm_term=<segmento>
+?utm_id=%SUBSCRIBERID%&utm_source=activecampaign&utm_source_platform=activecampaign&utm_medium=email-disparo&utm_campaign=<nome_campanha>&utm_content=<segmento>&utm_term=<posicao_do_link>
+```
+
+**Automação** (fluxo disparado por gatilho):
+
+```
+?utm_id=%SUBSCRIBERID%&utm_source=activecampaign&utm_source_platform=activecampaign&utm_medium=email-automacao&utm_campaign=<nome_automacao>&utm_content=<segmento>&utm_term=<posicao_do_link>
 ```
 
 ---

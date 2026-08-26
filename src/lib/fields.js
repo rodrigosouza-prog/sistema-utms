@@ -2,14 +2,16 @@
    Compartilhado entre o render de build (.astro) e o runtime no cliente. */
 
 export const TOKEN_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-export const PERIODO_RE = /^((0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-20[2-9][0-9]|perene)$/;
+export const PERIODO_RE = /^((0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{2}|perene)$/;
 export const VERSAO_RE = /^v[0-9]{2}$/;
 
-/* O regex garante o formato dd-mm-aaaa; isto garante que a data existe —
-   31-02-2026 passa no regex mas nao e um dia real. */
+/* O regex garante o formato dd-mm-aa; isto garante que a data existe —
+   31-02-26 passa no regex mas nao e um dia real.
+   Barra nao entra: '/' quebraria a URL e nao esta nos caracteres validos. */
 export function dataValida(v) {
   if (v === 'perene') return true;
-  const [d, m, y] = v.split('-').map(Number);
+  const [d, m, aa] = v.split('-').map(Number);
+  const y = 2000 + aa;
   const dt = new Date(y, m - 1, d);
   return dt.getDate() === d && dt.getMonth() === m - 1 && dt.getFullYear() === y;
 }
@@ -21,8 +23,8 @@ export function dataValida(v) {
    url    -> landing page                                            */
 export const FIELDS = {
   canal: {
-    kind: 'canal', label: 'Plataforma', req: true,
-    hint: 'escolha a plataforma — ela define utm_source e utm_medium'
+    kind: 'canal', label: 'Canal', req: true,
+    hint: 'escolha o canal — ele define utm_source e utm_medium'
   },
   lp: {
     kind: 'url', label: 'Landing page', req: true,
@@ -34,8 +36,8 @@ export const FIELDS = {
   funil: { kind: 'combo', dim: 'funil', label: 'Funil', req: true, ph: 'fundo' },
   geo: { kind: 'combo', dim: 'geo', label: 'Geo', req: true, ph: 'brasil' },
   periodo: {
-    kind: 'text', label: 'Data', req: true, ph: '12-02-2026',
-    hint: 'dia-mes-ano — <b>12-02-2026</b> · ou <b>perene</b>',
+    kind: 'text', label: 'Data', req: true, ph: '12-12-26',
+    hint: 'dia-mes-ano — <b>12-12-26</b> · ou <b>perene</b>',
     re: 'PERIODO', chk: dataValida, chkWhy: 'essa data nao existe'
   },
   publico: { kind: 'combo', dim: 'publico', label: 'Publico', req: true, ph: 'lookalike' },
@@ -67,12 +69,12 @@ export const SECTIONS = [
     rows: [['objetivo', 'produto'], ['funil', 'geo'], ['periodo']]
   },
   {
-    n: '2', title: 'Conjunto / Ad group', map: 'utm_term',
+    n: '2', title: 'Conjunto / Ad group', map: 'utm_content',
     desc: 'Para quem?',
     rows: [['publico', 'detalhe'], ['posicionamento']]
   },
   {
-    n: '3', title: 'Anuncio', map: 'utm_content',
+    n: '3', title: 'Anuncio', map: 'utm_term',
     desc: 'Com qual criativo? Bloco opcional — preencha o que fizer sentido.',
     rows: [['formato', 'angulo'], ['gancho', 'versao']]
   }

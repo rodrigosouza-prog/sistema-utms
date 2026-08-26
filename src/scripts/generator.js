@@ -23,6 +23,7 @@ let HIDDEN = {};              /* { dim: { valor: 1 } } removidos da base */
 let tab = 'url';
 let variante = 'completo';
 let view = 'gerador';
+let canalTab = 'anuncio';   /* aba ativa do dropdown de canal */
 const TOUCHED = new Set();
 
 const VIEWS = {
@@ -59,13 +60,16 @@ const btnCopy = alvo =>
 
 /* ═══════════════ dicionario ═══════════════ */
 
-const DIM_LABEL = { canal: 'Plataforma / canal' };
+const DIM_LABEL = { canal: 'Canal' };
+const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico' };
+const outraAba = t => (t === 'anuncio' ? 'organico' : 'anuncio');
 for (const f of Object.values(FIELDS)) if (f.dim) DIM_LABEL[f.dim] = f.label;
 const DIMS = Object.keys(DIM_LABEL);
 
 /* campos extras que so o canal tem */
 const CANAL_COLS = [
   { k: 'label',               ph: 'Nome exibido (ex: Pinterest)' },
+  { k: 'tipo',                ph: 'Aba', opts: ['anuncio', 'organico'] },
   { k: 'grupo',               ph: 'Grupo (ex: Outras midias pagas)' },
   { k: 'utm_source',          ph: 'utm_source' },
   { k: 'utm_medium',          ph: 'utm_medium' },
@@ -208,6 +212,8 @@ function cbxSetup(k) {
     list:  el.querySelector('.cbx__list'),
     empty: el.querySelector('.cbx__empty'),
     novo:  el.querySelector('.cbx__new'),
+    tabs:  el.querySelector('.cbx__tabs'),
+    cross: el.querySelector('[data-ccross]'),
     hi: -1
   };
   const canal = FIELDS[k].kind === 'canal';
@@ -216,6 +222,10 @@ function cbxSetup(k) {
   c.pop.addEventListener('mousedown', e => e.preventDefault());
 
   c.pop.addEventListener('click', e => {
+    const ct = e.target.closest('[data-ctab]');
+    if (ct) { canalTab = ct.dataset.ctab; return cbxFilter(k); }
+    if (e.target.closest('[data-ccross]')) { canalTab = outraAba(canalTab); return cbxFilter(k); }
+
     const rm = e.target.closest('[data-rm]');
     if (rm) {
       e.stopPropagation();
@@ -297,11 +307,36 @@ function cbxFilter(k) {
 
   let visiveis = 0;
   c.list.querySelectorAll('.opt').forEach(o => {
-    const hit = !o.dataset.removed && (!q || o.dataset.search.includes(q));
+    const naAba = !canal || o.dataset.tipo === canalTab;
+    const hit = !o.dataset.removed && naAba && (!q || o.dataset.search.includes(q));
     o.hidden = !hit;
     if (hit) visiveis++;
     o.classList.toggle('is-on', o.dataset.val === (canal ? S.canal : S[k]));
   });
+
+  if (canal && c.tabs) {
+    /* contador por aba, ja considerando a busca */
+    for (const t of ['anuncio', 'organico']) {
+      const n = Array.from(c.list.querySelectorAll(`.opt[data-tipo="${t}"]`))
+        .filter(o => !o.dataset.removed && (!q || o.dataset.search.includes(q))).length;
+      const el = c.tabs.querySelector(`[data-ctabn="${t}"]`);
+      if (el) el.textContent = n;
+      const bt = c.tabs.querySelector(`[data-ctab="${t}"]`);
+      if (bt) {
+        bt.classList.toggle('is-on', t === canalTab);
+        bt.setAttribute('aria-selected', t === canalTab ? 'true' : 'false');
+      }
+    }
+    /* buscou e nao achou aqui, mas achou na outra aba */
+    const outra = outraAba(canalTab);
+    const nOutra = q ? Array.from(c.list.querySelectorAll(`.opt[data-tipo="${outra}"]`))
+      .filter(o => !o.dataset.removed && o.dataset.search.includes(q)).length : 0;
+    c.cross.hidden = !(visiveis === 0 && nOutra > 0);
+    if (nOutra) {
+      c.cross.querySelector('[data-ccrosst]').textContent =
+        `${nOutra} resultado${nOutra > 1 ? 's' : ''} em ${TIPO_LABEL[outra]}`;
+    }
+  }
 
   /* esconde titulo de grupo que ficou sem itens */
   c.list.querySelectorAll('[data-g]').forEach(g => {
@@ -340,6 +375,7 @@ function cbxChoose(k, opt) {
   const v = opt.dataset.val;
   if (FIELDS[k].kind === 'canal') {
     S.canal = v;
+    canalTab = opt.dataset.tipo || canalTab;
     c.inp.value = opt.dataset.label || v;
   } else {
     S[k] = v;
@@ -376,6 +412,7 @@ function syncCombos() {
       o.querySelector('.opt__v').textContent = label;
       o.querySelector('.opt__d').textContent = desc;
       o.dataset.label = label;
+      if (dim === 'canal') o.dataset.tipo = raw.tipo === 'organico' ? 'organico' : 'anuncio';
       o.dataset.search = `${v} ${label} ${desc}`.toLowerCase();
     });
 
@@ -399,18 +436,22 @@ function cbxAddOpt(k, dim, v, raw) {
   el.setAttribute('role', 'option');
   el.dataset.val = v;
   el.dataset.label = label;
+  if (canal) el.dataset.tipo = raw.tipo === 'organico' ? 'organico' : 'anuncio';
   el.dataset.search = `${v} ${label} ${desc}`.toLowerCase();
   el.innerHTML =
     `<span class="opt__v">${esc(label)}</span><span class="opt__d">${esc(desc)}</span>` +
     `<span class="opt__x" role="button" data-rm="${dim}|${esc(v)}" title="Remover do dicionario">${SVG(IC.x, 12)}</span>`;
 
   if (canal) {
+    const tipo = el.dataset.tipo;
     const grupo = raw.grupo || 'Outros';
-    let head = Array.from(c.list.querySelectorAll('[data-g]')).find(g => g.dataset.g === grupo);
+    let head = Array.from(c.list.querySelectorAll('[data-g]'))
+      .find(g => g.dataset.g === grupo && g.dataset.tipo === tipo);
     if (!head) {
       head = document.createElement('div');
       head.className = 'cbx__g';
       head.dataset.g = grupo;
+      head.dataset.tipo = tipo;
       head.textContent = grupo;
       c.list.insertBefore(head, c.empty);
     }
@@ -486,7 +527,10 @@ function dimForm(dim, editV) {
 
   const campos = canal
     ? `<input class="inp inp--sm" data-df="v" placeholder="chave (ex: pinterest)" value="${esc(editV || '')}" ${editV ? 'disabled' : ''}>` +
-      CANAL_COLS.map(c => `<input class="inp inp--sm" data-df="${c.k}" placeholder="${c.ph}" value="${val(c.k)}">`).join('')
+      CANAL_COLS.map(c => c.opts
+        ? `<select class="inp inp--sm" data-df="${c.k}">${c.opts.map(o =>
+             `<option value="${o}"${val(c.k) === o ? ' selected' : ''}>${TIPO_LABEL[o] || o}</option>`).join('')}</select>`
+        : `<input class="inp inp--sm" data-df="${c.k}" placeholder="${c.ph}" value="${val(c.k)}">`).join('')
     : `<input class="inp inp--sm" data-df="v" placeholder="valor (ex: black-friday)" value="${esc(editV || '')}" ${editV ? 'disabled' : ''}>
        <input class="inp inp--sm dform__wide" data-df="d" placeholder="descricao curta" value="${esc(cur ?? '')}">`;
 
@@ -529,6 +573,7 @@ function dimFormSave(dim, editV) {
     if (!cfg.label) return err('informe o nome exibido');
     if (!cfg.utm_source || !cfg.utm_medium) return err('utm_source e utm_medium sao obrigatorios');
     cfg.grupo = cfg.grupo || 'Outros';
+    cfg.tipo = cfg.tipo === 'organico' ? 'organico' : 'anuncio';
     cfg.utm_source_platform = cfg.utm_source_platform || 'manual';
     dictSet(dim, v, cfg);
   } else {
@@ -663,7 +708,7 @@ function update() {
   $('#canal-map').innerHTML = cfg
     ? [['utm_source', cfg.utm_source], ['utm_medium', cfg.utm_medium], ['utm_source_platform', cfg.utm_source_platform]]
         .map(([k, v]) => `<span class="srcmap__i"><span class="srcmap__k">${k}</span><span class="srcmap__v">${esc(v)}</span></span>`).join('')
-    : '<span class="srcmap__ph">escolha a plataforma para ver source, medium e platform</span>';
+    : '<span class="srcmap__ph">escolha o canal para ver source, medium e platform</span>';
 
   const cb = $('#canal-badge');
   cb.hidden = !cfg;
@@ -758,7 +803,7 @@ function pane(n) {
   if (tab === 'tt') return paneTemplate(n);
 
   const u = urlFinal(S, canalCfg(), n);
-  if (!u) return `<div class="out"><div class="empty">${SVG(IC.link, 22)}<span>escolha a plataforma e informe a landing page</span></div></div>`;
+  if (!u) return `<div class="out"><div class="empty">${SVG(IC.link, 22)}<span>escolha o canal e informe a landing page</span></div></div>`;
   return `<div class="out">
     <div class="out__h"><span class="out__len">${u.length} chars</span></div>
     ${codeBox(u, 'o-url')}

@@ -20,15 +20,17 @@ export const MSADS_TEMPLATES = {
 /* ───────────────────────────────────────────────────────────────
    Plataformas com macro nativa de URL (nao usam custom parameter)
    ─────────────────────────────────────────────────────────────── */
+/* utm_term carrega o ANUNCIO e utm_content carrega o CONJUNTO — por isso
+   term aponta para o nome do anuncio e content para o nome do adset. */
 const META = {
   source: '{{site_source_name}}', campaign: '{{campaign.name}}',
-  content: '{{ad.name}}', term: '{{adset.name}}'
+  content: '{{adset.name}}', term: '{{ad.name}}'
 };
 
 export const MACROS = {
   'meta-facebook': META, 'meta-instagram': META, 'meta-messenger': META, 'meta-audience': META,
-  'tiktok': { campaign: '__CAMPAIGN_NAME__', content: '__CID_NAME__', term: '__AID_NAME__' },
-  'reddit': { campaign: '{{CAMPAIGN_NAME}}', content: '{{AD_NAME}}', term: '{{ADGROUP_NAME}}' }
+  'tiktok': { campaign: '__CAMPAIGN_NAME__', content: '__AID_NAME__', term: '__CID_NAME__' },
+  'reddit': { campaign: '{{CAMPAIGN_NAME}}', content: '{{ADGROUP_NAME}}', term: '{{AD_NAME}}' }
 };
 
 /* parametros granulares — sem prefixo utm_, lidos pela camada do GTM */
@@ -53,8 +55,8 @@ export function utmPairs(S, canalCfg, nomes, dyn) {
     ['utm_source', M.source || cfg.utm_source],
     ['utm_medium', cfg.utm_medium],
     ['utm_campaign', M.campaign || nomes.campanha],
-    ['utm_content', M.content || nomes.anuncio],
-    ['utm_term', M.term || nomes.conjunto]
+    ['utm_content', M.content || nomes.conjunto],
+    ['utm_term', M.term || nomes.anuncio]
   ].filter(p => p[1]);
 }
 
@@ -77,11 +79,18 @@ export function trackingTemplate(S, canalCfg, nomes, variante = 'completo') {
   return qs([].concat(utmPairs(S, canalCfg, nomes, true), EXTRAS[S.canal] || []));
 }
 
-/** Valores que vao nos custom parameters da conta (Google / Microsoft). */
+/**
+ * Valores que vao nos custom parameters da conta (Google / Microsoft).
+ * O template le {_content} dentro de utm_content, que agora carrega o CONJUNTO.
+ *
+ * ⚠️ No Google e no Microsoft o utm_term continua sendo {keyword} do ValueTrack,
+ * e nao o nome do anuncio — os templates sao os oficiais da conta e nao foram
+ * alterados. O anuncio ja vem identificado por creative={creative}.
+ */
 export function customParams(nomes) {
   return [
     ['_campaign', nomes.campanha],
-    ['_content', nomes.anuncio]
+    ['_content', nomes.conjunto]
   ].filter(p => p[1]);
 }
 

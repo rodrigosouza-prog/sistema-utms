@@ -7,8 +7,8 @@ Três níveis, três perguntas. Cada nível responde só a sua — nada se repet
 | Nível | Pergunta | Vira |
 |---|---|---|
 | **Campanha** | *Por que estou gastando esse dinheiro?* | `utm_campaign` |
-| **Conjunto / Ad Group** | *Para quem?* | `utm_term` |
-| **Anúncio** | *Com qual criativo?* | `utm_content` |
+| **Conjunto / Ad Group** | *Para quem?* | `utm_content` |
+| **Anúncio** | *Com qual criativo?* | `utm_term` |
 
 Regra de ouro: **se a informação já está no nível de cima, não repete embaixo.**
 
@@ -25,12 +25,12 @@ ANÚNCIO    formato_angulo_gancho_vNN          (opcional)
 ### Exemplo real
 
 ```
-CAMPANHA   conversao_intensivo-enem_fundo_sao-paulo_12-02-2026
+CAMPANHA   conversao_intensivo-enem_fundo_sao-paulo_12-12-26
 CONJUNTO   lookalike_compradores-180d_reels
 ANÚNCIO    video_prova-social_aprovada-usp_v01
 ```
 
-Lido em voz alta: *"campanha de conversão do Intensivo Enem, fundo de funil, São Paulo, começando em 12 de fevereiro de 2026; conjunto de lookalike de compradores de 180 dias no Reels; anúncio em vídeo com ângulo de prova social, gancho da aprovada da USP, versão 1."*
+Lido em voz alta: *"campanha de conversão do Intensivo Enem, fundo de funil, São Paulo, começando em 12 de dezembro de 2026; conjunto de lookalike de compradores de 180 dias no Reels; anúncio em vídeo com ângulo de prova social, gancho da aprovada da USP, versão 1."*
 
 O nível **ANÚNCIO é opcional**. Se ninguém preencher, `utm_content` não entra
 na URL. Se preencher parte, os tokens restantes viram `na` — a posição nunca
@@ -65,7 +65,7 @@ muda, então dá para separar por coluna em qualquer planilha.
 | 2 | **produto** | `intensivo-enem` `reta-final` `aprovalive` `craques-enem` `treino-elite` |
 | 3 | **funil** | `topo` `meio` `fundo` `retencao` `recuperacao` |
 | 4 | **geo** | `brasil` `sudeste` `sao-paulo` `na` |
-| 5 | **data** | `12-02-2026` (dia-mês-ano) · `perene` |
+| 5 | **data** | `12-12-26` (dia-mês-ano, ano com 2 dígitos) · `perene` |
 
 ### Nível CONJUNTO
 

@@ -17,11 +17,13 @@ function sugestoes(dim) {
 const versao = TX._meta?.versao ?? '?';
 const regras = TX._meta?.regras_globais ?? {};
 
-/* canais agrupados por familia, para o dropdown do bloco 1 */
-const canalGrupos: Record<string, [string, any][]> = {};
+/* Canais em duas abas — anuncio e organico — e dentro de cada uma
+   os grupos por familia. O time se perdia numa lista unica de 25. */
+const canalAbas: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {} };
 for (const [k, c] of Object.entries(TX.canal || {})) {
   if (k.startsWith('_')) continue;
-  (canalGrupos[(c as any).grupo] ||= []).push([k, c]);
+  const tipo = (c as any).tipo === 'organico' ? 'organico' : 'anuncio';
+  ((canalAbas[tipo][(c as any).grupo] ||= [])).push([k, c]);
 }
 
 /* 4 campos ficam melhor em 2x2 do que em 3+1 */
@@ -29,8 +31,8 @@ const cols = (n: number) => (n <= 2 ? n : 3);
 
 const previews = [
   { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
-  { id: 'conjunto', titulo: 'Conjunto / ad group', map: 'utm_term', vazio: 'complete o bloco 3' },
-  { id: 'anuncio',  titulo: 'Anuncio', map: 'utm_content', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  { id: 'conjunto', titulo: 'Conjunto / ad group', map: 'utm_content', vazio: 'complete o bloco 3' },
+  { id: 'anuncio',  titulo: 'Anuncio', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
 ];
 
 /* formula de cada nome, para a tela de regras */
@@ -115,11 +117,11 @@ const regraLabels: Record<string, string> = {
                     {sec.n === '0' ? (
                       <>
                         <div class="grid grid--2">
-                          <Field k="canal" field={FIELDS.canal} grupos={canalGrupos} />
+                          <Field k="canal" field={FIELDS.canal} abas={canalAbas} />
                           <Field k="lp" field={FIELDS.lp} />
                         </div>
                         <div class="srcmap" id="canal-map">
-                          <span class="srcmap__ph">escolha a plataforma para ver source, medium e platform</span>
+                          <span class="srcmap__ph">escolha o canal para ver source, medium e platform</span>
                         </div>
                       </>
                     ) : (

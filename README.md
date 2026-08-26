@@ -31,12 +31,12 @@ docs/                       nomenclatura e tracking templates
 | Saída | Fórmula |
 |---|---|
 | `utm_campaign` | `objetivo_produto_funil_geo_data` |
-| `utm_term` | `publico_detalhe_posicionamento` |
-| `utm_content` | `formato_angulo_gancho_versao` |
+| `utm_content` | `publico_detalhe_posicionamento` |
+| `utm_term` | `formato_angulo_gancho_versao` |
 
-O bloco do **anúncio é opcional**: se ninguém encostar nele, `utm_content`
+O bloco do **anúncio é opcional**: se ninguém encostar nele, `utm_term`
 simplesmente não entra na URL. Se preencher qualquer campo, os outros três
-viram `na` — token vazio nunca fica em branco. Data no formato `12-02-2026`,
+viram `na` — token vazio nunca fica em branco. Data no formato `12-12-26`,
 ou `perene` para campanha sem data de corte.
 
 Regras completas em `_meta.regras_globais` do dicionário e na tela
