@@ -32,23 +32,6 @@ ANÚNCIO    video_prova-social_aprovada-usp_v01
 
 Lido em voz alta: *"campanha de conversão do Intensivo Enem, fundo de funil, São Paulo, começando em 12 de dezembro de 2026; conjunto de lookalike de compradores de 180 dias no Reels; anúncio em vídeo com ângulo de prova social, gancho da aprovada da USP, versão 1."*
 
-### Anúncios x Orgânico
-
-O gerador tem dois modos, escolhidos no menu lateral. **Canal e campanha são
-idênticos nos dois.** O que muda é da metade para baixo:
-
-| Token | Anúncios | Orgânico |
-|---|---|---|
-| `posicionamento` | preenchido | `na` |
-| `formato` | preenchido | `na` |
-| `angulo` | preenchido | `na` |
-| `gancho` | preenchido | `na` |
-
-Não existe placement nem criativo num e-mail, num SMS ou num push. Os campos
-somem da tela no modo Orgânico, mas o token continua na mesma posição do nome
-— senão a contagem de colunas mudaria entre um canal e outro e o `split("_")`
-deixaria de funcionar na planilha.
-
 O nível **ANÚNCIO é opcional**. Se ninguém preencher, `utm_content` não entra
 na URL. Se preencher parte, os tokens restantes viram `na` — a posição nunca
 muda, então dá para separar por coluna em qualquer planilha.

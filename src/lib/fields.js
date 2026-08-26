@@ -16,11 +16,7 @@ export function dataValida(v) {
   return dt.getDate() === d && dt.getMonth() === m - 1 && dt.getFullYear() === y;
 }
 
-/* modos: em quais modos o campo aparece. Sem a chave, aparece nos dois.
-   Campo fora do modo ativo nao some do nome: o token vira 'na', para a
-   posicao nunca mudar entre uma UTM de anuncio e uma de organico.
-
-   kind:
+/* kind:
    select -> valor fechado (so canal, porque mapeia source/medium/platform)
    combo  -> texto livre COM sugestoes do dicionario
    text   -> texto livre puro
@@ -49,12 +45,12 @@ export const FIELDS = {
     kind: 'text', label: 'Detalhe', req: false, ph: 'compradores-180d',
     hint: 'opcional — vazio vira <b>na</b>'
   },
-  posicionamento: { kind: 'combo', dim: 'posicionamento', label: 'Posicionamento', req: true, ph: 'reels', modos: ['anuncio'] },
-  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: false, ph: 'video', modos: ['anuncio'] },
-  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: false, ph: 'prova-social', modos: ['anuncio'] },
+  posicionamento: { kind: 'combo', dim: 'posicionamento', label: 'Posicionamento', req: true, ph: 'reels' },
+  formato: { kind: 'combo', dim: 'formato', label: 'Formato', req: false, ph: 'video' },
+  angulo: { kind: 'combo', dim: 'angulo', label: 'Angulo', req: false, ph: 'prova-social' },
   gancho: {
     kind: 'text', label: 'Gancho', req: false, ph: 'aprovada-usp',
-    hint: 'vazio vira <b>na</b>', modos: ['anuncio']
+    hint: 'vazio vira <b>na</b>'
   },
   versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO' }
 };
@@ -75,13 +71,11 @@ export const SECTIONS = [
   {
     n: '2', title: 'Conjunto / Ad group', map: 'utm_content',
     desc: 'Para quem?',
-    porModo: { organico: { title: 'Publico / segmento', desc: 'Para quem?' } },
     rows: [['publico', 'detalhe'], ['posicionamento']]
   },
   {
     n: '3', title: 'Anuncio', map: 'utm_term',
     desc: 'Com qual criativo? Bloco opcional — preencha o que fizer sentido.',
-    porModo: { organico: { title: 'Variacao', desc: 'Bloco opcional — use para testar versoes do mesmo envio.' } },
     rows: [['formato', 'angulo'], ['gancho', 'versao']]
   }
 ];
