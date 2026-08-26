@@ -4,8 +4,11 @@ export interface Props { versao: string }
 const { versao } = Astro.props;
 
 const nav = [
+  { grupo: 'Gerar UTM', itens: [
+    { v: 'anuncios', icon: 'megafone', label: 'Anuncios' },
+    { v: 'organico', icon: 'folha',    label: 'Organico' }
+  ]},
   { grupo: 'Operacao', itens: [
-    { v: 'gerador',   icon: 'wand',    label: 'Gerador' },
     { v: 'historico', icon: 'history', label: 'Historico', badge: true }
   ]},
   { grupo: 'Referencia', itens: [
@@ -29,7 +32,7 @@ const nav = [
       <>
         <span class="nav__sec">{g.grupo}</span>
         {g.itens.map((i) => (
-          <button type="button" class={`nav__i${i.v === 'gerador' ? ' is-on' : ''}`} data-view={i.v}>
+          <button type="button" class={`nav__i${i.v === 'anuncios' ? ' is-on' : ''}`} data-view={i.v}>
             <Icon name={i.icon} size={16} />
             <span>{i.label}</span>
             {i.badge && <em class="nav__b" id="nav-hist" hidden></em>}

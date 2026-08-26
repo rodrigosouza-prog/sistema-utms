@@ -22,15 +22,20 @@ let CUSTOM = {};              /* { dim: { valor: descricao|cfg } } adicionados o
 let HIDDEN = {};              /* { dim: { valor: 1 } } removidos da base */
 let tab = 'url';
 let variante = 'completo';
-let view = 'gerador';
-let canalTab = 'anuncio';   /* aba ativa do dropdown de canal */
+let view = 'anuncios';
+let canalTab = 'anuncio';   /* modo ativo, vindo do menu lateral */
 const TOUCHED = new Set();
 
+/* Anuncios e Organico sao a MESMA tela; o que muda e quais canais aparecem.
+   sec = qual <section class="view"> exibir. modo = filtro do dropdown de canal. */
 const VIEWS = {
-  gerador:    { t: 'Gerador de UTM',  s: 'Monte a nomenclatura da campanha e a URL rastreavel.' },
-  historico:  { t: 'Historico',       s: 'Campanhas salvas neste navegador.' },
-  dicionario: { t: 'Dicionario',      s: 'Adicione, edite ou remova os valores que aparecem nos campos.' },
-  ajuda:      { t: 'Regras & padrao', s: 'Como o nome e montado e onde colar cada saida.' }
+  anuncios:   { sec: 'gerador', modo: 'anuncio',
+                t: 'UTM de anuncios', s: 'Midia paga — Google, Meta, TikTok, parcerias e offline.' },
+  organico:   { sec: 'gerador', modo: 'organico',
+                t: 'UTM organico',    s: 'Canais proprios — e-mail, WhatsApp, SMS, push e social organico.' },
+  historico:  { sec: 'historico',  t: 'Historico',       s: 'Campanhas salvas neste navegador.' },
+  dicionario: { sec: 'dicionario', t: 'Dicionario',      s: 'Adicione, edite ou remova os valores que aparecem nos campos.' },
+  ajuda:      { sec: 'ajuda',      t: 'Regras & padrao', s: 'Como o nome e montado e onde colar cada saida.' }
 };
 
 const $  = s => document.querySelector(s);
@@ -62,7 +67,6 @@ const btnCopy = alvo =>
 
 const DIM_LABEL = { canal: 'Canal' };
 const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico' };
-const outraAba = t => (t === 'anuncio' ? 'organico' : 'anuncio');
 for (const f of Object.values(FIELDS)) if (f.dim) DIM_LABEL[f.dim] = f.label;
 const DIMS = Object.keys(DIM_LABEL);
 
@@ -151,6 +155,7 @@ function afterDict() {
   Object.keys(CBX).forEach(k => { if (!CBX[k].pop.hidden) cbxFilter(k); });
   if (view === 'dicionario') renderDims();
   update();
+  go('anuncios');
 }
 
 /* ═══════════════ nomes ═══════════════ */
@@ -212,8 +217,6 @@ function cbxSetup(k) {
     list:  el.querySelector('.cbx__list'),
     empty: el.querySelector('.cbx__empty'),
     novo:  el.querySelector('.cbx__new'),
-    tabs:  el.querySelector('.cbx__tabs'),
-    cross: el.querySelector('[data-ccross]'),
     hi: -1
   };
   const canal = FIELDS[k].kind === 'canal';
@@ -222,10 +225,6 @@ function cbxSetup(k) {
   c.pop.addEventListener('mousedown', e => e.preventDefault());
 
   c.pop.addEventListener('click', e => {
-    const ct = e.target.closest('[data-ctab]');
-    if (ct) { canalTab = ct.dataset.ctab; return cbxFilter(k); }
-    if (e.target.closest('[data-ccross]')) { canalTab = outraAba(canalTab); return cbxFilter(k); }
-
     const rm = e.target.closest('[data-rm]');
     if (rm) {
       e.stopPropagation();
@@ -314,31 +313,7 @@ function cbxFilter(k) {
     o.classList.toggle('is-on', o.dataset.val === (canal ? S.canal : S[k]));
   });
 
-  if (canal && c.tabs) {
-    /* contador por aba, ja considerando a busca */
-    for (const t of ['anuncio', 'organico']) {
-      const n = Array.from(c.list.querySelectorAll(`.opt[data-tipo="${t}"]`))
-        .filter(o => !o.dataset.removed && (!q || o.dataset.search.includes(q))).length;
-      const el = c.tabs.querySelector(`[data-ctabn="${t}"]`);
-      if (el) el.textContent = n;
-      const bt = c.tabs.querySelector(`[data-ctab="${t}"]`);
-      if (bt) {
-        bt.classList.toggle('is-on', t === canalTab);
-        bt.setAttribute('aria-selected', t === canalTab ? 'true' : 'false');
-      }
-    }
-    /* buscou e nao achou aqui, mas achou na outra aba */
-    const outra = outraAba(canalTab);
-    const nOutra = q ? Array.from(c.list.querySelectorAll(`.opt[data-tipo="${outra}"]`))
-      .filter(o => !o.dataset.removed && o.dataset.search.includes(q)).length : 0;
-    c.cross.hidden = !(visiveis === 0 && nOutra > 0);
-    if (nOutra) {
-      c.cross.querySelector('[data-ccrosst]').textContent =
-        `${nOutra} resultado${nOutra > 1 ? 's' : ''} em ${TIPO_LABEL[outra]}`;
-    }
-  }
-
-  /* esconde titulo de grupo que ficou sem itens */
+  /* titulo de grupo sem nenhum item visivel nao deve aparecer */
   c.list.querySelectorAll('[data-g]').forEach(g => {
     let n = 0;
     for (let el = g.nextElementSibling; el && el.classList.contains('opt'); el = el.nextElementSibling) {
@@ -348,6 +323,11 @@ function cbxFilter(k) {
   });
 
   c.empty.hidden = visiveis > 0;
+  if (canal && !visiveis) {
+    c.empty.textContent = q
+      ? `nenhum canal de ${TIPO_LABEL[canalTab].toLowerCase()} com esse texto`
+      : `nenhum canal de ${TIPO_LABEL[canalTab].toLowerCase()} no dicionario`;
+  }
   c.hi = -1;
   c.list.querySelectorAll('.is-hi').forEach(o => o.classList.remove('is-hi'));
 
@@ -375,7 +355,6 @@ function cbxChoose(k, opt) {
   const v = opt.dataset.val;
   if (FIELDS[k].kind === 'canal') {
     S.canal = v;
-    canalTab = opt.dataset.tipo || canalTab;
     c.inp.value = opt.dataset.label || v;
   } else {
     S[k] = v;
@@ -914,11 +893,23 @@ function doCopy(btn) {
 function go(v, foco) {
   if (!VIEWS[v]) return;
   view = v;
-  $$('.view').forEach(s => s.classList.toggle('is-on', s.dataset.view === v));
+  const cfgV = VIEWS[v];
+  $$('.view').forEach(s => s.classList.toggle('is-on', s.dataset.view === cfgV.sec));
   $$('.nav__i').forEach(b => b.classList.toggle('is-on', b.dataset.view === v));
+
+  if (cfgV.modo) {
+    canalTab = cfgV.modo;
+    /* canal escolhido no outro modo nao vale aqui */
+    const cfg = canalCfg();
+    if (cfg && (cfg.tipo === 'organico' ? 'organico' : 'anuncio') !== canalTab) {
+      delete S.canal;
+      syncCanal();
+    }
+    update();
+  }
   $('#page-t').textContent = VIEWS[v].t;
   $('#page-s').textContent = VIEWS[v].s;
-  $$('[data-acts]').forEach(el => { el.hidden = el.dataset.acts !== v; });
+  $$('[data-acts]').forEach(el => { el.hidden = el.dataset.acts !== cfgV.sec; });
   document.body.classList.remove('nav-open');
 
   if (v === 'historico') renderHist();

@@ -17,13 +17,14 @@ function sugestoes(dim) {
 const versao = TX._meta?.versao ?? '?';
 const regras = TX._meta?.regras_globais ?? {};
 
-/* Canais em duas abas — anuncio e organico — e dentro de cada uma
-   os grupos por familia. O time se perdia numa lista unica de 25. */
-const canalAbas: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {} };
+/* Canais separados por tipo — anuncio e organico — e dentro de cada um
+   os grupos por familia. O tipo e escolhido no menu lateral: uma lista
+   unica de 25 canais fazia o time se perder. */
+const canalPorTipo: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {} };
 for (const [k, c] of Object.entries(TX.canal || {})) {
   if (k.startsWith('_')) continue;
   const tipo = (c as any).tipo === 'organico' ? 'organico' : 'anuncio';
-  ((canalAbas[tipo][(c as any).grupo] ||= [])).push([k, c]);
+  ((canalPorTipo[tipo][(c as any).grupo] ||= [])).push([k, c]);
 }
 
 /* 4 campos ficam melhor em 2x2 do que em 3+1 */
@@ -61,8 +62,8 @@ const regraLabels: Record<string, string> = {
         </button>
 
         <div class="top__t">
-          <h1 id="page-t">Gerador de UTM</h1>
-          <p id="page-s">Monte a nomenclatura da campanha e a URL rastreavel.</p>
+          <h1 id="page-t">UTM de anuncios</h1>
+          <p id="page-s">Midia paga — Google, Meta, TikTok, parcerias e offline.</p>
         </div>
 
         <div class="top__acts">
@@ -117,7 +118,7 @@ const regraLabels: Record<string, string> = {
                     {sec.n === '0' ? (
                       <>
                         <div class="grid grid--2">
-                          <Field k="canal" field={FIELDS.canal} abas={canalAbas} />
+                          <Field k="canal" field={FIELDS.canal} porTipo={canalPorTipo} />
                           <Field k="lp" field={FIELDS.lp} />
                         </div>
                         <div class="srcmap" id="canal-map">

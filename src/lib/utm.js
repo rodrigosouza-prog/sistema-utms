@@ -95,6 +95,8 @@ export function customParams(nomes) {
 }
 
 export function urlFinal(S, canalCfg, nomes) {
-  if (!S.lp) return null;
+  /* sem canal nao ha source nem medium: melhor nao mostrar URL nenhuma
+     do que mostrar uma pela metade */
+  if (!S.lp || !canalCfg) return null;
   return S.lp + (S.lp.indexOf('?') > -1 ? '&' : '?') + qs(utmPairs(S, canalCfg, nomes, false));
 }

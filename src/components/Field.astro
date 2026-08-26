@@ -3,8 +3,8 @@
  * Campo do gerador. Tres formas, mesma casca:
  *   - texto puro / url      -> input simples
  *   - combo (tem dicionario)-> input + dropdown com busca, aceita valor novo
- *   - canal                 -> input + dropdown em duas abas (anuncio /
- *                              organico), cada uma com seus grupos
+ *   - canal                 -> input + dropdown filtrado pelo modo ativo
+ *                              (anuncio / organico), escolhido no menu lateral
  *
  * As opcoes saem do dicionario em build time. O que o time adiciona ou
  * remove depois e aplicado em cima, no cliente (ver generator.js).
@@ -17,19 +17,18 @@ export interface Props {
   k: string;
   field: Record<string, any>;
   sugestoes?: Record<string, string>;
-  abas?: Record<string, Grupos> | null;
+  porTipo?: Record<string, Grupos> | null;
 }
-const { k, field, sugestoes = {}, abas = null } = Astro.props;
+const { k, field, sugestoes = {}, porTipo = null } = Astro.props;
 
 const id = `i-${k}`;
-const dim = abas ? 'canal' : (field.dim ?? '');
+const dim = porTipo ? 'canal' : (field.dim ?? '');
 const opts = Object.entries(sugestoes).sort((a, b) => a[0].localeCompare(b[0]));
-const isCombo = !!abas || field.kind === 'combo';
+const isCombo = !!porTipo || field.kind === 'combo';
 
-const ABAS = [
-  { id: 'anuncio',  label: 'Anuncios' },
-  { id: 'organico', label: 'Organico' }
-];
+/* O tipo (anuncio / organico) e escolhido no menu lateral, nao aqui.
+   Os dois conjuntos vao no DOM e o runtime mostra so o do modo ativo. */
+const TIPOS = ['anuncio', 'organico'];
 ---
 
 <div class="fld">
@@ -51,31 +50,16 @@ const ABAS = [
       </button>
 
       <div class="cbx__pop" id={`l-${k}`} hidden>
-        {abas && (
-          <div class="cbx__tabs" role="tablist">
-            {ABAS.map((a, i) => (
-              <button
-                type="button" role="tab"
-                class={`cbx__tab${i === 0 ? ' is-on' : ''}`}
-                data-ctab={a.id}
-                aria-selected={i === 0 ? 'true' : 'false'}
-              >
-                {a.label}<span class="cbx__tabn" data-ctabn={a.id}></span>
-              </button>
-            ))}
-          </div>
-        )}
-
         <div class="cbx__list" role="listbox">
-          {abas
-            ? ABAS.map((a) =>
-                Object.entries(abas[a.id] ?? {}).map(([g, itens]) => (
+          {porTipo
+            ? TIPOS.map((tipo) =>
+                Object.entries(porTipo[tipo] ?? {}).map(([g, itens]) => (
                   <>
-                    <div class="cbx__g" data-g={g} data-tipo={a.id}>{g}</div>
+                    <div class="cbx__g" data-g={g} data-tipo={tipo}>{g}</div>
                     {itens.map(([ck, c]) => (
                       <div
                         class="opt" role="option"
-                        data-val={ck} data-label={(c as any).label} data-tipo={a.id}
+                        data-val={ck} data-label={(c as any).label} data-tipo={tipo}
                         data-search={`${ck} ${(c as any).label} ${(c as any).utm_source}`.toLowerCase()}
                       >
                         <span class="opt__v">{(c as any).label}</span>
@@ -103,15 +87,8 @@ const ABAS = [
           <div class="cbx__empty" hidden>nenhum valor no dicionario com esse texto</div>
         </div>
 
-        {abas && (
-          <button type="button" class="cbx__cross" data-ccross hidden>
-            <Icon name="chevron" size={13} />
-            <span data-ccrosst></span>
-          </button>
-        )}
-
         <div class="cbx__foot">
-          {!abas && (
+          {!porTipo && (
             <button type="button" class="cbx__new" data-add={k} hidden>
               <Icon name="plus" size={13} />
               <span>Adicionar <b data-newval>—</b> ao dicionario</span>
