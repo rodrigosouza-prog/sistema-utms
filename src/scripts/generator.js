@@ -658,6 +658,18 @@ function avisos() {
     } catch {}
   }
 
+  /* link interno com UTM e o erro classico de auto-referencia:
+     zera a origem real de quem chegou por anuncio e abre sessao nova */
+  if (S.canal === 'blog' && S.lp) {
+    try {
+      const host = new URL(S.lp).hostname.replace(/^www\./, '');
+      out.push({
+        t: 'w',
+        m: `Se o blog estiver em <b>${esc(host)}</b> — o mesmo dominio da landing page — esta UTM <b>apaga a origem real</b> do visitante e abre uma sessao nova no GA4. Quem veio de um anuncio vira "blog". Use so quando o link sai do dominio; para link interno, prefira um parametro sem <code>utm_</code> lido pelo GTM.`
+      });
+    } catch {}
+  }
+
   const cfg = canalCfg();
   if (cfg?.utm_source_platform === 'manual') out.push({ t: 'i', m: 'Canal sem macro: distribua a <b>URL final</b> pronta ao lado.' });
   if (S.canal === 'linkedin') out.push({ t: 'w', m: 'LinkedIn <b>nao tem macro de URL</b>. Tudo digitado a mao — copie a URL final e confira antes de publicar.' });

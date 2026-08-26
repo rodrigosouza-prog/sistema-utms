@@ -60,6 +60,15 @@ classe no GA4, então dá para filtrar sem quebrar o nome em pedaços.
 > grupo padrão do GA4. Vale criar um **grupo de canais personalizado** para
 > que Inside e CS apareçam separados de "Unassigned".
 
+### Blog: cuidado com link interno
+
+O canal **blog** (`utm_source=blog`, `utm_medium=conteudo`) só deve marcar
+links que **saem do domínio**. Se o blog vive no mesmo domínio da landing
+page, colocar UTM num link interno **zera a origem real do visitante**: quem
+chegou por um anúncio do Meta vira "blog" no relatório, e o GA4 abre uma
+sessão nova ali. Para link interno, use um parâmetro sem prefixo `utm_` e
+leia com o GTM. O gerador avisa isso na tela quando você escolhe o blog.
+
 ### Exemplo real
 
 ```
@@ -133,8 +142,8 @@ muda, então dá para separar por coluna em qualquer planilha.
 
 | Token | Dimensão | Exemplos |
 |---|---|---|
-| 1 | **peca** | `email` `newsletter` `broadcast` `grupo` `status` `sms` `push-app` `post` `reels` `story` `bio` |
-| 2 | **posicao** | `header` `banner` `cta-principal` `corpo` `rodape` `assinatura` `legenda` `bio-link` |
+| 1 | **peca** | `email` `newsletter` `broadcast` `grupo` `status` `sms` `push-app` `post` `reels` `story` `bio` `blog-post` `ebook` |
+| 2 | **posicao** | `header` `banner` `cta-principal` `corpo` `rodape` `assinatura` `legenda` `bio-link` `meio-artigo` `fim-artigo` `sidebar` `pop-up` |
 | 3 | **assunto** | livre-controlado: `ultimo-aviso` `vagas-acabando` |
 | 4 | **versao** | `v01` … `v99` |
 

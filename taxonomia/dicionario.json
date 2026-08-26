@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "0.10.0",
+    "versao": "0.11.0",
     "atualizado_em": "2026-08-26",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -297,6 +297,14 @@
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
+    "blog": {
+      "label": "Blog",
+      "grupo": "Canais proprios",
+      "tipo": "organico",
+      "utm_source": "blog",
+      "utm_medium": "conteudo",
+      "utm_source_platform": "manual"
+    },
     "influencer": {
       "label": "Influencer",
       "grupo": "Parcerias & offline",
@@ -528,7 +536,9 @@
     "reels": "Reels",
     "story": "Story",
     "live": "Transmissao ao vivo",
-    "bio": "Link na bio"
+    "bio": "Link na bio",
+    "blog-post": "Artigo do blog",
+    "ebook": "Material rico ou e-book"
   },
   "posicao": {
     "_descricao": "Onde dentro da peca estava o link clicado.",
@@ -546,6 +556,10 @@
     "sticker": "Sticker / figurinha do story",
     "bio-link": "Link do perfil",
     "destaque": "Destaque do perfil",
+    "sidebar": "Barra lateral do artigo",
+    "pop-up": "Pop-up ou banner flutuante",
+    "meio-artigo": "CTA no meio do artigo",
+    "fim-artigo": "CTA no fim do artigo",
     "na": "Nao se aplica"
   },
   "vendedor": {
