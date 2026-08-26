@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "0.8.0",
+    "versao": "0.10.0",
     "atualizado_em": "2026-08-26",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -329,9 +329,115 @@
       "utm_source_platform": "manual",
       "tipo": "anuncio"
     },
+    "whatsapp-inside": {
+      "label": "WhatsApp · vendedor",
+      "grupo": "Contato direto",
+      "tipo": "inside",
+      "utm_source": "whatsapp",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "email-inside": {
+      "label": "E-mail · vendedor",
+      "grupo": "Contato direto",
+      "tipo": "inside",
+      "utm_source": "email",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "sms-inside": {
+      "label": "SMS · vendedor",
+      "grupo": "Contato direto",
+      "tipo": "inside",
+      "utm_source": "sms",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "dm-instagram": {
+      "label": "Direct do Instagram",
+      "grupo": "Contato direto",
+      "tipo": "inside",
+      "utm_source": "instagram",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "ligacao": {
+      "label": "Ligacao",
+      "grupo": "Contato direto",
+      "tipo": "inside",
+      "utm_source": "telefone",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "crm-sequencia": {
+      "label": "CRM · sequencia",
+      "grupo": "Cadencia automatizada",
+      "tipo": "inside",
+      "utm_source": "crm",
+      "utm_medium": "inside",
+      "utm_source_platform": "manual"
+    },
+    "cs-retencao-whatsapp": {
+      "label": "WhatsApp · retencao",
+      "grupo": "Retencao",
+      "tipo": "cs",
+      "utm_source": "whatsapp",
+      "utm_medium": "cs-retencao",
+      "utm_source_platform": "manual"
+    },
+    "cs-retencao-email": {
+      "label": "E-mail · retencao",
+      "grupo": "Retencao",
+      "tipo": "cs",
+      "utm_source": "email",
+      "utm_medium": "cs-retencao",
+      "utm_source_platform": "manual"
+    },
+    "cs-retencao-ligacao": {
+      "label": "Ligacao · retencao",
+      "grupo": "Retencao",
+      "tipo": "cs",
+      "utm_source": "telefone",
+      "utm_medium": "cs-retencao",
+      "utm_source_platform": "manual"
+    },
+    "cs-retencao-app": {
+      "label": "App · retencao",
+      "grupo": "Retencao",
+      "tipo": "cs",
+      "utm_source": "app",
+      "utm_medium": "cs-retencao",
+      "utm_source_platform": "manual"
+    },
+    "cs-reversao-whatsapp": {
+      "label": "WhatsApp · reversao",
+      "grupo": "Reversao",
+      "tipo": "cs",
+      "utm_source": "whatsapp",
+      "utm_medium": "cs-reversao",
+      "utm_source_platform": "manual"
+    },
+    "cs-reversao-email": {
+      "label": "E-mail · reversao",
+      "grupo": "Reversao",
+      "tipo": "cs",
+      "utm_source": "email",
+      "utm_medium": "cs-reversao",
+      "utm_source_platform": "manual"
+    },
+    "cs-reversao-ligacao": {
+      "label": "Ligacao · reversao",
+      "grupo": "Reversao",
+      "tipo": "cs",
+      "utm_source": "telefone",
+      "utm_medium": "cs-reversao",
+      "utm_source_platform": "manual"
+    },
     "_tipos": {
-      "anuncio": "Mídia paga — compra de clique ou veiculação",
-      "organico": "Canal próprio — audiência que já é sua"
+      "anuncio": "Midia paga — compra de clique ou veiculacao",
+      "organico": "Canal proprio — audiencia que ja e sua",
+      "inside": "Inside sales — link 1:1 mandado pelo time comercial",
+      "cs": "Customer success — retencao e reversao da base de alunos"
     }
   },
   "aliases_normalizacao": {
@@ -441,5 +547,86 @@
     "bio-link": "Link do perfil",
     "destaque": "Destaque do perfil",
     "na": "Nao se aplica"
+  },
+  "vendedor": {
+    "_descricao": "Quem mandou o link. Comece vazio e va adicionando o time pela tela Dicionario."
+  },
+  "origem_lead": {
+    "_descricao": "De onde esse lead veio antes de chegar no comercial.",
+    "meta-lead": "Formulario de lead do Meta",
+    "google-form": "Formulario de lead do Google",
+    "site": "Formulario do site",
+    "inbound": "Procurou a gente sozinho",
+    "webinar": "Aula ou webinar",
+    "evento": "Evento presencial ou feira",
+    "indicacao": "Indicacao de aluno ou parceiro",
+    "lista-fria": "Prospeccao ativa em lista fria",
+    "base-antiga": "Base antiga reativada",
+    "na": "Origem nao identificada"
+  },
+  "etapa": {
+    "_descricao": "Em que ponto da conversa o link foi mandado.",
+    "primeiro-contato": "Primeira abordagem",
+    "follow-up": "Retomada apos contato anterior",
+    "proposta": "Envio de proposta",
+    "negociacao": "Negociacao de valor ou condicao",
+    "recuperacao": "Recuperacao de boleto ou carrinho",
+    "reativacao": "Reativacao de lead frio",
+    "pos-venda": "Pos-venda e onboarding"
+  },
+  "material": {
+    "_descricao": "Que material o link entrega do outro lado.",
+    "proposta": "Proposta comercial",
+    "catalogo": "Catalogo de cursos ou planos",
+    "apresentacao": "Apresentacao institucional",
+    "grade-horaria": "Grade de aulas",
+    "link-pagamento": "Link de pagamento ou checkout",
+    "agendamento": "Agenda para marcar call",
+    "depoimento": "Depoimento ou caso de aprovado",
+    "condicao-especial": "Condicao ou desconto especifico",
+    "contrato": "Contrato para assinatura",
+    "na": "Sem material especifico"
+  },
+  "agente": {
+    "_descricao": "Quem do CS mandou o link. Comece vazio e adicione o time pela tela Dicionario."
+  },
+  "situacao": {
+    "_descricao": "Situacao do aluno no momento do contato.",
+    "ativo": "Ativo e em dia",
+    "novo": "Recem-matriculado, em onboarding",
+    "em-risco": "Sinal de churn — baixo uso ou reclamacao",
+    "inadimplente": "Pagamento em atraso",
+    "renovacao-proxima": "Contrato perto do vencimento",
+    "trancado": "Matricula trancada",
+    "cancelado": "Ja cancelou — alvo de reversao",
+    "na": "Situacao nao identificada"
+  },
+  "acao": {
+    "_descricao": "O que o contato esta tentando fazer.",
+    "onboarding": "Primeiros passos do aluno",
+    "oferta-retencao": "Oferta para segurar o aluno",
+    "renegociacao": "Renegociar valor ou parcelas",
+    "segunda-via": "Enviar segunda via de cobranca",
+    "renovacao": "Renovar matricula ou plano",
+    "upgrade": "Subir de plano",
+    "downgrade": "Descer de plano para nao perder",
+    "reativacao": "Trazer de volta quem cancelou",
+    "pesquisa": "Pesquisa de satisfacao ou motivo",
+    "suporte": "Resolver um problema aberto",
+    "agendamento": "Marcar conversa"
+  },
+  "material_cs": {
+    "_descricao": "Que material o link entrega no contato de CS.",
+    "boleto": "Boleto ou fatura",
+    "segunda-via": "Segunda via de cobranca",
+    "link-pagamento": "Link de pagamento",
+    "proposta-renovacao": "Proposta de renovacao",
+    "condicao-especial": "Condicao ou desconto de retencao",
+    "agendamento": "Agenda para marcar conversa",
+    "tutorial": "Tutorial ou material de uso",
+    "grade-horaria": "Grade de aulas",
+    "pesquisa": "Formulario de pesquisa",
+    "contrato": "Contrato ou termo",
+    "na": "Sem material especifico"
   }
 }

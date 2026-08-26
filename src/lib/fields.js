@@ -69,7 +69,25 @@ export const FIELDS = {
     kind: 'text', label: 'Assunto / chamada', req: false, ph: 'ultimo-aviso',
     hint: 'vazio vira <b>na</b>', modo: 'organico'
   },
-  peca_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'organico' }
+  peca_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'organico' },
+
+  /* ── so no modo Inside ───────────────────────────────────────────
+     Link 1:1 do comercial: importa quem mandou, de onde veio o lead,
+     em que etapa da conversa e com que material.                    */
+  vendedor: { kind: 'combo', dim: 'vendedor', label: 'Vendedor', req: true, ph: 'joao-victor', modo: 'inside' },
+  origem_lead: { kind: 'combo', dim: 'origem_lead', label: 'Origem do lead', req: true, ph: 'meta-lead', modo: 'inside' },
+  etapa: { kind: 'combo', dim: 'etapa', label: 'Etapa', req: false, ph: 'follow-up', modo: 'inside' },
+  material: { kind: 'combo', dim: 'material', label: 'Material', req: false, ph: 'proposta', modo: 'inside' },
+  inside_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'inside' },
+
+  /* ── so no modo CS ───────────────────────────────────────────────
+     Retencao e reversao ja vem separadas pelo canal (utm_medium).
+     Aqui importa quem falou, como o aluno estava e o que se tentou. */
+  agente: { kind: 'combo', dim: 'agente', label: 'Agente', req: true, ph: 'maria-clara', modo: 'cs' },
+  situacao: { kind: 'combo', dim: 'situacao', label: 'Situacao do aluno', req: true, ph: 'em-risco', modo: 'cs' },
+  acao: { kind: 'combo', dim: 'acao', label: 'Acao', req: false, ph: 'oferta-retencao', modo: 'cs' },
+  material_cs: { kind: 'combo', dim: 'material_cs', label: 'Material', req: false, ph: 'segunda-via', modo: 'cs' },
+  cs_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'cs' }
 };
 
 export const RE_MAP = { PERIODO: PERIODO_RE, VERSAO: VERSAO_RE };
@@ -100,6 +118,30 @@ export const SECOES = {
       rows: [['formato', 'angulo'], ['gancho', 'versao']]
     }
   ],
+  inside: [BLOCO_CANAL, BLOCO_CAMPANHA,
+    {
+      n: '2i', num: 3, modo: 'inside', title: 'Vendedor / origem', map: 'utm_content',
+      desc: 'Quem mandou e de onde veio o lead?',
+      rows: [['vendedor', 'origem_lead']]
+    },
+    {
+      n: '3i', num: 4, modo: 'inside', title: 'Abordagem', map: 'utm_term',
+      desc: 'Em que etapa e com que material? Bloco opcional.',
+      rows: [['etapa', 'material'], ['inside_versao']]
+    }
+  ],
+  cs: [BLOCO_CANAL, BLOCO_CAMPANHA,
+    {
+      n: '2c', num: 3, modo: 'cs', title: 'Agente / situacao', map: 'utm_content',
+      desc: 'Quem falou e como o aluno estava?',
+      rows: [['agente', 'situacao']]
+    },
+    {
+      n: '3c', num: 4, modo: 'cs', title: 'Acao', map: 'utm_term',
+      desc: 'O que se tentou e com que material? Bloco opcional.',
+      rows: [['acao', 'material_cs'], ['cs_versao']]
+    }
+  ],
   organico: [BLOCO_CANAL, BLOCO_CAMPANHA,
     {
       n: '2o', num: 3, modo: 'organico', title: 'Publico / segmento', map: 'utm_content',
@@ -118,7 +160,9 @@ export const SECOES = {
 export const SECOES_RENDER = [
   BLOCO_CANAL, BLOCO_CAMPANHA,
   ...SECOES.anuncio.slice(2),
-  ...SECOES.organico.slice(2)
+  ...SECOES.organico.slice(2),
+  ...SECOES.inside.slice(2),
+  ...SECOES.cs.slice(2)
 ];
 
 /* rotulos do painel de saida, por modo */
@@ -132,6 +176,16 @@ export const PREVIEWS = {
     { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
     { id: 'conjunto', titulo: 'Publico / segmento', map: 'utm_content', vazio: 'complete o bloco 3' },
     { id: 'anuncio', titulo: 'Peca', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  ],
+  inside: [
+    { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+    { id: 'conjunto', titulo: 'Vendedor / origem', map: 'utm_content', vazio: 'complete o bloco 3' },
+    { id: 'anuncio', titulo: 'Abordagem', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  ],
+  cs: [
+    { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+    { id: 'conjunto', titulo: 'Agente / situacao', map: 'utm_content', vazio: 'complete o bloco 3' },
+    { id: 'anuncio', titulo: 'Acao', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
   ]
 };
 

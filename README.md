@@ -28,8 +28,8 @@ docs/                       nomenclatura e tracking templates
 
 ## Como o nome é montado
 
-O gerador tem dois modos, escolhidos no menu lateral. **Canal e campanha são
-idênticos nos dois**; os blocos 3 e 4 mudam.
+O gerador tem quatro modos, escolhidos no menu lateral. **Canal e campanha são
+idênticos em todos**; os blocos 3 e 4 mudam.
 
 **Anúncios** — mídia paga:
 
@@ -47,8 +47,29 @@ idênticos nos dois**; os blocos 3 e 4 mudam.
 | `utm_content` | `segmento_detalhe` |
 | `utm_term` | `peca_posicao_assunto_versao` |
 
+**Inside sales** — link 1:1 do comercial:
+
+| Saída | Fórmula |
+|---|---|
+| `utm_campaign` | `objetivo_produto_funil_geo_data` |
+| `utm_content` | `vendedor_origem-do-lead` |
+| `utm_term` | `etapa_material_versao` |
+
+**CS** — retenção e reversão da base:
+
+| Saída | Fórmula |
+|---|---|
+| `utm_campaign` | `objetivo_produto_funil_geo_data` |
+| `utm_content` | `agente_situacao` |
+| `utm_term` | `acao_material_versao` |
+
 Canal próprio não tem placement nem criativo: tem segmento, peça e o ponto da
-peça onde o link estava.
+peça onde o link estava. Inside e CS são 1:1, então importa quem falou e em
+que contexto.
+
+No CS, **retenção e reversão já vêm separadas pelo canal**: o `utm_medium` sai
+como `cs-retencao` ou `cs-reversao`, então dá para filtrar uma frente ou outra
+sem depender do nome.
 
 O **bloco 4 é opcional** nos dois modos: se ninguém encostar nele, `utm_term`
 não entra na URL. Se preencher parte, o resto vira `na` — token vazio nunca

@@ -20,10 +20,10 @@ const regras = TX._meta?.regras_globais ?? {};
 /* Canais separados por tipo — anuncio e organico — e dentro de cada um
    os grupos por familia. O tipo e escolhido no menu lateral: uma lista
    unica de 25 canais fazia o time se perder. */
-const canalPorTipo: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {} };
+const canalPorTipo: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {}, inside: {}, cs: {} };
 for (const [k, c] of Object.entries(TX.canal || {})) {
   if (k.startsWith('_')) continue;
-  const tipo = (c as any).tipo === 'organico' ? 'organico' : 'anuncio';
+  const tipo = canalPorTipo[(c as any).tipo] ? (c as any).tipo : 'anuncio';
   ((canalPorTipo[tipo][(c as any).grupo] ||= [])).push([k, c]);
 }
 
@@ -34,9 +34,12 @@ const previews = PREVIEWS.anuncio;   /* o runtime troca os rotulos por modo */
 
 /* formula de cada nome, para a tela de regras */
 /* uma formula por modo, para a tela de Regras */
+const ROTULO_MODO: Record<string, string> = {
+  anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS'
+};
 const formulasPorModo = Object.entries(SECOES).map(([modo, secs]) => ({
   modo,
-  rotulo: modo === 'anuncio' ? 'Anuncios' : 'Organico',
+  rotulo: ROTULO_MODO[modo] ?? modo,
   linhas: secs.filter((x) => x.map).map((x) => ({ map: x.map, titulo: x.title, tokens: x.rows.flat() }))
 }));
 
@@ -98,7 +101,7 @@ const regraLabels: Record<string, string> = {
           <div class="work">
             <div class="work__form">
               {SECOES_RENDER.map((sec) => (
-                <section class="blk" data-sec={sec.n} data-modo={sec.modo ?? null} hidden={sec.modo === 'organico'}>
+                <section class="blk" data-sec={sec.n} data-modo={sec.modo ?? null} hidden={!!sec.modo && sec.modo !== 'anuncio'}>
                   <header class="blk__h">
                     <span class="blk__n">{sec.num}</span>
                     <div class="blk__t">

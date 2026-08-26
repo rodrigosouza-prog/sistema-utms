@@ -32,9 +32,33 @@ SEGMENTO   segmento_detalhe
 PEÇA       peca_posicao_assunto_vNN          (opcional)
 ```
 
-Canal e campanha são iguais nos dois. O que muda são os dois de baixo:
-mídia paga fala de público e criativo, canal próprio fala de segmento,
-peça e o ponto da peça onde o link estava.
+**Inside sales** — link 1:1 do comercial:
+
+```
+CAMPANHA   objetivo_produto_funil_geo_data
+VENDEDOR   vendedor_origem-do-lead
+ABORDAGEM  etapa_material_vNN                (opcional)
+```
+
+**CS** — retenção e reversão:
+
+```
+CAMPANHA   objetivo_produto_funil_geo_data
+AGENTE     agente_situacao
+AÇÃO       acao_material_vNN                 (opcional)
+```
+
+Canal e campanha são iguais nos quatro. O que muda são os dois de baixo:
+mídia paga fala de público e criativo, canal próprio fala de segmento e
+peça, inside e CS falam de quem falou e em que contexto.
+
+No CS a frente não é um token: **retenção e reversão vêm do canal**, como
+`utm_medium=cs-retencao` ou `cs-reversao`. Medium é dimensão de primeira
+classe no GA4, então dá para filtrar sem quebrar o nome em pedaços.
+
+> ⚠️ `utm_medium=inside`, `cs-retencao` e `cs-reversao` não caem em nenhum
+> grupo padrão do GA4. Vale criar um **grupo de canais personalizado** para
+> que Inside e CS apareçam separados de "Unassigned".
 
 ### Exemplo real
 

@@ -33,6 +33,10 @@ const VIEWS = {
                 t: 'UTM de anuncios', s: 'Midia paga — Google, Meta, TikTok, parcerias e offline.' },
   organico:   { sec: 'gerador', modo: 'organico',
                 t: 'UTM organico',    s: 'Canais proprios — e-mail, WhatsApp, SMS, push e social organico.' },
+  inside:     { sec: 'gerador', modo: 'inside',
+                t: 'UTM de inside sales', s: 'Link 1:1 do comercial — WhatsApp, e-mail, CRM, direct e ligacao.' },
+  cs:         { sec: 'gerador', modo: 'cs',
+                t: 'UTM de CS',       s: 'Retencao e reversao da base — o canal ja separa as duas frentes.' },
   historico:  { sec: 'historico',  t: 'Historico',       s: 'Campanhas salvas neste navegador.' },
   dicionario: { sec: 'dicionario', t: 'Dicionario',      s: 'Adicione, edite ou remova os valores que aparecem nos campos.' },
   ajuda:      { sec: 'ajuda',      t: 'Regras & padrao', s: 'Como o nome e montado e onde colar cada saida.' }
@@ -66,14 +70,16 @@ const btnCopy = alvo =>
 /* ═══════════════ dicionario ═══════════════ */
 
 const DIM_LABEL = { canal: 'Canal' };
-const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico' };
+const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS' };
+/* canal sem tipo reconhecido cai em anuncio, para nunca sumir da tela */
+const tipoDoCanal = cfg => (cfg && TIPO_LABEL[cfg.tipo] ? cfg.tipo : 'anuncio');
 for (const f of Object.values(FIELDS)) if (f.dim) DIM_LABEL[f.dim] = f.label;
 const DIMS = Object.keys(DIM_LABEL);
 
 /* campos extras que so o canal tem */
 const CANAL_COLS = [
   { k: 'label',               ph: 'Nome exibido (ex: Pinterest)' },
-  { k: 'tipo',                ph: 'Aba', opts: ['anuncio', 'organico'] },
+  { k: 'tipo',                ph: 'Modo', opts: ['anuncio', 'organico', 'inside', 'cs'] },
   { k: 'grupo',               ph: 'Grupo (ex: Outras midias pagas)' },
   { k: 'utm_source',          ph: 'utm_source' },
   { k: 'utm_medium',          ph: 'utm_medium' },
@@ -160,16 +166,12 @@ function afterDict() {
 
 /* ═══════════════ nomes ═══════════════ */
 
-const ANUNCIO_KS = ['formato', 'angulo', 'gancho', 'versao'];
-
-/* Campo sem 'modo' vale nos dois. Fora do modo ativo ele nao existe:
+/* Campo sem 'modo' vale em todos. Fora do modo ativo ele nao existe:
    nao aparece, nao valida e nao entra em nome nenhum. */
 const campoAtivo = k => !FIELDS[k].modo || FIELDS[k].modo === canalTab;
 const secoesAtivas = () => SECOES[canalTab];
 /* bloco 4 so entra na URL se alguem preencheu algo nele */
-const temAnuncio = () => (canalTab === 'organico'
-  ? ['peca', 'posicao', 'assunto', 'peca_versao']
-  : ANUNCIO_KS).some(k => S[k]);
+const temAnuncio = () => TOKENS[canalTab].a.some(k => S[k]);
 
 /* so entra no nome o valor que passa na validacao do proprio campo —
    senao o preview monta um nome com um valor que o Salvar vai recusar */
@@ -183,13 +185,18 @@ function tokOuNa(k) {
   return tok(k);
 }
 
+/* que campos formam utm_content e utm_term em cada modo */
+const TOKENS = {
+  anuncio:  { j: ['publico', 'detalhe', 'posicionamento'], a: ['formato', 'angulo', 'gancho', 'versao'] },
+  organico: { j: ['segmento', 'segmento_detalhe'],         a: ['peca', 'posicao', 'assunto', 'peca_versao'] },
+  inside:   { j: ['vendedor', 'origem_lead'],              a: ['etapa', 'material', 'inside_versao'] },
+  cs:       { j: ['agente', 'situacao'],                   a: ['acao', 'material_cs', 'cs_versao'] }
+};
+
 function nomes() {
   const ok = arr => arr.every(v => v && TOKEN_RE.test(v));
-  const org = canalTab === 'organico';
-
   const c = ['objetivo', 'produto', 'funil', 'geo', 'periodo'].map(tokOuNa);
-  const jk = org ? ['segmento', 'segmento_detalhe'] : ['publico', 'detalhe', 'posicionamento'];
-  const ak = org ? ['peca', 'posicao', 'assunto', 'peca_versao'] : ANUNCIO_KS;
+  const { j: jk, a: ak } = TOKENS[canalTab];
 
   const j = jk.map(tokOuNa);
   const a = ak.map(tokOuNa);
@@ -411,7 +418,7 @@ function syncCombos() {
       o.querySelector('.opt__v').textContent = label;
       o.querySelector('.opt__d').textContent = desc;
       o.dataset.label = label;
-      if (dim === 'canal') o.dataset.tipo = raw.tipo === 'organico' ? 'organico' : 'anuncio';
+      if (dim === 'canal') o.dataset.tipo = tipoDoCanal(raw);
       o.dataset.search = `${v} ${label} ${desc}`.toLowerCase();
     });
 
@@ -435,7 +442,7 @@ function cbxAddOpt(k, dim, v, raw) {
   el.setAttribute('role', 'option');
   el.dataset.val = v;
   el.dataset.label = label;
-  if (canal) el.dataset.tipo = raw.tipo === 'organico' ? 'organico' : 'anuncio';
+  if (canal) el.dataset.tipo = tipoDoCanal(raw);
   el.dataset.search = `${v} ${label} ${desc}`.toLowerCase();
   el.innerHTML =
     `<span class="opt__v">${esc(label)}</span><span class="opt__d">${esc(desc)}</span>` +
@@ -572,7 +579,7 @@ function dimFormSave(dim, editV) {
     if (!cfg.label) return err('informe o nome exibido');
     if (!cfg.utm_source || !cfg.utm_medium) return err('utm_source e utm_medium sao obrigatorios');
     cfg.grupo = cfg.grupo || 'Outros';
-    cfg.tipo = cfg.tipo === 'organico' ? 'organico' : 'anuncio';
+    cfg.tipo = TIPO_LABEL[cfg.tipo] ? cfg.tipo : 'anuncio';
     cfg.utm_source_platform = cfg.utm_source_platform || 'manual';
     dictSet(dim, v, cfg);
   } else {
@@ -931,7 +938,7 @@ function go(v, foco) {
     canalTab = cfgV.modo;
     /* canal escolhido no outro modo nao vale aqui */
     const cfg = canalCfg();
-    if (cfg && (cfg.tipo === 'organico' ? 'organico' : 'anuncio') !== canalTab) {
+    if (cfg && tipoDoCanal(cfg) !== canalTab) {
       delete S.canal;
       syncCanal();
     }
