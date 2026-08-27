@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "versao": "0.11.0",
-    "atualizado_em": "2026-08-26",
+    "versao": "0.12.0",
+    "atualizado_em": "2026-08-27",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
       "casing": "lowercase sempre",
@@ -36,6 +36,9 @@
     "craques-enem": "Craques do Enem",
     "app": "App Aprova Total",
     "ensino-medio": "Ensino Médio",
+    "plataforma-2026": "Plataforma — ciclo 2026",
+    "plataforma-2027": "Plataforma — ciclo 2027",
+    "combo-plataforma-resolve": "Combo Plataforma + Resolve (aulao)",
     "institucional": "Marca (sem produto específico)"
   },
   "funil": {
@@ -280,6 +283,22 @@
       "utm_medium": "push",
       "utm_source_platform": "manual",
       "tipo": "organico"
+    },
+    "app-aprova": {
+      "label": "Aplicativo Aprova",
+      "grupo": "Canais proprios",
+      "tipo": "organico",
+      "utm_source": "app-aprova",
+      "utm_medium": "app",
+      "utm_source_platform": "manual"
+    },
+    "app-resolve": {
+      "label": "Aplicativo Resolve",
+      "grupo": "Canais proprios",
+      "tipo": "organico",
+      "utm_source": "app-resolve",
+      "utm_medium": "app",
+      "utm_source_platform": "manual"
     },
     "organico-social": {
       "label": "Social organico",
@@ -531,6 +550,8 @@
     "sms": "SMS",
     "push-app": "Push no aplicativo",
     "push-web": "Push no navegador",
+    "app-banner": "Banner dentro do aplicativo",
+    "app-card": "Card ou aviso dentro do aplicativo",
     "post": "Post de feed",
     "carrossel": "Carrossel de feed",
     "reels": "Reels",

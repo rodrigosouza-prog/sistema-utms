@@ -244,7 +244,8 @@ function cbxSetup(k) {
     list:  el.querySelector('.cbx__list'),
     empty: el.querySelector('.cbx__empty'),
     novo:  el.querySelector('.cbx__new'),
-    hi: -1
+    hi: -1,
+    dirty: false   /* so filtra depois que a pessoa digita algo */
   };
   const canal = FIELDS[k].kind === 'canal';
 
@@ -274,7 +275,7 @@ function cbxSetup(k) {
   });
 
   c.inp.addEventListener('input', () => {
-    if (canal) { cbxOpen(k); cbxFilter(k); return; }
+    if (canal) { cbxOpen(k); c.dirty = true; cbxFilter(k); return; }
     const raw = c.inp.value;
     const caret = c.inp.selectionStart;
     const v = slug(raw);
@@ -285,6 +286,7 @@ function cbxSetup(k) {
       try { c.inp.setSelectionRange(caret - d, caret - d); } catch {}
     }
     cbxOpen(k);
+    c.dirty = true;
     cbxFilter(k);
     update();
   });
@@ -310,6 +312,7 @@ function cbxOpen(k) {
   c.pop.hidden = false;
   c.el.classList.add('is-open');
   c.inp.setAttribute('aria-expanded', 'true');
+  c.dirty = false;          /* abriu: mostra a lista inteira */
   cbxFilter(k);
 }
 
@@ -326,10 +329,9 @@ function cbxClose(k) {
 function cbxFilter(k) {
   const c = CBX[k];
   const canal = FIELDS[k].kind === 'canal';
-  /* no canal o input mostra o rotulo; enquanto digita, ele e a busca */
-  const atual = canal ? (canalCfg()?.label || '') : (S[k] || '');
-  const raw = c.inp.value.trim().toLowerCase();
-  const q = raw === atual.toLowerCase() ? '' : raw;
+  /* enquanto ninguem digitou, a lista vem inteira — mesmo com um valor
+     ja escolhido no campo, senao reabrir o dropdown mostraria so ele */
+  const q = c.dirty ? c.inp.value.trim().toLowerCase() : '';
 
   let visiveis = 0;
   c.list.querySelectorAll('.opt').forEach(o => {

@@ -109,7 +109,7 @@ muda, então dá para separar por coluna em qualquer planilha.
 | Token | Dimensão | Exemplos |
 |---|---|---|
 | 1 | **objetivo** | `conversao` `lead` `remarketing` `trafego` `alcance` `video` `engajamento` |
-| 2 | **produto** | `intensivo-enem` `reta-final` `aprovalive` `craques-enem` `treino-elite` |
+| 2 | **produto** | `intensivo-enem` `reta-final` `aprovalive` `craques-enem` `treino-elite` `plataforma-2026` `plataforma-2027` `combo-plataforma-resolve` |
 | 3 | **funil** | `topo` `meio` `fundo` `retencao` `recuperacao` |
 | 4 | **geo** | `brasil` `sudeste` `sao-paulo` `na` |
 | 5 | **data** | `12-12-26` (dia-mês-ano, ano com 2 dígitos) · `perene` |
@@ -142,7 +142,7 @@ muda, então dá para separar por coluna em qualquer planilha.
 
 | Token | Dimensão | Exemplos |
 |---|---|---|
-| 1 | **peca** | `email` `newsletter` `broadcast` `grupo` `status` `sms` `push-app` `post` `reels` `story` `bio` `blog-post` `ebook` |
+| 1 | **peca** | `email` `newsletter` `broadcast` `grupo` `status` `sms` `push-app` `app-banner` `app-card` `post` `reels` `story` `bio` `blog-post` `ebook` |
 | 2 | **posicao** | `header` `banner` `cta-principal` `corpo` `rodape` `assinatura` `legenda` `bio-link` `meio-artigo` `fim-artigo` `sidebar` `pop-up` |
 | 3 | **assunto** | livre-controlado: `ultimo-aviso` `vagas-acabando` |
 | 4 | **versao** | `v01` … `v99` |
