@@ -10,7 +10,8 @@ import TX from '../../taxonomia/dicionario.json';
 import { FIELDS, SECOES, PREVIEWS, RE_MAP, TOKEN_RE, slug } from '../lib/fields.js';
 import {
   isDyn, isGoogleAds, isMsAds, usaCustomParam,
-  trackingTemplate, customParams, urlFinal
+  trackingTemplate, customParams, urlFinal,
+  GADS_VARIANTES, abreCom
 } from '../lib/utm.js';
 
 const LS_HIST = 'at_utm_hist_v1';
@@ -654,8 +655,15 @@ function avisos() {
       const u = new URL(S.lp);
       if (u.protocol !== 'https:') out.push({ t: 'w', m: 'A landing page nao esta em <b>https</b>.' });
       if (isGoogleAds(S.canal) || isMsAds(S.canal)) {
-        if (u.search) out.push({ t: 'i', m: 'Essa LP <b>tem</b> query string, entao o <code>&amp;</code> do template funciona aqui.' });
-        else out.push({ t: 'w', m: 'Essa LP <b>nao tem</b> query string. Vale testar o template no botao <b>Testar</b> do Google Ads — <code>{lpurl}&amp;</code> pode gerar URL sem <code>?</code>.' });
+        /* o template ativo manda: '&' quer LP com query string, '?' quer sem */
+        const abre = abreCom(trackingTemplate(S, canalCfg(), nomes(), variante));
+        if (abre === '?' && u.search) {
+          out.push({ t: 'e', m: `Esse template abre com <code>{lpurl}?</code> e a LP <b>ja tem</b> query string — a URL final sairia com dois <code>?</code>. Use a LP sem parametros ou troque para um template que abre com <code>&amp;</code>.` });
+        } else if (abre === '&' && !u.search) {
+          out.push({ t: 'w', m: 'Esse template abre com <code>{lpurl}&amp;</code> e a LP <b>nao tem</b> query string — pode gerar URL sem <code>?</code>. Vale conferir no botao <b>Testar</b> do Google Ads.' });
+        } else {
+          out.push({ t: 'i', m: `LP e template combinam: <code>{lpurl}${esc(abre)}</code> com uma LP ${u.search ? '<b>com</b>' : '<b>sem</b>'} query string.` });
+        }
       }
     } catch {}
   }
@@ -845,13 +853,15 @@ function pane(n) {
 
 function paneTemplate(n) {
   const gads = usaCustomParam(S.canal);
+  const v = GADS_VARIANTES.find(x => x.id === variante);
+  if (v && v.soGoogle && !isGoogleAds(S.canal)) variante = 'completo';
   const t = trackingTemplate(S, canalCfg(), n, variante);
   const cps = customParams(n);
 
-  const toggle = gads ? `<div class="seg">
-      <button type="button" class="seg__b${variante === 'completo' ? ' is-on' : ''}" data-var="completo">Completo</button>
-      <button type="button" class="seg__b${variante === 'simples' ? ' is-on' : ''}" data-var="simples">Simples</button>
-    </div>` : '';
+  const disponiveis = GADS_VARIANTES.filter(v => !v.soGoogle || isGoogleAds(S.canal));
+  const toggle = gads ? `<div class="seg">${disponiveis.map(v =>
+      `<button type="button" class="seg__b${variante === v.id ? ' is-on' : ''}" data-var="${v.id}">${v.label}</button>`
+    ).join('')}</div>` : '';
 
   const params = gads ? `<div class="cps">
       <div class="cps__t">Custom parameters da campanha</div>

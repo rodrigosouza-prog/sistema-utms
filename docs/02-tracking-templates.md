@@ -94,6 +94,31 @@ Nenhum destes é bloqueante — o template roda. Ficam registrados para decisão
 
 ---
 
+## ✅ Google Ads — destino WhatsApp
+
+Campanha de Search cujo destino é o WhatsApp. Cole em **Configurações da
+campanha → Opções de URL**, no lugar do template completo:
+
+```
+{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}
+```
+
+Difere do template completo em cinco pontos:
+
+| | Completo | WhatsApp |
+|---|---|---|
+| Abre com | `{lpurl}&` — exige LP **com** query string | `{lpurl}?` — exige LP **sem** query string |
+| `utm_medium` | `{ifsearch:cpc}{ifcontent:display}` | `cpc` fixo |
+| Roteamento | — | `seller=performance` |
+| Criativo | `creative={creative}` | `placement` · `targetid` · `loc_physical_ms` |
+| `gclid` | — | `gclid={gclid}`, para bater com o relatório do Ads |
+
+⚠️ O `?` no início é a diferença que mais quebra na prática: se a LP do
+WhatsApp já tiver parâmetro, a URL final sai com dois `?` e nada depois do
+segundo é lido. O gerador bloqueia esse caso na tela.
+
+---
+
 > ⚠️ **Exceção do Google e do Microsoft:** no padrão da casa, `utm_term` carrega
 > o **anúncio**. Nesses dois, os templates oficiais mantêm `utm_term={keyword}`
 > — a keyword é mais valiosa ali, e o anúncio já vem identificado por
