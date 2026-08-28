@@ -7,26 +7,19 @@
    com os nomes gerados, que sao configurados como custom parameters.
    ─────────────────────────────────────────────────────────────── */
 export const GADS_TEMPLATES = {
-  completo: '{lpurl}&utm_source=google&utm_medium={ifsearch:cpc}{ifcontent:display}&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&creative={creative}&adposition={adposition}',
-
-  /* Destino WhatsApp. Difere do completo em cinco pontos, todos de proposito:
-     abre com '?' (a LP do whats nao leva query string), fixa utm_medium=cpc,
-     carrega seller=performance para o roteamento, troca creative por
-     placement/targetid/loc_physical_ms e leva gclid para bater com o Ads. */
-  whatsapp: '{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}',
-
+  completo: '{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}',
   simples: '{lpurl}&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_term={keyword}'
 };
 
-/* rotulo e disponibilidade de cada variante no seletor da tela */
+/* rotulo de cada variante no seletor da tela */
 export const GADS_VARIANTES = [
-  { id: 'completo', label: 'Completo', soGoogle: false },
-  { id: 'whatsapp', label: 'WhatsApp', soGoogle: true },
-  { id: 'simples',  label: 'Simples',  soGoogle: false }
+  { id: 'completo', label: 'Completo' },
+  { id: 'simples',  label: 'Simples' }
 ];
 
-/* primeiro caractere depois de {lpurl}: define se o template espera uma LP
-   com ou sem query string */
+/* primeiro caractere depois de {lpurl}: diz se o template espera uma LP
+   com ou sem query string. O completo do Google abre com '?', o simples
+   e os do Microsoft abrem com '&'. */
 export const abreCom = tpl => (tpl || '').slice(7, 8);
 
 /* Microsoft Ads usa o mesmo ValueTrack do Google — mesma estrutura, outro source. */

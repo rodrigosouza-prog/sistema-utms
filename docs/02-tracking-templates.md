@@ -3,7 +3,7 @@
 ## Diagnóstico do template atual
 
 ```
-{lpurl}&utm_source=google&utm_medium={ifsearch:cpc}{ifcontent:display}&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&creative={creative}&adposition={adposition}
+{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}
 ```
 
 ### 🔴 1. `{lpurl}&` quebra URL de LP sem query string
@@ -64,7 +64,7 @@ O **`utm_id`** é o mais importante do projeto: com `utm_id={campaignid}` você 
 ### Completo
 
 ```
-{lpurl}&utm_source=google&utm_medium={ifsearch:cpc}{ifcontent:display}&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&creative={creative}&adposition={adposition}
+{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}
 ```
 
 ### Simples
@@ -94,30 +94,11 @@ Nenhum destes é bloqueante — o template roda. Ficam registrados para decisão
 
 ---
 
-## ✅ Google Ads — destino WhatsApp
-
-Campanha de Search cujo destino é o WhatsApp. Cole em **Configurações da
-campanha → Opções de URL**, no lugar do template completo:
-
-```
-{lpurl}?seller=performance&utm_source=google&utm_medium=cpc&utm_campaign={_campaign}&utm_content={_content}&utm_term={keyword}&matchtype={matchtype}&device={device}&network={network}&adgroupid={adgroupid}&campaignid={campaignid}&adposition={adposition}&placement={placement}&targetid={targetid}&loc_physical_ms={loc_physical_ms}&gclid={gclid}
-```
-
-Difere do template completo em cinco pontos:
-
-| | Completo | WhatsApp |
-|---|---|---|
-| Abre com | `{lpurl}&` — exige LP **com** query string | `{lpurl}?` — exige LP **sem** query string |
-| `utm_medium` | `{ifsearch:cpc}{ifcontent:display}` | `cpc` fixo |
-| Roteamento | — | `seller=performance` |
-| Criativo | `creative={creative}` | `placement` · `targetid` · `loc_physical_ms` |
-| `gclid` | — | `gclid={gclid}`, para bater com o relatório do Ads |
-
-⚠️ O `?` no início é a diferença que mais quebra na prática: se a LP do
-WhatsApp já tiver parâmetro, a URL final sai com dois `?` e nada depois do
-segundo é lido. O gerador bloqueia esse caso na tela.
-
----
+> ⚠️ **O template do Google abre com `{lpurl}?`, não com `&`.** A landing page
+> não pode ter query string: se tiver, a URL final sai com dois `?` e nada
+> depois do segundo é lido — nem o `seller`, nem as UTMs. O gerador bloqueia
+> o Salvar nesse caso. O template `simples` e os do Microsoft continuam
+> abrindo com `&` e esperam o contrário.
 
 > ⚠️ **Exceção do Google e do Microsoft:** no padrão da casa, `utm_term` carrega
 > o **anúncio**. Nesses dois, os templates oficiais mantêm `utm_term={keyword}`

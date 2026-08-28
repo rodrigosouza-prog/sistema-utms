@@ -634,6 +634,14 @@ function problemas() {
       for (const key of u.searchParams.keys()) {
         if (key.startsWith('utm_')) lp.push(`A landing page ja contem <code>${esc(key)}</code>. Remova — vai duplicar.`);
       }
+      /* template que abre com '?' + LP que ja tem query string = dois '?'
+         na URL final, e tudo depois do segundo e ignorado */
+      if (u.search && (isGoogleAds(S.canal) || isMsAds(S.canal))) {
+        const abre = abreCom(trackingTemplate(S, canalCfg(), nomes(), variante));
+        if (abre === '?') {
+          lp.push('Esse template abre com <code>{lpurl}?</code> e a LP <b>ja tem</b> query string. A URL final sairia com dois <code>?</code> e nada depois do segundo seria lido — nem o <code>seller</code>, nem as UTMs. Use a LP sem parametros.');
+        }
+      }
     } catch {}
   }
   return { faltando, invalidos, lp };
@@ -658,7 +666,7 @@ function avisos() {
         /* o template ativo manda: '&' quer LP com query string, '?' quer sem */
         const abre = abreCom(trackingTemplate(S, canalCfg(), nomes(), variante));
         if (abre === '?' && u.search) {
-          out.push({ t: 'e', m: `Esse template abre com <code>{lpurl}?</code> e a LP <b>ja tem</b> query string — a URL final sairia com dois <code>?</code>. Use a LP sem parametros ou troque para um template que abre com <code>&amp;</code>.` });
+          /* ja reportado como erro em problemas(), que bloqueia o Salvar */
         } else if (abre === '&' && !u.search) {
           out.push({ t: 'w', m: 'Esse template abre com <code>{lpurl}&amp;</code> e a LP <b>nao tem</b> query string — pode gerar URL sem <code>?</code>. Vale conferir no botao <b>Testar</b> do Google Ads.' });
         } else {
@@ -853,13 +861,10 @@ function pane(n) {
 
 function paneTemplate(n) {
   const gads = usaCustomParam(S.canal);
-  const v = GADS_VARIANTES.find(x => x.id === variante);
-  if (v && v.soGoogle && !isGoogleAds(S.canal)) variante = 'completo';
   const t = trackingTemplate(S, canalCfg(), n, variante);
   const cps = customParams(n);
 
-  const disponiveis = GADS_VARIANTES.filter(v => !v.soGoogle || isGoogleAds(S.canal));
-  const toggle = gads ? `<div class="seg">${disponiveis.map(v =>
+  const toggle = gads ? `<div class="seg">${GADS_VARIANTES.map(v =>
       `<button type="button" class="seg__b${variante === v.id ? ' is-on' : ''}" data-var="${v.id}">${v.label}</button>`
     ).join('')}</div>` : '';
 
