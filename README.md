@@ -26,6 +26,12 @@ src/pages/index.astro       as 4 telas (Gerador, Histórico, Dicionário, Regras
 docs/                       nomenclatura e tracking templates
 ```
 
+## utm_source e utm_medium
+
+`utm_medium` tem dois valores: **`cpc`** (mídia paga, 18 canais) e
+**`organico`** (todo o resto, 23 canais). Ambos saem do canal escolhido — não
+se digita. A distinção fina fica na `utm_source`, única por canal.
+
 ## Como o nome é montado
 
 O gerador tem quatro modos, escolhidos no menu lateral. **Canal e campanha são

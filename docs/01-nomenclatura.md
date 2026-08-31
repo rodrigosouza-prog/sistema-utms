@@ -56,9 +56,25 @@ No CS a frente não é um token: **retenção e reversão vêm do canal**, como
 `utm_medium=cs-retencao` ou `cs-reversao`. Medium é dimensão de primeira
 classe no GA4, então dá para filtrar sem quebrar o nome em pedaços.
 
-> ⚠️ `utm_medium=inside`, `cs-retencao` e `cs-reversao` não caem em nenhum
-> grupo padrão do GA4. Vale criar um **grupo de canais personalizado** para
-> que Inside e CS apareçam separados de "Unassigned".
+### utm_medium tem dois valores, só
+
+| Valor | Quando | Canais |
+|---|---|---|
+| `cpc` | pagamos pelo clique | 18 |
+| `organico` | todo o resto | 23 |
+
+Não existe terceiro valor. A granularidade mora na `utm_source`, que é única
+por canal — é ela que separa o WhatsApp de marketing (`whatsapp`) do WhatsApp
+do vendedor (`whatsapp-inside`) e do WhatsApp da retenção
+(`whatsapp-cs-retencao`).
+
+Nunca use `organic`, em inglês: é o valor que o GA4 reserva para busca não
+paga, e marcar link próprio com ele contamina o dado de SEO.
+
+> ⚠️ `utm_medium=organico` não casa com nenhuma regra padrão do GA4 e cai em
+> "Unassigned". Crie um **grupo de canais personalizado** com uma condição só:
+> `Medium corresponde exatamente a organico`. Já `cpc` o GA4 resolve sozinho,
+> classificando pela source.
 
 ### Blog: cuidado com link interno
 

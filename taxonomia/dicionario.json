@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "versao": "0.12.0",
-    "atualizado_em": "2026-08-27",
+    "versao": "1.0.0",
+    "atualizado_em": "2026-08-31",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
       "casing": "lowercase sempre",
@@ -10,7 +10,8 @@
       "acentos": "proibido (a-z 0-9 - _ apenas)",
       "espacos": "proibido",
       "vazio": "usar 'na' — nunca deixar o token em branco",
-      "regex_validacao_token": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      "regex_validacao_token": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "utm_medium": "apenas dois valores: cpc (midia paga) e organico (todo o resto)"
     }
   },
   "objetivo": {
@@ -144,7 +145,7 @@
       "label": "Performance Max",
       "grupo": "Google Ads",
       "utm_source": "google",
-      "utm_medium": "pmax",
+      "utm_medium": "cpc",
       "utm_source_platform": "google_ads",
       "tipo": "anuncio"
     },
@@ -152,7 +153,7 @@
       "label": "Display",
       "grupo": "Google Ads",
       "utm_source": "google",
-      "utm_medium": "display",
+      "utm_medium": "cpc",
       "utm_source_platform": "google_ads",
       "tipo": "anuncio"
     },
@@ -160,7 +161,7 @@
       "label": "YouTube",
       "grupo": "Google Ads",
       "utm_source": "youtube",
-      "utm_medium": "video",
+      "utm_medium": "cpc",
       "utm_source_platform": "google_ads",
       "tipo": "anuncio"
     },
@@ -168,7 +169,7 @@
       "label": "Demand Gen",
       "grupo": "Google Ads",
       "utm_source": "google",
-      "utm_medium": "demandgen",
+      "utm_medium": "cpc",
       "utm_source_platform": "google_ads",
       "tipo": "anuncio"
     },
@@ -176,7 +177,7 @@
       "label": "Shopping",
       "grupo": "Google Ads",
       "utm_source": "google",
-      "utm_medium": "shopping",
+      "utm_medium": "cpc",
       "utm_source_platform": "google_ads",
       "tipo": "anuncio"
     },
@@ -184,7 +185,7 @@
       "label": "Facebook",
       "grupo": "Meta Ads",
       "utm_source": "facebook",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "meta_ads",
       "tipo": "anuncio"
     },
@@ -192,7 +193,7 @@
       "label": "Instagram",
       "grupo": "Meta Ads",
       "utm_source": "instagram",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "meta_ads",
       "tipo": "anuncio"
     },
@@ -200,7 +201,7 @@
       "label": "Messenger",
       "grupo": "Meta Ads",
       "utm_source": "messenger",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "meta_ads",
       "tipo": "anuncio"
     },
@@ -208,7 +209,7 @@
       "label": "Audience Network",
       "grupo": "Meta Ads",
       "utm_source": "audience-network",
-      "utm_medium": "display",
+      "utm_medium": "cpc",
       "utm_source_platform": "meta_ads",
       "tipo": "anuncio"
     },
@@ -216,7 +217,7 @@
       "label": "TikTok",
       "grupo": "Outras midias pagas",
       "utm_source": "tiktok",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "tiktok_ads",
       "tipo": "anuncio"
     },
@@ -224,7 +225,7 @@
       "label": "LinkedIn",
       "grupo": "Outras midias pagas",
       "utm_source": "linkedin",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "linkedin_ads",
       "tipo": "anuncio"
     },
@@ -240,23 +241,23 @@
       "label": "Reddit",
       "grupo": "Outras midias pagas",
       "utm_source": "reddit",
-      "utm_medium": "paid-social",
+      "utm_medium": "cpc",
       "utm_source_platform": "reddit_ads",
       "tipo": "anuncio"
     },
     "email-disparo": {
       "label": "E-mail · disparo",
       "grupo": "Canais proprios",
-      "utm_source": "activecampaign",
-      "utm_medium": "email-disparo",
+      "utm_source": "activecampaign-disparo",
+      "utm_medium": "organico",
       "utm_source_platform": "activecampaign",
       "tipo": "organico"
     },
     "email-automacao": {
       "label": "E-mail · automação",
       "grupo": "Canais proprios",
-      "utm_source": "activecampaign",
-      "utm_medium": "email-automacao",
+      "utm_source": "activecampaign-automacao",
+      "utm_medium": "organico",
       "utm_source_platform": "activecampaign",
       "tipo": "organico"
     },
@@ -264,7 +265,7 @@
       "label": "WhatsApp",
       "grupo": "Canais proprios",
       "utm_source": "whatsapp",
-      "utm_medium": "messaging",
+      "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
@@ -272,7 +273,7 @@
       "label": "SMS",
       "grupo": "Canais proprios",
       "utm_source": "sms",
-      "utm_medium": "sms",
+      "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
@@ -280,7 +281,7 @@
       "label": "Push",
       "grupo": "Canais proprios",
       "utm_source": "onesignal",
-      "utm_medium": "push",
+      "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
@@ -289,7 +290,7 @@
       "grupo": "Canais proprios",
       "tipo": "organico",
       "utm_source": "app-aprova",
-      "utm_medium": "app",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "app-resolve": {
@@ -297,22 +298,22 @@
       "grupo": "Canais proprios",
       "tipo": "organico",
       "utm_source": "app-resolve",
-      "utm_medium": "app",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "organico-social": {
       "label": "Social organico",
       "grupo": "Canais proprios",
-      "utm_source": "instagram",
-      "utm_medium": "social-organic",
+      "utm_source": "instagram-organico",
+      "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
     "link-na-bio": {
       "label": "Link na bio",
       "grupo": "Canais proprios",
-      "utm_source": "instagram",
-      "utm_medium": "bio",
+      "utm_source": "instagram-bio",
+      "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
     },
@@ -321,7 +322,7 @@
       "grupo": "Canais proprios",
       "tipo": "organico",
       "utm_source": "blog",
-      "utm_medium": "conteudo",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "influencer": {
@@ -344,7 +345,7 @@
       "label": "Parceria",
       "grupo": "Parcerias & offline",
       "utm_source": "parceria",
-      "utm_medium": "partnership",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual",
       "tipo": "anuncio"
     },
@@ -352,7 +353,7 @@
       "label": "Offline",
       "grupo": "Parcerias & offline",
       "utm_source": "offline",
-      "utm_medium": "offline",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual",
       "tipo": "anuncio"
     },
@@ -360,40 +361,40 @@
       "label": "WhatsApp · vendedor",
       "grupo": "Contato direto",
       "tipo": "inside",
-      "utm_source": "whatsapp",
-      "utm_medium": "inside",
+      "utm_source": "whatsapp-inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "email-inside": {
       "label": "E-mail · vendedor",
       "grupo": "Contato direto",
       "tipo": "inside",
-      "utm_source": "email",
-      "utm_medium": "inside",
+      "utm_source": "email-inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "sms-inside": {
       "label": "SMS · vendedor",
       "grupo": "Contato direto",
       "tipo": "inside",
-      "utm_source": "sms",
-      "utm_medium": "inside",
+      "utm_source": "sms-inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "dm-instagram": {
       "label": "Direct do Instagram",
       "grupo": "Contato direto",
       "tipo": "inside",
-      "utm_source": "instagram",
-      "utm_medium": "inside",
+      "utm_source": "instagram-inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "ligacao": {
       "label": "Ligacao",
       "grupo": "Contato direto",
       "tipo": "inside",
-      "utm_source": "telefone",
-      "utm_medium": "inside",
+      "utm_source": "telefone-inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "crm-sequencia": {
@@ -401,63 +402,63 @@
       "grupo": "Cadencia automatizada",
       "tipo": "inside",
       "utm_source": "crm",
-      "utm_medium": "inside",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-retencao-whatsapp": {
       "label": "WhatsApp · retencao",
       "grupo": "Retencao",
       "tipo": "cs",
-      "utm_source": "whatsapp",
-      "utm_medium": "cs-retencao",
+      "utm_source": "whatsapp-cs-retencao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-retencao-email": {
       "label": "E-mail · retencao",
       "grupo": "Retencao",
       "tipo": "cs",
-      "utm_source": "email",
-      "utm_medium": "cs-retencao",
+      "utm_source": "email-cs-retencao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-retencao-ligacao": {
       "label": "Ligacao · retencao",
       "grupo": "Retencao",
       "tipo": "cs",
-      "utm_source": "telefone",
-      "utm_medium": "cs-retencao",
+      "utm_source": "telefone-cs-retencao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-retencao-app": {
       "label": "App · retencao",
       "grupo": "Retencao",
       "tipo": "cs",
-      "utm_source": "app",
-      "utm_medium": "cs-retencao",
+      "utm_source": "app-cs-retencao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-reversao-whatsapp": {
       "label": "WhatsApp · reversao",
       "grupo": "Reversao",
       "tipo": "cs",
-      "utm_source": "whatsapp",
-      "utm_medium": "cs-reversao",
+      "utm_source": "whatsapp-cs-reversao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-reversao-email": {
       "label": "E-mail · reversao",
       "grupo": "Reversao",
       "tipo": "cs",
-      "utm_source": "email",
-      "utm_medium": "cs-reversao",
+      "utm_source": "email-cs-reversao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "cs-reversao-ligacao": {
       "label": "Ligacao · reversao",
       "grupo": "Reversao",
       "tipo": "cs",
-      "utm_source": "telefone",
-      "utm_medium": "cs-reversao",
+      "utm_source": "telefone-cs-reversao",
+      "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
     "_tipos": {
@@ -506,22 +507,43 @@
       "paid": "cpc",
       "cpc-search": "cpc",
       "search": "cpc",
-      "social": "paid-social",
-      "social-paid": "paid-social",
-      "socialpaid": "paid-social",
-      "banner": "display",
-      "cpm": "display",
-      "e-mail": "email-disparo",
-      "mail": "email-disparo",
-      "newsletter": "email-disparo",
-      "stories": "paid-social",
-      "reels": "paid-social",
+      "social": "cpc",
+      "social-paid": "cpc",
+      "socialpaid": "cpc",
+      "banner": "cpc",
+      "cpm": "cpc",
+      "e-mail": "organico",
+      "mail": "organico",
+      "newsletter": "organico",
+      "stories": "cpc",
+      "reels": "cpc",
       "affiliate": "cpc",
       "influencer": "cpc",
-      "email": "email-disparo",
-      "automacao": "email-automacao",
-      "automation": "email-automacao",
-      "flow": "email-automacao"
+      "email": "organico",
+      "automacao": "organico",
+      "automation": "organico",
+      "flow": "organico",
+      "paid-social": "cpc",
+      "display": "cpc",
+      "pmax": "cpc",
+      "demandgen": "cpc",
+      "shopping": "cpc",
+      "video": "cpc",
+      "partnership": "cpc",
+      "offline": "cpc",
+      "email-disparo": "organico",
+      "email-automacao": "organico",
+      "organic": "organico",
+      "social-organic": "organico",
+      "messaging": "organico",
+      "bio": "organico",
+      "conteudo": "organico",
+      "app": "organico",
+      "push": "organico",
+      "sms": "organico",
+      "inside": "organico",
+      "cs-retencao": "organico",
+      "cs-reversao": "organico"
     }
   },
   "segmento": {
