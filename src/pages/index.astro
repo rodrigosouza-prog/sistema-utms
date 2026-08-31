@@ -20,7 +20,7 @@ const regras = TX._meta?.regras_globais ?? {};
 /* Canais separados por tipo — anuncio e organico — e dentro de cada um
    os grupos por familia. O tipo e escolhido no menu lateral: uma lista
    unica de 25 canais fazia o time se perder. */
-const canalPorTipo: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {}, inside: {}, cs: {} };
+const canalPorTipo: Record<string, Record<string, [string, any][]>> = { anuncio: {}, organico: {}, inside: {}, cs: {}, afiliado: {} };
 for (const [k, c] of Object.entries(TX.canal || {})) {
   if (k.startsWith('_')) continue;
   const tipo = canalPorTipo[(c as any).tipo] ? (c as any).tipo : 'anuncio';
@@ -35,7 +35,8 @@ const previews = PREVIEWS.anuncio;   /* o runtime troca os rotulos por modo */
 /* formula de cada nome, para a tela de regras */
 /* uma formula por modo, para a tela de Regras */
 const ROTULO_MODO: Record<string, string> = {
-  anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS'
+  anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS',
+  afiliado: 'Afiliados'
 };
 const formulasPorModo = Object.entries(SECOES).map(([modo, secs]) => ({
   modo,

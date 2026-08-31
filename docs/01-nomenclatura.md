@@ -40,6 +40,14 @@ VENDEDOR   vendedor_origem-do-lead
 ABORDAGEM  etapa_material_vNN                (opcional)
 ```
 
+**Afiliados** — programa de indicação:
+
+```
+CAMPANHA   objetivo_produto_funil_geo_data
+AFILIADO   afiliado_categoria
+DIVULGAÇÃO divulgacao_formato_vNN            (opcional)
+```
+
 **CS** — retenção e reversão:
 
 ```

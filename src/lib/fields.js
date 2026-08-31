@@ -87,7 +87,16 @@ export const FIELDS = {
   situacao: { kind: 'combo', dim: 'situacao', label: 'Situacao do aluno', req: true, ph: 'em-risco', modo: 'cs' },
   acao: { kind: 'combo', dim: 'acao', label: 'Acao', req: false, ph: 'oferta-retencao', modo: 'cs' },
   material_cs: { kind: 'combo', dim: 'material_cs', label: 'Material', req: false, ph: 'segunda-via', modo: 'cs' },
-  cs_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'cs' }
+  cs_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'cs' },
+
+  /* ── so no modo Afiliados ────────────────────────────────────────
+     Um canal so (utm_source=afiliado); quem indicou vai no content,
+     e onde e como divulgou vao no term.                             */
+  afiliado: { kind: 'combo', dim: 'afiliado', label: 'Afiliado', req: true, ph: 'joao-silva', modo: 'afiliado' },
+  categoria: { kind: 'combo', dim: 'categoria_afiliado', label: 'Categoria', req: true, ph: 'creator', modo: 'afiliado' },
+  divulgacao: { kind: 'combo', dim: 'divulgacao', label: 'Onde divulgou', req: false, ph: 'instagram', modo: 'afiliado' },
+  af_formato: { kind: 'combo', dim: 'formato_afiliado', label: 'Formato', req: false, ph: 'review', modo: 'afiliado' },
+  af_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'afiliado' }
 };
 
 export const RE_MAP = { PERIODO: PERIODO_RE, VERSAO: VERSAO_RE };
@@ -142,6 +151,18 @@ export const SECOES = {
       rows: [['acao', 'material_cs'], ['cs_versao']]
     }
   ],
+  afiliado: [BLOCO_CANAL, BLOCO_CAMPANHA,
+    {
+      n: '2f', num: 3, modo: 'afiliado', title: 'Afiliado', map: 'utm_content',
+      desc: 'Quem indicou?',
+      rows: [['afiliado', 'categoria']]
+    },
+    {
+      n: '3f', num: 4, modo: 'afiliado', title: 'Divulgacao', map: 'utm_term',
+      desc: 'Onde e como ele divulgou? Bloco opcional.',
+      rows: [['divulgacao', 'af_formato'], ['af_versao']]
+    }
+  ],
   organico: [BLOCO_CANAL, BLOCO_CAMPANHA,
     {
       n: '2o', num: 3, modo: 'organico', title: 'Publico / segmento', map: 'utm_content',
@@ -162,7 +183,8 @@ export const SECOES_RENDER = [
   ...SECOES.anuncio.slice(2),
   ...SECOES.organico.slice(2),
   ...SECOES.inside.slice(2),
-  ...SECOES.cs.slice(2)
+  ...SECOES.cs.slice(2),
+  ...SECOES.afiliado.slice(2)
 ];
 
 /* rotulos do painel de saida, por modo */
@@ -186,6 +208,11 @@ export const PREVIEWS = {
     { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
     { id: 'conjunto', titulo: 'Agente / situacao', map: 'utm_content', vazio: 'complete o bloco 3' },
     { id: 'anuncio', titulo: 'Acao', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
+  ],
+  afiliado: [
+    { id: 'campanha', titulo: 'Campanha', map: 'utm_campaign', vazio: 'complete o bloco 2' },
+    { id: 'conjunto', titulo: 'Afiliado', map: 'utm_content', vazio: 'complete o bloco 3' },
+    { id: 'anuncio', titulo: 'Divulgacao', map: 'utm_term', vazio: 'opcional — preencha o bloco 4 se quiser' }
   ]
 };
 

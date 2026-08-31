@@ -38,6 +38,8 @@ const VIEWS = {
                 t: 'UTM de inside sales', s: 'Link 1:1 do comercial — WhatsApp, e-mail, CRM, direct e ligacao.' },
   cs:         { sec: 'gerador', modo: 'cs',
                 t: 'UTM de CS',       s: 'Retencao e reversao da base — o canal ja separa as duas frentes.' },
+  afiliados:  { sec: 'gerador', modo: 'afiliado',
+                t: 'UTM de afiliados', s: 'Programa de indicacao — um canal so, quem indicou vai no utm_content.' },
   historico:  { sec: 'historico',  t: 'Historico',       s: 'Campanhas salvas neste navegador.' },
   dicionario: { sec: 'dicionario', t: 'Dicionario',      s: 'Adicione, edite ou remova os valores que aparecem nos campos.' },
   ajuda:      { sec: 'ajuda',      t: 'Regras & padrao', s: 'Como o nome e montado e onde colar cada saida.' }
@@ -71,7 +73,7 @@ const btnCopy = alvo =>
 /* ═══════════════ dicionario ═══════════════ */
 
 const DIM_LABEL = { canal: 'Canal' };
-const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS' };
+const TIPO_LABEL = { anuncio: 'Anuncios', organico: 'Organico', inside: 'Inside sales', cs: 'CS', afiliado: 'Afiliados' };
 /* canal sem tipo reconhecido cai em anuncio, para nunca sumir da tela */
 const tipoDoCanal = cfg => (cfg && TIPO_LABEL[cfg.tipo] ? cfg.tipo : 'anuncio');
 for (const f of Object.values(FIELDS)) if (f.dim) DIM_LABEL[f.dim] = f.label;
@@ -80,7 +82,7 @@ const DIMS = Object.keys(DIM_LABEL);
 /* campos extras que so o canal tem */
 const CANAL_COLS = [
   { k: 'label',               ph: 'Nome exibido (ex: Pinterest)' },
-  { k: 'tipo',                ph: 'Modo', opts: ['anuncio', 'organico', 'inside', 'cs'] },
+  { k: 'tipo',                ph: 'Modo', opts: ['anuncio', 'organico', 'inside', 'cs', 'afiliado'] },
   { k: 'grupo',               ph: 'Grupo (ex: Outras midias pagas)' },
   { k: 'utm_source',          ph: 'utm_source' },
   { k: 'utm_medium',          ph: 'utm_medium' },
@@ -191,7 +193,8 @@ const TOKENS = {
   anuncio:  { j: ['publico', 'detalhe', 'posicionamento'], a: ['formato', 'angulo', 'gancho', 'versao'] },
   organico: { j: ['segmento', 'segmento_detalhe'],         a: ['peca', 'posicao', 'assunto', 'peca_versao'] },
   inside:   { j: ['vendedor', 'origem_lead'],              a: ['etapa', 'material', 'inside_versao'] },
-  cs:       { j: ['agente', 'situacao'],                   a: ['acao', 'material_cs', 'cs_versao'] }
+  cs:       { j: ['agente', 'situacao'],                   a: ['acao', 'material_cs', 'cs_versao'] },
+  afiliado: { j: ['afiliado', 'categoria'],                a: ['divulgacao', 'af_formato', 'af_versao'] }
 };
 
 function nomes() {

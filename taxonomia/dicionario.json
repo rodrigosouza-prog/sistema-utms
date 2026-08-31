@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "1.0.0",
+    "versao": "1.1.0",
     "atualizado_em": "2026-08-31",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -335,11 +335,11 @@
     },
     "afiliado": {
       "label": "Afiliado",
-      "grupo": "Parcerias & offline",
+      "grupo": "Programa de afiliados",
       "utm_source": "afiliado",
       "utm_medium": "cpc",
       "utm_source_platform": "manual",
-      "tipo": "anuncio"
+      "tipo": "afiliado"
     },
     "parceria": {
       "label": "Parceria",
@@ -465,7 +465,8 @@
       "anuncio": "Midia paga — compra de clique ou veiculacao",
       "organico": "Canal proprio — audiencia que ja e sua",
       "inside": "Inside sales — link 1:1 mandado pelo time comercial",
-      "cs": "Customer success — retencao e reversao da base de alunos"
+      "cs": "Customer success — retencao e reversao da base de alunos",
+      "afiliado": "Programa de afiliados — comissao por indicacao"
     }
   },
   "aliases_normalizacao": {
@@ -685,5 +686,45 @@
     "pesquisa": "Formulario de pesquisa",
     "contrato": "Contrato ou termo",
     "na": "Sem material especifico"
+  },
+  "afiliado": {
+    "_descricao": "Quem indicou. Comece vazio e cadastre o time de afiliados pela tela Dicionario."
+  },
+  "categoria_afiliado": {
+    "_descricao": "Que tipo de afiliado e — muda a expectativa de volume e de comissao.",
+    "creator": "Criador de conteudo com audiencia propria",
+    "influenciador": "Influenciador contratado por indicacao",
+    "blogueiro": "Blog ou portal de conteudo",
+    "cupom": "Site ou perfil de cupom e desconto",
+    "aluno": "Aluno que indica",
+    "professor": "Professor ou coordenador parceiro",
+    "parceiro-escola": "Escola ou cursinho parceiro",
+    "parceiro-empresa": "Empresa com beneficio para funcionarios"
+  },
+  "divulgacao": {
+    "_descricao": "Onde o afiliado publicou o link.",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "youtube": "YouTube",
+    "whatsapp": "WhatsApp — grupo ou lista",
+    "telegram": "Telegram",
+    "email": "Lista de e-mail do afiliado",
+    "site": "Site ou blog do afiliado",
+    "podcast": "Podcast",
+    "evento": "Evento presencial",
+    "offline": "Material impresso ou boca a boca"
+  },
+  "formato_afiliado": {
+    "_descricao": "Que peca o afiliado usou para divulgar.",
+    "review": "Resenha ou analise",
+    "comparativo": "Comparacao com concorrente",
+    "depoimento": "Depoimento ou caso de aprovado",
+    "tutorial": "Tutorial ou aula gratuita",
+    "cupom": "Divulgacao de cupom",
+    "banner": "Banner ou display no site",
+    "link-texto": "Link no meio do texto",
+    "stories": "Stories",
+    "live": "Transmissao ao vivo",
+    "na": "Nao especificado"
   }
 }

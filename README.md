@@ -34,7 +34,7 @@ se digita. A distinção fina fica na `utm_source`, única por canal.
 
 ## Como o nome é montado
 
-O gerador tem quatro modos, escolhidos no menu lateral. **Canal e campanha são
+O gerador tem cinco modos, escolhidos no menu lateral. **Canal e campanha são
 idênticos em todos**; os blocos 3 e 4 mudam.
 
 **Anúncios** — mídia paga:
@@ -60,6 +60,14 @@ idênticos em todos**; os blocos 3 e 4 mudam.
 | `utm_campaign` | `objetivo_produto_funil_geo_data` |
 | `utm_content` | `vendedor_origem-do-lead` |
 | `utm_term` | `etapa_material_versao` |
+
+**Afiliados** — programa de indicação:
+
+| Saída | Fórmula |
+|---|---|
+| `utm_campaign` | `objetivo_produto_funil_geo_data` |
+| `utm_content` | `afiliado_categoria` |
+| `utm_term` | `divulgacao_formato_versao` |
 
 **CS** — retenção e reversão da base:
 
