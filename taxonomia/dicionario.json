@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "1.1.0",
+    "versao": "1.1.1",
     "atualizado_em": "2026-08-31",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -698,6 +698,7 @@
     "cupom": "Site ou perfil de cupom e desconto",
     "aluno": "Aluno que indica",
     "professor": "Professor ou coordenador parceiro",
+    "colaborador": "Colaborador da Aprova Total que indica",
     "parceiro-escola": "Escola ou cursinho parceiro",
     "parceiro-empresa": "Empresa com beneficio para funcionarios"
   },
