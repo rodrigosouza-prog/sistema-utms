@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "1.3.0",
+    "versao": "1.4.0",
     "atualizado_em": "2026-09-01",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -615,12 +615,15 @@
     "discord-fechado": "Canal fechado no Discord",
     "status": "Status do WhatsApp",
     "atendimento": "Conversa de atendimento",
+    "inbox": "Direct ou caixa de entrada da rede",
+    "manychat": "Fluxo automatico no direct (ManyChat)",
     "sms": "SMS",
     "push-app": "Push no aplicativo",
     "push-web": "Push no navegador",
     "app-banner": "Banner dentro do aplicativo",
     "app-card": "Card ou aviso dentro do aplicativo",
     "post": "Post de feed",
+    "tweet": "Tweet",
     "carrossel": "Carrossel de feed",
     "reels": "Reels",
     "story": "Story",
@@ -641,6 +644,8 @@
     "assinatura": "Assinatura",
     "ps": "P.S. no fim da mensagem",
     "legenda": "Legenda do post",
+    "descricao": "Descricao do video",
+    "chat": "Chat da transmissao ao vivo",
     "primeiro-comentario": "Primeiro comentario",
     "sticker": "Sticker / figurinha do story",
     "bio-link": "Link do perfil",
