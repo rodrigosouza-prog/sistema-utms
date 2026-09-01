@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "versao": "1.2.0",
+    "versao": "1.3.0",
     "atualizado_em": "2026-09-01",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
@@ -303,21 +303,61 @@
       "utm_medium": "organico",
       "utm_source_platform": "manual"
     },
-    "organico-social": {
-      "label": "Social organico",
-      "grupo": "Canais proprios",
+    "organico-instagram": {
+      "label": "Instagram",
+      "grupo": "Social organico",
+      "tipo": "organico",
       "utm_source": "instagram-organico",
       "utm_medium": "organico",
-      "utm_source_platform": "manual",
-      "tipo": "organico"
+      "utm_source_platform": "manual"
+    },
+    "organico-tiktok": {
+      "label": "TikTok",
+      "grupo": "Social organico",
+      "tipo": "organico",
+      "utm_source": "tiktok-organico",
+      "utm_medium": "organico",
+      "utm_source_platform": "manual"
+    },
+    "organico-youtube": {
+      "label": "YouTube",
+      "grupo": "Social organico",
+      "tipo": "organico",
+      "utm_source": "youtube-organico",
+      "utm_medium": "organico",
+      "utm_source_platform": "manual"
+    },
+    "organico-linkedin": {
+      "label": "LinkedIn",
+      "grupo": "Social organico",
+      "tipo": "organico",
+      "utm_source": "linkedin-organico",
+      "utm_medium": "organico",
+      "utm_source_platform": "manual"
+    },
+    "organico-twitter": {
+      "label": "Twitter / X",
+      "grupo": "Social organico",
+      "tipo": "organico",
+      "utm_source": "twitter-organico",
+      "utm_medium": "organico",
+      "utm_source_platform": "manual"
     },
     "link-na-bio": {
       "label": "Link na bio",
-      "grupo": "Canais proprios",
+      "grupo": "Social organico",
       "utm_source": "instagram-bio",
       "utm_medium": "organico",
       "utm_source_platform": "manual",
       "tipo": "organico"
+    },
+    "comunidade": {
+      "label": "Comunidade",
+      "grupo": "Comunidade",
+      "tipo": "organico",
+      "utm_source": "comunidade",
+      "utm_medium": "organico",
+      "utm_source_platform": "manual"
     },
     "blog": {
       "label": "Blog",
@@ -570,6 +610,9 @@
     "newsletter": "Newsletter recorrente",
     "broadcast": "Disparo em massa no WhatsApp",
     "grupo": "Mensagem em grupo de WhatsApp",
+    "grupo-aberto": "Grupo aberto da comunidade",
+    "grupo-fechado": "Grupo fechado da comunidade",
+    "discord-fechado": "Canal fechado no Discord",
     "status": "Status do WhatsApp",
     "atendimento": "Conversa de atendimento",
     "sms": "SMS",
