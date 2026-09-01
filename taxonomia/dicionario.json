@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "versao": "1.1.1",
-    "atualizado_em": "2026-08-31",
+    "versao": "1.2.0",
+    "atualizado_em": "2026-09-01",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
       "casing": "lowercase sempre",
@@ -37,6 +37,8 @@
     "craques-enem": "Craques do Enem",
     "app": "App Aprova Total",
     "ensino-medio": "Ensino Médio",
+    "esquenta-enem": "Esquenta Enem",
+    "simuladao-fechado": "Simuladao fechado",
     "plataforma-2026": "Plataforma — ciclo 2026",
     "plataforma-2027": "Plataforma — ciclo 2027",
     "combo-plataforma-resolve": "Combo Plataforma + Resolve (aulao)",
