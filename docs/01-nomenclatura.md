@@ -36,7 +36,7 @@ PEÇA       peca_posicao_assunto_vNN          (opcional)
 
 ```
 CAMPANHA   objetivo_produto_funil_geo_data
-VENDEDOR   vendedor_origem-do-lead
+VENDEDOR   vendedor_origem-do-lead_operador
 ABORDAGEM  etapa_material_vNN                (opcional)
 ```
 

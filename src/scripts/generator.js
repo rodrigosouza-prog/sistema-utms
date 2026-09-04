@@ -192,7 +192,7 @@ function tokOuNa(k) {
 const TOKENS = {
   anuncio:  { j: ['publico', 'detalhe', 'posicionamento'], a: ['formato', 'angulo', 'gancho', 'versao'] },
   organico: { j: ['segmento', 'segmento_detalhe'],         a: ['peca', 'posicao', 'assunto', 'peca_versao'] },
-  inside:   { j: ['vendedor', 'origem_lead'],              a: ['etapa', 'material', 'inside_versao'] },
+  inside:   { j: ['vendedor', 'origem_lead', 'operador'],  a: ['etapa', 'material', 'inside_versao'] },
   cs:       { j: ['agente', 'situacao'],                   a: ['acao', 'material_cs', 'cs_versao'] },
   afiliado: { j: ['afiliado', 'categoria'],                a: ['divulgacao', 'af_formato', 'af_versao'] }
 };

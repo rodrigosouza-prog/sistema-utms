@@ -76,6 +76,7 @@ export const FIELDS = {
      em que etapa da conversa e com que material.                    */
   vendedor: { kind: 'combo', dim: 'vendedor', label: 'Vendedor', req: true, ph: 'joao-victor', modo: 'inside' },
   origem_lead: { kind: 'combo', dim: 'origem_lead', label: 'Origem do lead', req: true, ph: 'meta-lead', modo: 'inside' },
+  operador: { kind: 'combo', dim: 'operador', label: 'Operado por', req: true, ph: 'humano', modo: 'inside' },
   etapa: { kind: 'combo', dim: 'etapa', label: 'Etapa', req: false, ph: 'follow-up', modo: 'inside' },
   material: { kind: 'combo', dim: 'material', label: 'Material', req: false, ph: 'proposta', modo: 'inside' },
   inside_versao: { kind: 'text', label: 'Versao', req: false, ph: 'v01', hint: '<b>v01</b> ate <b>v99</b>', re: 'VERSAO', modo: 'inside' },
@@ -130,8 +131,8 @@ export const SECOES = {
   inside: [BLOCO_CANAL, BLOCO_CAMPANHA,
     {
       n: '2i', num: 3, modo: 'inside', title: 'Vendedor / origem', map: 'utm_content',
-      desc: 'Quem mandou e de onde veio o lead?',
-      rows: [['vendedor', 'origem_lead']]
+      desc: 'Quem mandou, de onde veio o lead e quem conduziu?',
+      rows: [['vendedor', 'origem_lead'], ['operador']]
     },
     {
       n: '3i', num: 4, modo: 'inside', title: 'Abordagem', map: 'utm_term',

@@ -58,7 +58,7 @@ idênticos em todos**; os blocos 3 e 4 mudam.
 | Saída | Fórmula |
 |---|---|
 | `utm_campaign` | `objetivo_produto_funil_geo_data` |
-| `utm_content` | `vendedor_origem-do-lead` |
+| `utm_content` | `vendedor_origem-do-lead_operador` |
 | `utm_term` | `etapa_material_versao` |
 
 **Afiliados** — programa de indicação:

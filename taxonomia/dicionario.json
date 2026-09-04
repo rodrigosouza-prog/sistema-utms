@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "versao": "1.4.0",
-    "atualizado_em": "2026-09-01",
+    "versao": "1.6.0",
+    "atualizado_em": "2026-09-04",
     "owner": "contas.marketing@aprovatotal.com.br",
     "regras_globais": {
       "casing": "lowercase sempre",
@@ -404,7 +404,7 @@
       "grupo": "Contato direto",
       "tipo": "inside",
       "utm_source": "whatsapp-inside",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "email-inside": {
@@ -412,7 +412,7 @@
       "grupo": "Contato direto",
       "tipo": "inside",
       "utm_source": "email-inside",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "sms-inside": {
@@ -420,7 +420,7 @@
       "grupo": "Contato direto",
       "tipo": "inside",
       "utm_source": "sms-inside",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "dm-instagram": {
@@ -428,7 +428,7 @@
       "grupo": "Contato direto",
       "tipo": "inside",
       "utm_source": "instagram-inside",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "ligacao": {
@@ -436,7 +436,7 @@
       "grupo": "Contato direto",
       "tipo": "inside",
       "utm_source": "telefone-inside",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "crm-sequencia": {
@@ -444,7 +444,7 @@
       "grupo": "Cadencia automatizada",
       "tipo": "inside",
       "utm_source": "crm",
-      "utm_medium": "organico",
+      "utm_medium": "cpc",
       "utm_source_platform": "manual"
     },
     "cs-retencao-whatsapp": {
@@ -584,7 +584,7 @@
       "app": "organico",
       "push": "organico",
       "sms": "organico",
-      "inside": "organico",
+      "inside": "cpc",
       "cs-retencao": "organico",
       "cs-reversao": "organico"
     }
@@ -777,5 +777,11 @@
     "stories": "Stories",
     "live": "Transmissao ao vivo",
     "na": "Nao especificado"
+  },
+  "operador": {
+    "_descricao": "Quem de fato conduziu o contato: pessoa, agente de IA ou os dois.",
+    "humano": "Vendedor conduziu do inicio ao fim",
+    "ia": "Agente de IA conduziu sozinho",
+    "hibrido": "IA abriu ou preparou, humano assumiu"
   }
 }
